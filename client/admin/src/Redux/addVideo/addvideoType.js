@@ -1,0 +1,3 @@
+export const ADD_VIDOE_REQ = 'ADD_VIDOE_REQ';
+export const ADD_VIDEO_SUC = 'ADD_VIDEO_SUC';
+export const ADD_VIDEO_FAILED = 'ADD_VIDEO_FAILED';
