@@ -11,9 +11,8 @@ const snackReducer = (state = {}, action) => {
      };
    case SNACKBAR_CLEAR:
      return {
+       ...state,
        snackbarOpen: false,
-       errorSnackbarOpen: false,
-       infoSnackbarOpen: false
      };
    default:
      return state;
