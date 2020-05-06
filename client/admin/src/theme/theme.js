@@ -28,7 +28,7 @@ const theme = createMuiTheme({
       '"Segoe UI Emoji"',
       '"Segoe UI Symbol"',
   ].join(','),
- }
+ },
 })
 
 export default theme;

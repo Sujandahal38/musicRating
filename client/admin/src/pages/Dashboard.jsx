@@ -6,6 +6,7 @@ import clsx from "clsx";
 import LeftDrawer from "../components/Drawer/Drawer";
 import { useSelector} from "react-redux";
 import { HashLoader } from "react-spinners";
+import AddVideoPage from "./AddVideoPage";
 
 const device = () => {
   let x = window.matchMedia("(min-width: 700px");
@@ -42,9 +43,7 @@ export default function (props) {
         <LeftDrawer openDrawer={openDrawer} />
         <Navbar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
         <Switch>
-          <Route path="/dashboard/addvideo">
-            <h1 style={{ fontSize: "150px" }}>asdasdasdas</h1>
-          </Route>
+          <Route path="/dashboard/addvideo" component={AddVideoPage} />
           <Route path="/dashboard/">
             <h1 style={{ fontSize: "150px" }}>asujanvs</h1>
           </Route>

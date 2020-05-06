@@ -14,7 +14,6 @@ import security from "../assets/svg/security.svg";
 import mention from "../assets/svg/mention.svg";
 import { useHistory } from "react-router-dom";
 
-
 function step() {
   return [personalInfo, security, mention];
 }
@@ -74,7 +73,7 @@ const useStyle = makeStyles((theme) => ({
     [theme.breakpoints.down("sm")]: {
       width: "100vw",
       marginTop: theme.spacing(5),
-      marginLeft: '0px',
+      marginLeft: "0px",
     },
   },
   adminsvg: {

@@ -4,6 +4,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import { clearSnackbar } from "../../Redux";
 import { ErrorOutlineSharp, CheckCircleOutlineSharp } from "@material-ui/icons";
 import { Alert } from "@material-ui/lab";
+import { makeStyles, Slide } from "@material-ui/core";
 export default function SuccessSnackbar() {
   const dispatch = useDispatch();
 
@@ -11,6 +12,7 @@ export default function SuccessSnackbar() {
     (state) => state.snack
   );
 
+  const classes = useStyle()
   function handleClose() {
     dispatch(clearSnackbar());
   }
@@ -30,12 +32,15 @@ export default function SuccessSnackbar() {
   };
   return (
     <Snackbar
-      anchorOrigin={{ vertical: "top", horizontal: "right" }}
+    className = {classes.root}
+      anchorOrigin={{ vertical: "top", horizontal: "center" }}
       open={snackbarOpen}
       onClose={handleClose}
-      autoHideDuration={6000}
+      autoHideDuration={4000}
     >
+      <Slide direction='down' in={snackbarOpen} >
       <Alert
+      elevation={5}
         icon={
           status >= 400 ? (
             <ErrorOutlineSharp fontSize="inherit" />
@@ -49,6 +54,13 @@ export default function SuccessSnackbar() {
       >
         {snackbarMessage}
       </Alert>
+      </Slide>
     </Snackbar>
   );
 }
+
+const useStyle = makeStyles((theme) => ({
+  root: {
+    marginTop: theme.spacing(-1),
+  }
+}));

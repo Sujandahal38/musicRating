@@ -11,12 +11,15 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { BsMusicNoteList } from "react-icons/bs";
-import { AiOutlineDashboard } from "react-icons/ai";
-import { Link } from "react-router-dom";
-
+import { AiFillDashboard, IoMdAddCircle, FaUserEdit } from "react-icons/all";
+import { Link, useLocation } from "react-router-dom";
+import { useSelector } from 'react-redux';
 
 export default function LeftDrawer(props) {
   const classes = useStyle();
+  const location = useLocation();
+  const userData = useSelector(state => state.auth.userData);
+  console.log(location.pathname)
   return (
     <Drawer
       className={classes.root}
@@ -30,30 +33,32 @@ export default function LeftDrawer(props) {
           </Toolbar>
           <Divider variant="middle" />
           <List component="nav">
-          <Link to='/dashboard/'>
-            <ListItem button >
-              
+            <Link style={{textDecoration: 'none'}} to="/dashboard/">
+              <ListItem  selected={!!(location.pathname === '/dashboard/')} button>
                 <ListItemIcon>
-                  <AiOutlineDashboard color="white" fontSize={25} />
+                  <AiFillDashboard color="white" fontSize={25} />
                 </ListItemIcon>
-                <ListItemText style={{color : 'white'}} primary='Dashboard' />
-            </ListItem>
+                <ListItemText style={{ color: "white" }} primary="Dashboard" />
+              </ListItem>
             </Link>
-            <Link to='/dashboard/addvideo'>
-            <ListItem button >
-              <ListItemIcon>
-                <AiOutlineDashboard color="white" fontSize={25} />
-              </ListItemIcon>
-              <ListItemText style={{color : 'white'}} primary='Add Videos' />
-          </ListItem>
-          </Link>
-          <ListItem button >
-              
-              <ListItemIcon>
-                <AiOutlineDashboard color="white" fontSize={25} />
-              </ListItemIcon>
-              <ListItemText style={{color : 'white'}} primary='Dashboard' />
-          </ListItem>
+            <Link style={{textDecoration: 'none'}} to="/dashboard/addvideo">
+              <ListItem  selected={!!(location.pathname === '/dashboard/addvideo')}  button>
+                <ListItemIcon>
+                  <IoMdAddCircle color="white" fontSize={25} />
+                </ListItemIcon>
+                <ListItemText style={{ color: "white" }} primary="Add Video" />
+              </ListItem>
+            </Link>
+            { userData?.adminType === 'root' && 
+            <Link style={{textDecoration: 'none'}} to="/dashboard/addvideo">
+              <ListItem  selected={!!(location.pathname === '/dashboard/manageadmin')}  button>
+                <ListItemIcon>
+                  <FaUserEdit color="white" fontSize={25} />
+                </ListItemIcon>
+                <ListItemText style={{ color: "white" }} primary="Admin Role" />
+              </ListItem>
+            </Link>
+            }
           </List>
         </Container>
       </div>
