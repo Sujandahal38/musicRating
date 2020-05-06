@@ -1,36 +1,37 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-undef */
-const Joi = require('@hapi/joi');
-const ytThumnail = require('youtube-thumbnail');
-const puppeteer = require('puppeteer');
+const Joi = require("@hapi/joi");
+const ytThumnail = require("youtube-thumbnail");
+const puppeteer = require("puppeteer");
 
-const Video = require('../model/Video');
+const Video = require("../model/Video");
 
 exports.AddVideo = async (req, res, next) => {
   try {
     const validationSchema = Joi.object({
       title: Joi.string().trim().max(100).required(),
       description: Joi.string().trim().max(500),
-      youtubeLink: Joi.string().trim().required().regex(/(https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/),
+      youtubeLink: Joi.string()
+        .trim()
+        .required()
+        .regex(
+          /(https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/
+        ),
       genre: Joi.string().trim().max(75),
       artist: Joi.string().trim().max(70),
     });
     const validate = await validationSchema.validateAsync(req.body);
     if (validate) {
-      const {
-        title,
-        description,
-        youtubeLink,
-        artist,
-        genre,
-      } = req.body;
+      const { title, description, youtubeLink, artist, genre } = req.body;
       const createdBy = req.adminInfo.id;
       const checkVideo = await Video.findOne({
         youtubeLink,
       });
       if (!checkVideo) {
-        const grabEmbedCode = String(youtubeLink).match(/^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/);
+        const grabEmbedCode = String(youtubeLink).match(
+          /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/
+        );
         const embedCode = grabEmbedCode[2];
         const thumbnail = ytThumnail(youtubeLink);
         const videoInfo = new Video({
@@ -46,43 +47,41 @@ exports.AddVideo = async (req, res, next) => {
         const saveVideoData = await videoInfo.save();
         if (saveVideoData) {
           res.status(200).json({
-            message: 'video added successfully 🎉',
+            message: "video added successfully 🎉",
           });
         }
       }
       if (checkVideo) {
         res.status(400).json({
-          message: 'Video already exists 🤷‍',
+          message: "Video already exists 🤷‍",
         });
       }
     }
   } catch (error) {
-    if (error.name === 'ValidationError') {
+    if (error.name === "ValidationError") {
       res.status(422);
     }
     next(error);
   }
 };
 
-
 // helperFunction
 function getElText(page, selector) {
   // eslint-disable-next-line no-shadow
-  return page.evaluate((selector) => document.querySelector(selector).innerText, selector);
+  return page.evaluate(
+    (selector) => document.querySelector(selector).innerText,
+    selector
+  );
 }
 
 exports.youtubeScrape = async (req, res, next) => {
   try {
-    const {
-      id,
-    } = req.params;
+    const { id } = req.params;
     const findVideo = await Video.findOne({
       _id: id,
     });
     if (findVideo) {
-      const {
-        youtubeLink,
-      } = findVideo;
+      const { youtubeLink } = findVideo;
       const browser = await puppeteer.launch({
         headless: false,
       });
@@ -93,7 +92,7 @@ exports.youtubeScrape = async (req, res, next) => {
       });
       const navigationPromise = page.waitForNavigation();
       await page.goto(youtubeLink, {
-        waitUntil: 'load',
+        waitUntil: "load",
         timeout: 0,
       });
       await navigationPromise;
@@ -102,12 +101,13 @@ exports.youtubeScrape = async (req, res, next) => {
       await page.evaluate(() => {
         window.scrollBy(0, 300);
       });
-      await page.waitForSelector('#content');
-      await page.waitForSelector('#comments');
+      await page.waitForSelector("#content");
+      await page.waitForSelector("#comments");
 
       await page.waitFor(2000);
 
-      const totalCommentSelector = '.style-scope:nth-child(1) > #title > #count > .count-text';
+      const totalCommentSelector =
+        ".style-scope:nth-child(1) > #title > #count > .count-text";
       await getElText(page, totalCommentSelector);
       // eslint-disable-next-line radix
       // const total = Number(totalComments.replace(' Comments', '').replace(',', ''));
@@ -128,18 +128,21 @@ exports.youtubeScrape = async (req, res, next) => {
         }
       }
       if (comments) {
-        const commentSave = await Video.updateOne({
-          _id: id,
-        }, {
-          $set: {
-            youtubeComments: comments,
-            updatedBy: req.adminInfo.id,
-            updatedAt: Date.now(),
+        const commentSave = await Video.updateOne(
+          {
+            _id: id,
           },
-        });
+          {
+            $set: {
+              youtubeComments: comments,
+              updatedBy: req.adminInfo.id,
+              updatedAt: Date.now(),
+            },
+          }
+        );
         if (commentSave) {
           res.status(200).json({
-            message: 'comments saved successfully',
+            message: "comments saved successfully",
           });
           await browser.close();
         }
@@ -147,7 +150,7 @@ exports.youtubeScrape = async (req, res, next) => {
     }
     if (!findVideo) {
       res.status(404).json({
-        message: 'video not found.',
+        message: "video not found.",
       });
     }
   } catch (error) {
@@ -157,9 +160,7 @@ exports.youtubeScrape = async (req, res, next) => {
 
 exports.deleteVideo = async (req, res, next) => {
   try {
-    const {
-      id,
-    } = req.params;
+    const { id } = req.params;
     const findVideo = await Video.findOne({
       _id: id,
     });
@@ -169,13 +170,13 @@ exports.deleteVideo = async (req, res, next) => {
       });
       if (deleteVideo) {
         res.status(200).json({
-          message: 'Video deleted. 🚮',
+          message: "Video deleted. 🚮",
         });
       }
     }
     if (!findVideo) {
       res.status(400).json({
-        message: 'Video do not exists',
+        message: "Video do not exists",
       });
     }
   } catch (error) {
@@ -188,58 +189,60 @@ exports.editVideo = async (req, res, next) => {
     const validationSchema = Joi.object({
       title: Joi.string().trim().max(100).required(),
       description: Joi.string().trim().max(500),
-      youtubeLink: Joi.string().trim().required().regex(/(https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/),
+      youtubeLink: Joi.string()
+        .trim()
+        .required()
+        .regex(
+          /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?[\w\?‌​=]*)?/
+        ),
       genre: Joi.string().trim().max(75),
       artist: Joi.string().trim().max(70),
     });
     const validate = await validationSchema.validateAsync(req.body);
     if (validate) {
-      const {
-        title,
-        description,
-        youtubeLink,
-        artist,
-        genre,
-      } = req.body;
+      const { title, description, youtubeLink, artist, genre } = req.body;
       const updatedBy = req.adminInfo.id;
-      const {
-        id,
-      } = req.params;
+      const { id } = req.params;
       const checkVideo = await Video.findOne({
         _id: id,
       });
       if (checkVideo) {
-        const grabEmbedCode = String(youtubeLink).match(/^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/);
+        const grabEmbedCode = String(youtubeLink).match(
+          /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/
+        );
         const embedCode = grabEmbedCode[2];
         const thumbnail = ytThumnail(youtubeLink);
-        const editvideoInfo = await Video.updateOne({
-          _id: id,
-        }, {
-          $set: {
-            title,
-            description,
-            youtubeLink,
-            genre,
-            artist,
-            embedCode,
-            updatedBy,
-            thumbnail: thumbnail.high.url,
+        const editvideoInfo = await Video.updateOne(
+          {
+            _id: id,
           },
-        });
+          {
+            $set: {
+              title,
+              description,
+              youtubeLink,
+              genre,
+              artist,
+              embedCode,
+              updatedBy,
+              thumbnail: thumbnail.high.url,
+            },
+          }
+        );
         if (editvideoInfo.nModified > 0) {
           res.status(200).json({
-            message: 'videoInfo updated successfully 🎉',
+            message: "videoInfo updated successfully 🎉",
           });
         }
       }
       if (!checkVideo) {
         res.status(400).json({
-          message: 'Video do not exists 🤷‍',
+          message: "Video do not exists 🤷‍",
         });
       }
     }
   } catch (error) {
-    if (error.name === 'ValidationError') {
+    if (error.name === "ValidationError") {
       res.status(422);
     }
     next(error);
