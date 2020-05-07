@@ -9,6 +9,8 @@ Music Video Database (rating based on sentiment analysis)
 
 `npm run dev ` to start express server at https://localhost:5000 as DEVELOPMENT MODE.
 
+`.env` file conatins all the necessary environment variables. Including Root admin login credentials.
+
 `npm start` starts the project as production mode :tada: 
 
 #REACT Apps:
