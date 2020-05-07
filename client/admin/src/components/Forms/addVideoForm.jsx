@@ -21,7 +21,7 @@ import { RestorePage, Save } from "@material-ui/icons";
 export default function AddVideoForm(props) {
   const classes = useStyle();
   const { register, errors, reset, handleSubmit } = useForm();
-  const addVideo = useSelector(state => state.addVideo);
+  const addVideo = useSelector(state => state.video);
   const dispatch = useDispatch();
   const [genre, setGenre] = useState("Pop");
   const handleSelectGenre = (event) => {
