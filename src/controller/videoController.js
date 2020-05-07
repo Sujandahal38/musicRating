@@ -248,3 +248,25 @@ exports.editVideo = async (req, res, next) => {
     next(error);
   }
 };
+
+
+exports.fetchVideo = async (req, res, next) => {
+  try {
+    const { limit } = req.params;
+
+  const fetchVideo = await Video.find().sort({_id: -1}).limit(parseInt(limit));
+  if (fetchVideo) {
+    res.status(200).json({
+      message: 'fetched successfully 🎉',
+      videoData: fetchVideo,
+    });
+  }
+  if (!fetchVideo) {
+    res.status(404).json({
+      message: 'No video available ❌',
+    });
+  }
+  } catch (error) {
+    next(error);
+  }
+}

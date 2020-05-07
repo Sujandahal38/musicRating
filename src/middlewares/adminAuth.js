@@ -8,11 +8,13 @@ exports.verifyAdmin = async (req, res, next) => {
     const {
       usernameOrEmail,
     } = req.body;
+    const data = usernameOrEmail.trim();
+    console.log(data);
     const isUser = await Admin.findOne({
       $or: [{
-        email: usernameOrEmail,
+        email: data,
       }, {
-        username: usernameOrEmail,
+        username: data,
       }],
     });
     if (!isUser) {

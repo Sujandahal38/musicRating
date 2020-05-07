@@ -13,6 +13,7 @@ const {
   youtubeScrape,
   deleteVideo,
   editVideo,
+  fetchVideo
 } = require('../controller/videoController');
 const {
   verifyAdmin,
@@ -29,6 +30,8 @@ adminRouter.post('/addvideo', adminAuth, AddVideo);
 adminRouter.get('/fetchcomment/:id', adminAuth, youtubeScrape);
 adminRouter.delete('/deleteVideo/:id', adminAuth, deleteVideo);
 adminRouter.patch('/editvideo/:id', adminAuth, editVideo);
+
+adminRouter.get('/fetchvideo/:limit', adminAuth, fetchVideo);
 
 
 module.exports = adminRouter;

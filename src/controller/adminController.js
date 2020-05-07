@@ -46,7 +46,11 @@ exports.Signup = async (req, res, next) => {
       }
       if (!findUser) {
         const hash = await bcrypt.hashSync(password, 12);
-        const avatar = await gravatar.url(email,{s: '200', r: 'pg', d: '404'});
+        const avatar = await gravatar.url(email, {
+          s: '200',
+          r: 'pg',
+          d: '404'
+        });
         const userData = new Admin({
           fullName,
           email,
@@ -88,10 +92,12 @@ exports.Login = async (req, res, next) => {
       }
       if (verifyPassword) {
         const token = await jwt.sign({
-          email: checkUser.email,
-          id: checkUser.id,
-        },
-        SECRET_KEY, { expiresIn: '2h' });
+            email: checkUser.email,
+            id: checkUser.id,
+          },
+          SECRET_KEY, {
+            expiresIn: '2h'
+          });
         if (token) {
           res.status(200).json({
             message: 'Logged in successfully 🎉',
@@ -107,15 +113,19 @@ exports.Login = async (req, res, next) => {
 
 exports.AdminProfile = async (req, res, next) => {
   try {
-    const { id } = req.adminInfo;
+    const {
+      id
+    } = req.adminInfo;
     console.log(id);
-    const findUser = await Admin.findOne({_id: id});
-    if(findUser) {
+    const findUser = await Admin.findOne({
+      _id: id
+    });
+    if (findUser) {
       res.status(200).json({
         findUser,
       });
     }
-    if(!findUser) {
+    if (!findUser) {
       res.status(404).json({
         message: 'admin not found',
       })
@@ -128,8 +138,12 @@ exports.AdminProfile = async (req, res, next) => {
 
 exports.CheckUsername = async (req, res, next) => {
   try {
-   const { username } = req.body;
-    const checkUsername = await Admin.findOne({username});
+    const {
+      username
+    } = req.body;
+    const checkUsername = await Admin.findOne({
+      username
+    });
     console.log(username, checkUsername);
     if (checkUsername) {
       res.status(400).json({
