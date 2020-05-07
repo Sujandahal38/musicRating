@@ -9,7 +9,8 @@ Music Video Database (rating based on sentiment analysis)
 
 `npm run dev ` to start express server at https://localhost:5000 as DEVELOPMENT MODE.
 
-`.env` file conatins all the necessary environment variables. Including Root admin login credentials.
+`.env` file contains all the necessary environment variables. Including Root admin login credentials.
+
 
 `npm start` starts the project as production mode :tada: 
 
@@ -18,7 +19,7 @@ Music Video Database (rating based on sentiment analysis)
 `./client/admin` for AdminPage.
 `./client/user` from userPage.
  
-
+NOTE:- separate app for user and admin because they do no share UI and any components.
 ##USED TECHNOLOGIES:
 
 -Puppeteer for youtube scraping.
