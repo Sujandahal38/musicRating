@@ -49,6 +49,7 @@ if(auth?.isLoggedIn ) {
           <form onSubmit={handleSubmit(setLogin)}>
             <FormGroup className={classes.inputField}>
               <TextField
+              autoFocus={true}
                 name="usernameOrEmail"
                 placeholder="username or email"
                 id="Username"

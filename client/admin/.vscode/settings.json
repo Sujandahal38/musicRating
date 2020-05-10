@@ -1,3 +1,4 @@
 {
- "workbench.iconTheme": "material-icon-theme"
+ "workbench.iconTheme": "material-icon-theme",
+ "markdown.preview.fontSize": 10
 }

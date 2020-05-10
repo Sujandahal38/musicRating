@@ -3,8 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setFetchVideo } from "../../Redux";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import "moment-timezone";
-import { FadeLoader } from 'react-spinners'
+import { FadeLoader } from "react-spinners";
 import {
   makeStyles,
   Paper,
@@ -35,13 +34,15 @@ export default function VideoList() {
           <Typography variant="h6">Recently Added Videos</Typography>
         </Toolbar>
         <Divider variant="middle" className={classes.divider} />
-       {video?.fetching &&
-         <div className={classes.hashloader}><FadeLoader width={4} height={10} radius={2} color='black' /></div> 
-       }
+        {video?.fetching && (
+          <div className={classes.hashloader}>
+            <FadeLoader width={4} height={10} radius={2} color="black" />
+          </div>
+        )}
         {video?.videoData &&
-          video.videoData.map((item, index) => (
-            <List>
-              <ListItem key={index}>
+          video?.videoData.map((item, index) => (
+            <List key={index}>
+              <ListItem>
                 <ListItemAvatar>
                   <Avatar fontSize={85} src={item.thumbnail} variant="square" />
                 </ListItemAvatar>
@@ -72,7 +73,7 @@ export default function VideoList() {
 
 const useStyle = makeStyles((theme) => ({
   root: {
-    width: "25vw",
+    width: "35vw",
     height: 520.97,
     marginTop: theme.spacing(12),
     marginLeft: theme.spacing(12),
@@ -92,6 +93,6 @@ const useStyle = makeStyles((theme) => ({
     textDecoration: "none",
   },
   hashloader: {
-   margin: '50%'
-  }
+    margin: "50%",
+  },
 }));

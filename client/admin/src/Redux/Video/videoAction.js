@@ -4,7 +4,13 @@ import {
   ADD_VIDEO_FAILED,
   FETCH_VIDEO_REQ,
   FETCH_VIDEO_SUC,
-  FETCH_VIDEO_FAILED
+  FETCH_VIDEO_FAILED,
+  VIDEO_ID_REQ,
+  VIDEO_ID_SUC,
+  VIDEO_ID_FAIL,
+  FETCH_COMMENT_SUC,
+  FETCH_COMMENT_FAIL,
+  FETCH_COMMENT_REQ
 } from './videoType';
 import Axios from 'axios';
 import {
@@ -51,6 +57,86 @@ export const fetchVideoFailed = (error) => {
   return {
     type :FETCH_VIDEO_FAILED,
     payload: error,
+  }
+}
+
+export const VideoIdReq = () => {
+  return {
+    type: VIDEO_ID_REQ,
+  }
+}
+
+export const videoIdSuc = (data) => {
+  return {
+    type: VIDEO_ID_SUC,
+    payload: data,
+  }
+}
+
+export const videoIdFail = (error) => {
+  return {
+    type: VIDEO_ID_FAIL,
+    payload: error,
+  }
+}
+export const commentFetch = () => {
+  return {
+    type: FETCH_COMMENT_REQ,
+  }
+}
+export const commentFetchSuc = (message) => {
+  return {
+    type: FETCH_COMMENT_SUC,
+    message: message,
+  }
+}
+export const commentFetchFail = (message) => {
+  return {
+    type: FETCH_COMMENT_FAIL,
+    message: message,
+  }
+}
+
+export const setCommentFetch = (id) => {
+  return (dispatch) => {
+    dispatch(commentFetch());
+    const token = localStorage.getItem('token');
+    Axios.defaults.headers.common['Authorization'] = token;
+    Axios.get(`${API}/admin//fetchcomment/${id}`)
+    .then(res => {
+      dispatch(commentFetchSuc(res.data.message));
+      dispatch(showSnackbar(res.data.message, res.status));
+      dispatch(getVideoByID(id));
+    })
+    .catch(err => {
+      if (err && err.response && err.response.data.message) {
+        dispatch(videoIdFail(err.response.data.message));
+        dispatch(showSnackbar(err.response.data.message, err.status));
+      }
+      if (err && !err.response ) {
+        dispatch(videoIdFail(err.message));
+        dispatch(showSnackbar(err.message, err.status));
+      }
+    })
+  }
+}
+
+export const getVideoByID = (id) => {
+  return (dispatch)=> {
+    dispatch(VideoIdReq());
+    const token = localStorage.getItem('token');
+    Axios.defaults.headers.common['Authorization'] = token;
+    Axios.get(`${API}/admin/videobyid/${id}`)
+    .then(res => {
+      dispatch(videoIdSuc(res.data.videoData));
+    }).catch(err => {
+        if (err && err.response && err.response.data.message) {
+          dispatch(videoIdFail(err.response.data.message));
+        }
+        if (err && !err.response ) {
+          dispatch(videoIdFail(err.message));
+        }
+    })
   }
 }
 

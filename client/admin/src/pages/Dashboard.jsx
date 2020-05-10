@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import { Switch, Route, Link } from "react-router-dom";
-import { makeStyles, Typography, Button } from "@material-ui/core";
+import { makeStyles, Typography, Button, Container } from "@material-ui/core";
 import clsx from "clsx";
 import LeftDrawer from "../components/Drawer/Drawer";
 import { useSelector} from "react-redux";
 import { HashLoader } from "react-spinners";
 import AddVideoPage from "./AddVideoPage";
+import VideoInfo from "../components/video/VideoInfo";
 
 const device = () => {
   let x = window.matchMedia("(min-width: 700px");
@@ -42,12 +43,12 @@ export default function (props) {
       <div className={clsx(classes.root, { [classes.shift]: openDrawer })}>
         <LeftDrawer openDrawer={openDrawer} />
         <Navbar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
+        <Container>
         <Switch>
           <Route path="/dashboard/addvideo" component={AddVideoPage} />
-          <Route path="/dashboard/">
-            <h1 style={{ fontSize: "150px" }}>asujanvs</h1>
-          </Route>
+          <Route path="/dashboard/videos/:id" component={VideoInfo}/>
         </Switch>
+        </Container>
       </div>
     </>
   );

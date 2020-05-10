@@ -19,7 +19,6 @@ export default function LeftDrawer(props) {
   const classes = useStyle();
   const location = useLocation();
   const userData = useSelector(state => state.auth.userData);
-  console.log(location.pathname)
   return (
     <Drawer
       className={classes.root}

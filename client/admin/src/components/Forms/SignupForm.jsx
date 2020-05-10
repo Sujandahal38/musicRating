@@ -133,6 +133,8 @@ export default function SignupForm(props) {
                 <>
                   <FormGroup className={classes.inputField}>
                     <TextField
+                    autoFocus={true}
+                    autoCapitalize={true}
                       defaultValue={data.fullName}
                       name="fullName"
                       placeholder="Full Name"
