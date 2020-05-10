@@ -13,7 +13,8 @@ const {
   youtubeScrape,
   deleteVideo,
   editVideo,
-  fetchVideo
+  fetchVideo,
+  VideoById
 } = require('../controller/videoController');
 const {
   verifyAdmin,
@@ -32,6 +33,8 @@ adminRouter.delete('/deleteVideo/:id', adminAuth, deleteVideo);
 adminRouter.patch('/editvideo/:id', adminAuth, editVideo);
 
 adminRouter.get('/fetchvideo/:limit', adminAuth, fetchVideo);
+
+adminRouter.get('/videobyid/:id', adminAuth, VideoById);
 
 
 module.exports = adminRouter;

@@ -20,7 +20,7 @@ exports.Signup = async (req, res, next) => {
         },
       }).required(),
       password: Joi.string().trim().max(78).required(),
-      username: Joi.string().trim(),
+      username: Joi.string().trim().lowercase(),
     });
     const validate = await validationSchema.validateAsync(req.body);
     if (validate) {
@@ -116,7 +116,6 @@ exports.AdminProfile = async (req, res, next) => {
     const {
       id
     } = req.adminInfo;
-    console.log(id);
     const findUser = await Admin.findOne({
       _id: id
     });
@@ -131,7 +130,7 @@ exports.AdminProfile = async (req, res, next) => {
       })
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 

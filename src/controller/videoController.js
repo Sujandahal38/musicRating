@@ -234,6 +234,12 @@ exports.editVideo = async (req, res, next) => {
             message: "videoInfo updated successfully 🎉",
           });
         }
+        if (editvideoInfo.nModified === 0) {
+          res.status(305).json({
+            message: 'not modified'
+          })
+        }
+
       }
       if (!checkVideo) {
         res.status(400).json({
@@ -266,6 +272,26 @@ exports.fetchVideo = async (req, res, next) => {
       message: 'No video available ❌',
     });
   }
+  } catch (error) {
+    next(error);
+  }
+}
+
+exports.VideoById = async (req, res, next) => {
+  try {
+   const { id } = req.params;
+   const fetchVideo = await Video.findOne({_id: id});
+   if (!fetchVideo) {
+     res.status(404).json({
+       message: 'Video not Found 😢',
+     })
+   }
+   if (fetchVideo) {
+     res.status(200).json({
+       message: 'video fetched 🎉',
+       videoData: fetchVideo,
+     });
+   }
   } catch (error) {
     next(error);
   }

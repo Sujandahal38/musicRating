@@ -19,7 +19,7 @@ exports.Signup = async (req, res, next) => {
         },
       }).required(),
       password: Joi.string().trim().max(78).required(),
-      username: Joi.string().trim(),
+      username: Joi.string().trim().lowercase(),
     });
     const validate = await validationSchema.validateAsync(req.body);
     if (validate) {
@@ -97,7 +97,7 @@ exports.login = async (req, res, next) => {
           email,
           username,
         }, SECRET_KEY, {
-          expiresIn: '2h',
+          expiresIn: '24h',
         });
         if (token) {
           res.status(200).json({
