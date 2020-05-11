@@ -82,7 +82,7 @@ export default function VideoInfo() {
                 />
 
                 <CardContent>
-                  <Typography align="center" variant="body1">
+                  <Typography component="span" align="center" variant="body1">
                     {video?.loading ? (
                       <BeatLoader margin={2} size={10} color="white" />
                     ) : (
@@ -103,15 +103,15 @@ export default function VideoInfo() {
               >
                 <CardHeader
                   title={
-                    <Typography align="center" variant="body1">
+                    <Typography component="span" align="center" variant="body1">
                       Youtube Comments
                     </Typography>
                   }
                 />
 
                 <CardContent>
-                  <Typography align="center" variant="body1">
-                    {video?.fetching ? (
+                  <Typography component="span" align="center" variant="body1">
+                    {video?.fetching || video?.loading ? (
                       <BeatLoader margin={2} size={10} color="white" />
                     ) : (
                       video?.videoDatabyId?.youtubeComments?.length
@@ -131,15 +131,15 @@ export default function VideoInfo() {
               >
                 <CardHeader
                   title={
-                    <Typography align="center" variant="body1">
+                    <Typography component="span" align="center" variant="body1">
                       MVDB Comments
                     </Typography>
                   }
                 />
 
                 <CardContent>
-                  <Typography align="center" variant="body1">
-                    {video?.fetching ? (
+                  <Typography component="span" align="center" variant="body1">
+                    {video?.fetching || video?.loading ? (
                       <BeatLoader margin={2} size={10} color="white" />
                     ) : (
                       video?.videoDatabyId?.mvdbComments?.length
