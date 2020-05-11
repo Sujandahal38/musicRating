@@ -10,7 +10,10 @@ import {
   VIDEO_ID_FAIL,
   FETCH_COMMENT_SUC,
   FETCH_COMMENT_FAIL,
-  FETCH_COMMENT_REQ
+  FETCH_COMMENT_REQ,
+  DELETE_VIDEO_REQ,
+  DELETE_VIDEO_SUC,
+  DELETE_VIDEO_FAIL
 } from './videoType';
 import Axios from 'axios';
 import {
@@ -94,6 +97,48 @@ export const commentFetchFail = (message) => {
   return {
     type: FETCH_COMMENT_FAIL,
     message: message,
+  }
+}
+
+export const deleteVideoReq = () => {
+  return {
+    type: DELETE_VIDEO_REQ,
+  }
+}
+
+export const deleteVideoSuc = (message) => {
+  return {
+    type: DELETE_VIDEO_SUC,
+    payload: message,
+  }
+}
+
+export const deleteVideoFail = (message) => {
+  return {
+    type: DELETE_VIDEO_FAIL,
+    payload: message,
+  }
+}
+
+export const deleteVideo = (id) => {
+  return (dispatch) => {
+    dispatch(deleteVideoReq());
+    const token = localStorage.getItem('token');
+    Axios.defaults.headers.common['Authorization'] = token;
+    Axios.delete(`${API}/admin/deletevideo/${id}`)
+    .then(res => {
+      dispatch(deleteVideoSuc(res.data.message));
+      dispatch(showSnackbar(res.data.message, res.status));
+    }).catch(err => {
+      if (err && err.response && err.response.data.message) {
+        dispatch(deleteVideoFail(err.response.data.message));
+        dispatch(showSnackbar(err.response.data.message, err.status));
+      }
+      if (err && !err.response ) {
+        dispatch(deleteVideoFail(err.message));
+        dispatch(showSnackbar(err.message, err.status));
+      }
+    })
   }
 }
 

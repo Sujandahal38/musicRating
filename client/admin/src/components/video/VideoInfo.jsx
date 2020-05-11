@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   makeStyles,
   Card,
@@ -9,6 +9,9 @@ import {
   Box,
   CardActions,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogActions,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
 import { useParams } from "react-router-dom";
@@ -22,23 +25,34 @@ import {
   BsGraphUp,
   AiOutlineCloudDownload,
 } from "react-icons/all";
-
-import { setCommentFetch } from "../../Redux";
+import { useHistory } from "react-router-dom";
+import { setCommentFetch, deleteVideo } from "../../Redux";
 
 export default function VideoInfo() {
   const classes = useStyles();
   const { id } = useParams();
   const video = useSelector((state) => state.video);
   const dispatch = useDispatch();
-  console.log(video);
+  const history = useHistory();
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     dispatch(getVideoByID(id));
   }, []);
-
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const onDelete = (id) => {
+    dispatch(deleteVideo(id));
+  };
   const fetchComment = (id) => {
     dispatch(setCommentFetch(id));
   };
-
+  if (video?.message === "Video deleted successfully.") {
+    history.push("/dashboard/addvideo");
+  }
   return (
     <>
       <Card elevation={5} className={classes.root}>
@@ -145,6 +159,7 @@ export default function VideoInfo() {
               startIcon={<AiOutlineDelete />}
               className={classes.Button}
               disabled={video?.fetching || video?.loading}
+              onClick={handleOpen}
             >
               Delete Video
             </Button>
@@ -154,7 +169,7 @@ export default function VideoInfo() {
               color="secondary"
               startIcon={<BsGraphUp />}
               className={classes.Button}
-              disabled={video?.fetching || video?.loading }
+              disabled={video?.fetching || video?.loading}
             >
               Analyze Video
             </Button>
@@ -165,13 +180,29 @@ export default function VideoInfo() {
               color="primary"
               startIcon={<AiOutlineCloudDownload />}
               onClick={() => fetchComment(id)}
-              disabled={video?.fetching || video?.loading }
+              disabled={video?.fetching || video?.loading}
             >
               Fetch Comment
             </Button>
           </Box>
         </CardActions>
       </Card>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="confirmation dailog"
+      >
+        <DialogTitle id="alert-dialog-title">Are you sure?</DialogTitle>
+
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Disagree
+          </Button>
+          <Button onClick={() => onDelete(id)} color="primary" autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }

@@ -10,7 +10,10 @@ import {
   VIDEO_ID_FAIL,
   FETCH_COMMENT_REQ,
   FETCH_COMMENT_SUC,
-  FETCH_COMMENT_FAIL
+  FETCH_COMMENT_FAIL,
+  DELETE_VIDEO_REQ,
+  DELETE_VIDEO_SUC,
+  DELETE_VIDEO_FAIL
 } from './videoType';
 
 
@@ -89,6 +92,25 @@ const videoReducer = (state = initialState, action) => {
                               ...state,
 
                             }
+                            case DELETE_VIDEO_REQ:
+                              return {
+                                ...state,
+                                deleting: true,
+                              }
+                              case DELETE_VIDEO_SUC:
+                                return {
+                                  ...state,
+                                  deleting: false,
+                                  message: action.payload,
+                                }
+                                case DELETE_VIDEO_FAIL:
+                                  return {
+                                    ...state,
+                                    deleting: false,
+                                    message: action.payload,
+                                  }
+
+                              
                             default:
                               return {
                                 ...state,
