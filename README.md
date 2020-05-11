@@ -5,7 +5,7 @@ Music Video Database (rating based on sentiment analysis)
 
 #Start Express server
 
-`npm install` inside `./src/` will install all necessary node_modules.
+`npm install` inside `./` will install all necessary node_modules.
 
 `npm run dev ` to start express server at https://localhost:5000 as DEVELOPMENT MODE.
 
