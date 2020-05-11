@@ -144,6 +144,7 @@ export default function VideoInfo() {
               style={{ backgroundColor: "red", color: "white" }}
               startIcon={<AiOutlineDelete />}
               className={classes.Button}
+              disabled={video?.fetching || video?.loading}
             >
               Delete Video
             </Button>
@@ -153,6 +154,7 @@ export default function VideoInfo() {
               color="secondary"
               startIcon={<BsGraphUp />}
               className={classes.Button}
+              disabled={video?.fetching || video?.loading }
             >
               Analyze Video
             </Button>
@@ -163,6 +165,7 @@ export default function VideoInfo() {
               color="primary"
               startIcon={<AiOutlineCloudDownload />}
               onClick={() => fetchComment(id)}
+              disabled={video?.fetching || video?.loading }
             >
               Fetch Comment
             </Button>
