@@ -22,7 +22,7 @@ Music Video Database (rating based on sentiment analysis)
 NOTE:- separate app for user and admin because they do no share UI and any components.
 ##USED TECHNOLOGIES:
 
--Puppeteer for youtube scraping.
+-Puppeteer for youtube scraping and..
 -redux for state management.
 
 
