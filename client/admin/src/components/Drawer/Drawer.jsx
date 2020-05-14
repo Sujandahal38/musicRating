@@ -11,7 +11,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { BsMusicNoteList } from "react-icons/bs";
-import { AiFillDashboard, IoMdAddCircle, FaUserEdit } from "react-icons/all";
+import { AiFillDashboard, IoMdAddCircle, FaUserEdit, FaEdit } from "react-icons/all";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from 'react-redux';
 
@@ -48,8 +48,16 @@ export default function LeftDrawer(props) {
                 <ListItemText style={{ color: "white" }} primary="Add Video" />
               </ListItem>
             </Link>
+            <Link style={{textDecoration: 'none'}} to="/dashboard/managevideo">
+              <ListItem  selected={!!(location.pathname === '/dashboard/managevideo')}  button>
+                <ListItemIcon>
+                  <FaEdit color="white" fontSize={25} />
+                </ListItemIcon>
+                <ListItemText style={{ color: "white" }} primary="Manage Video" />
+              </ListItem>
+            </Link>
             { userData?.adminType === 'root' && 
-            <Link style={{textDecoration: 'none'}} to="/dashboard/addvideo">
+            <Link style={{textDecoration: 'none'}} to="/dashboard/manageadmin">
               <ListItem  selected={!!(location.pathname === '/dashboard/manageadmin')}  button>
                 <ListItemIcon>
                   <FaUserEdit color="white" fontSize={25} />

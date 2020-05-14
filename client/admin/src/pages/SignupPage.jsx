@@ -7,7 +7,7 @@ import {
   Toolbar,
   Fade,
 } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import SignupForm from "../components/Forms/SignupForm";
 import personalInfo from "../assets/svg/signIn.svg";
 import security from "../assets/svg/security.svg";

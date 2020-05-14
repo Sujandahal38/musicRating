@@ -48,7 +48,6 @@ const videoReducer = (state = initialState, action) => {
             }
             case FETCH_VIDEO_SUC:
               return {
-                ...state,
                 fetching: false,
                   videoData: action.payload,
                   message: action.message,

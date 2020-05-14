@@ -120,7 +120,7 @@ export const deleteVideoFail = (message) => {
   }
 }
 
-export const deleteVideo = (id) => {
+export const deleteVideo = (id, params) => {
   return (dispatch) => {
     dispatch(deleteVideoReq());
     const token = localStorage.getItem('token');
@@ -128,7 +128,11 @@ export const deleteVideo = (id) => {
     Axios.delete(`${API}/admin/deletevideo/${id}`)
     .then(res => {
       dispatch(deleteVideoSuc(res.data.message));
+      if ( params === '/dashboard/managevideo') {
+        dispatch(setFetchVideo(0));
+        }
       dispatch(showSnackbar(res.data.message, res.status));
+      
     }).catch(err => {
       if (err && err.response && err.response.data.message) {
         dispatch(deleteVideoFail(err.response.data.message));
@@ -147,7 +151,7 @@ export const setCommentFetch = (id) => {
     dispatch(commentFetch());
     const token = localStorage.getItem('token');
     Axios.defaults.headers.common['Authorization'] = token;
-    Axios.get(`${API}/admin//fetchcomment/${id}`)
+    Axios.get(`${API}/admin/fetchcomment/${id}`)
     .then(res => {
       dispatch(commentFetchSuc(res.data.message));
       dispatch(showSnackbar(res.data.message, res.status));
@@ -217,7 +221,6 @@ export const setFetchVideo = (limit) => {
     dispatch(fetchVideoRequest());
     const token = localStorage.getItem('token');
     Axios.defaults.headers.common["Authorization"] = token;
-    console.log('dispathcing...')
     Axios.get(`${API}/admin/fetchvideo/${limit}`)
     .then(res => {
       dispatch(fetchVideoSucess(res.data.videoData, res.data.message));

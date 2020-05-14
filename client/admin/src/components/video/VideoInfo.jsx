@@ -14,7 +14,7 @@ import {
   DialogActions,
 } from "@material-ui/core";
 import { Alert } from "@material-ui/lab";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { getVideoByID } from "../../Redux";
 import Moment from "react-moment";
@@ -29,6 +29,8 @@ import { useHistory } from "react-router-dom";
 import { setCommentFetch, deleteVideo } from "../../Redux";
 
 export default function VideoInfo() {
+  const location = useLocation();
+  console.log(location.pathname)
   const classes = useStyles();
   const { id } = useParams();
   const video = useSelector((state) => state.video);
@@ -48,7 +50,7 @@ export default function VideoInfo() {
     dispatch(deleteVideo(id));
   };
   const fetchComment = (id) => {
-    dispatch(setCommentFetch(id));
+    dispatch(setCommentFetch(id, location.pathname));
   };
   if (video?.message === "Video deleted successfully.") {
     history.push("/dashboard/addvideo");

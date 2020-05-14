@@ -8,7 +8,7 @@ import { useSelector} from "react-redux";
 import { HashLoader } from "react-spinners";
 import AddVideoPage from "./AddVideoPage";
 import VideoInfo from "../components/video/VideoInfo";
-
+import VideoTable from "../components/Table/VideoTable";
 const device = () => {
   let x = window.matchMedia("(min-width: 700px");
   if (x.matches) {
@@ -18,6 +18,7 @@ const device = () => {
     return false;
   }
 };
+
 
 export default function (props) {
   const classes = useStyle();
@@ -47,6 +48,7 @@ export default function (props) {
         <Switch>
           <Route path="/dashboard/addvideo" component={AddVideoPage} />
           <Route path="/dashboard/videos/:id" component={VideoInfo}/>
+          <Route path="/dashboard/managevideo" component={VideoTable}/>
         </Switch>
         </Container>
       </div>
