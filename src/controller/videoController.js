@@ -154,8 +154,8 @@ exports.youtubeScrape = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error);
-  }
+   next(error)
+}
 };
 
 exports.deleteVideo = async (req, res, next) => {
@@ -170,7 +170,7 @@ exports.deleteVideo = async (req, res, next) => {
       });
       if (deleteVideo) {
         res.status(200).json({
-          message: "Video deleted. 🚮",
+          message: "Video deleted successfully.",
         });
       }
     }
