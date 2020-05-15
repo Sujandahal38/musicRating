@@ -24,7 +24,6 @@ const initialState = {
   loading: false,
   message: '',
   status: 0,
-  videoDatabyId: [],
 }
 
 const videoReducer = (state = initialState, action) => {
