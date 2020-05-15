@@ -9,6 +9,8 @@ import { HashLoader } from "react-spinners";
 import AddVideoPage from "./AddVideoPage";
 import VideoInfo from "../components/video/VideoInfo";
 import VideoTable from "../components/Table/VideoTable";
+import editVideo from "../components/Forms/editVideo";
+import EditVideo from "../components/Forms/editVideo";
 const device = () => {
   let x = window.matchMedia("(min-width: 700px");
   if (x.matches) {
@@ -49,6 +51,7 @@ export default function (props) {
           <Route path="/dashboard/addvideo" component={AddVideoPage} />
           <Route path="/dashboard/videos/:id" component={VideoInfo}/>
           <Route path="/dashboard/managevideo" component={VideoTable}/>
+          <Route path="/dashboard/editvideo/:id" component={EditVideo}/>
         </Switch>
         </Container>
       </div>

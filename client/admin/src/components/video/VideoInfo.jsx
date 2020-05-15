@@ -30,7 +30,6 @@ import { setCommentFetch, deleteVideo } from "../../Redux";
 
 export default function VideoInfo() {
   const location = useLocation();
-  console.log(location.pathname)
   const classes = useStyles();
   const { id } = useParams();
   const video = useSelector((state) => state.video);

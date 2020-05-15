@@ -13,7 +13,10 @@ import {
   FETCH_COMMENT_REQ,
   DELETE_VIDEO_REQ,
   DELETE_VIDEO_SUC,
-  DELETE_VIDEO_FAIL
+  DELETE_VIDEO_FAIL,
+  EDIT_VIDEO_REQ,
+  EDIT_VIDEO_SUC,
+  EDIT_VIDEO_FAIL
 } from './videoType';
 import Axios from 'axios';
 import {
@@ -116,6 +119,25 @@ export const deleteVideoSuc = (message) => {
 export const deleteVideoFail = (message) => {
   return {
     type: DELETE_VIDEO_FAIL,
+    payload: message,
+  }
+}
+
+export const editVideoReq = () => {
+  return {
+    type: EDIT_VIDEO_REQ,
+  }
+}
+
+export const editVideoSuc = (message) => {
+  return {
+    type: EDIT_VIDEO_SUC,
+    payload: message,
+  }
+}
+export const editVideoFail = (message) => {
+  return {
+    type: EDIT_VIDEO_FAIL,
     payload: message,
   }
 }
@@ -237,3 +259,27 @@ export const setFetchVideo = (limit) => {
     })
   }
 }
+
+export const editVideo = (id, data) => {
+  return (dispatch) => {
+    dispatch(editVideoReq());
+    const token = localStorage.getItem('token');
+    Axios.defaults.headers.common["Authorization"] = token;
+    Axios.patch(`${API}/admin/editvideo/${id}`,data)
+    .then(res => {
+      dispatch(editVideoSuc(res.data.message));
+      dispatch(showSnackbar(res.data.message, res.status));
+    }).catch(err => {
+      if (err && err.response && err.response.data.message) {
+        dispatch(
+          editVideoFail(err.response.data.message)
+        );
+        dispatch(showSnackbar(err.response.data.message, err.status));
+      }
+      if (err && !err.response) {
+        dispatch(fetchVideoFailed(err.message));
+        dispatch(showSnackbar(err.message, err.status));
+      }
+    })
+}
+  }

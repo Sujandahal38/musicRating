@@ -196,13 +196,13 @@ export default function VideoTable() {
                 <TableCell component="th" align="justify">
                   Uploaded on
                 </TableCell>
-                <TableCell component="th" align="justify" colSpan={2}>
+                <TableCell component="th" align="justify" colSpan={3}>
                   <FormControlLabel
                     control={
                       <Checkbox
                         checked={filterUnAnalyzed}
                         onChange={handleUnAnalyzed}
-                        name="checkedCd"
+                        name="unAnalyzed"
                       />
                     }
                     label="filter unanalyzed video"
@@ -212,7 +212,7 @@ export default function VideoTable() {
                       <Checkbox
                         checked={filterUnScraped}
                         onChange={handleUnscraped}
-                        name="checkedC"
+                        name="unscraped"
                       />
                     }
                     label="filter unscraped video"
@@ -257,9 +257,9 @@ export default function VideoTable() {
                         <IconButton onClick={() => handleOpen(item.id)}>
                           <AiTwotoneDelete color="red" />
                         </IconButton>
-                        <IconButton>
+                       <Link to={`/dashboard/editvideo/${item.id}`}><IconButton>
                           <FaEdit color="blue" />
-                        </IconButton>
+                        </IconButton></Link> 
                       </Toolbar>
                     </TableCell>
                   </TableRow>
