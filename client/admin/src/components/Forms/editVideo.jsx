@@ -39,7 +39,8 @@ export default function EditVideo(props) {
   };
   useEffect(() => {
     dispatch(getVideoByID(id));
-    setGenre(video?.videoDatabyId?.genre)
+    setGenre(video?.videoDatabyId?.genre);
+    // eslint-disable-next-line
   }, []);
   return (
     <>
@@ -78,7 +79,7 @@ export default function EditVideo(props) {
                       defaultValue={video?.videoDatabyId?.youtubeLink}
                       inputRef={register({
                         required: true,
-                        pattern: /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?[\w\?‌​=]*)?/,
+                        pattern: /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\]*)(&(amp;)?[\w‌​=]*)?/,
                       })}
                       error={!!errors.youtubeLink}
                       helperText={

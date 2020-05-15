@@ -47,6 +47,7 @@ export default function VideoTable() {
   };
   useEffect(() => {
     dispatch(setFetchVideo(0));
+    // eslint-disable-next-line
   }, []);
   const handleClose = () => {
     setOpen(false);
@@ -139,7 +140,7 @@ export default function VideoTable() {
         setRows(holder);
       }
     }
-  }, [filterUnAnalyzed, filterUnScraped]);
+  }, [filterUnAnalyzed, filterUnScraped, video]);
 
   const handleUnscraped = () => {
     setFilterUnScraped(!filterUnScraped);

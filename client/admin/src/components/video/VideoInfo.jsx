@@ -38,6 +38,7 @@ export default function VideoInfo() {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     dispatch(getVideoByID(id));
+    // eslint-disable-next-line
   }, []);
   const handleClose = () => {
     setOpen(false);

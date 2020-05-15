@@ -67,7 +67,7 @@ export default function AddVideoForm(props) {
                     fullWidth
                     inputRef={register({
                       required: true,
-                      pattern: /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?[\w\?‌​=]*)?/,
+                      pattern: /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w]*)(&(amp;)?[\w=]*)?/,
                     })}
                     error={!!(errors.youtubeLink)}
                     helperText={
