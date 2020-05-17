@@ -6,12 +6,12 @@ import {
   VALID_USERNAME,
   INVALID_USERNAME,
   DESTROY_MESSAGE,
-} from "./signupTypes";
+} from './signupTypes';
 
-import { API } from "../../API_GLOBAL";
-import { showSnackbar } from "../index";
+import { API } from '../../API_GLOBAL';
+import { showSnackbar } from '../index';
 
-import Axios from "axios";
+import Axios from 'axios';
 
 export const signupRequest = () => {
   return {

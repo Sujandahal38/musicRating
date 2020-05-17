@@ -33,6 +33,8 @@ const AdminRouter = () => {
     // eslint-disable-next-line
   }, []);
 
+  
+
   const PrivateRoute = ({ component: Component, path, ...rest }) => {
     return (
       <Route

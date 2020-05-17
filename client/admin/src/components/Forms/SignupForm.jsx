@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Toolbar,
   makeStyles,
@@ -11,13 +11,13 @@ import {
   Fade,
   CircularProgress,
   InputAdornment,
-} from "@material-ui/core";
-import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { checkValidUsername, setRequest } from "../../Redux";
-import { debounce } from "lodash";
-import { FaUserCheck, MdError } from "react-icons/all";
+} from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkValidUsername, setRequest } from '../../Redux';
+import { debounce } from 'lodash';
+import { FaUserCheck, MdError } from 'react-icons/all';
 
 function setSteps() {
   return [0, 1, 2];
@@ -29,13 +29,13 @@ export default function SignupForm(props) {
   const classes = useStyles();
   const [steps] = useState(setSteps());
   const [data, setData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    username: "",
+    fullName: '',
+    email: '',
+    password: '',
+    username: '',
   });
-  const [password, setPassword] = useState("");
-  const [re_Password, setRePassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [re_Password, setRePassword] = useState('');
   const {
     register,
     errors,
@@ -49,7 +49,7 @@ export default function SignupForm(props) {
     const value = e.target.value;
     setPassword(value);
     if (value === re_Password) {
-      return clearError("rePassword") && clearError("password");
+      return clearError('rePassword') && clearError('password');
     }
     clearError('password');
   };
@@ -57,17 +57,16 @@ export default function SignupForm(props) {
     const value = e.target.value;
     setRePassword(value);
     if (value === password) {
-      return clearError("rePassword") && clearError("password");
+      return clearError('rePassword') && clearError('password');
     }
-    setError('rePassword')
-  }; 
+    setError('rePassword');
+  };
 
   const handleUsernameDispatch = (value) => {
     dispatch(checkValidUsername({ username: value }));
   };
   const handleUsername = debounce(async (data) => {
-    const validate = await triggerValidation(["username"]);
-    console.log(validate);
+    const validate = await triggerValidation(['username']);
     if (validate) {
       handleUsernameDispatch(data);
     }
@@ -75,11 +74,11 @@ export default function SignupForm(props) {
   const handleNext = async (e) => {
     e.preventDefault();
     if (activeStep === steps[0]) {
-      const validate = await triggerValidation(["fullName", "email"]);
+      const validate = await triggerValidation(['fullName', 'email']);
       if (validate) {
         setData({
-          fullName: getValues("fullName"),
-          email: getValues("email"),
+          fullName: getValues('fullName'),
+          email: getValues('email'),
         });
 
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -87,18 +86,18 @@ export default function SignupForm(props) {
       }
     }
     if (activeStep === steps[1]) {
-      const validate = await triggerValidation(["password"]);
+      const validate = await triggerValidation(['password']);
       if (validate) {
         setData({
           ...data,
-          password: getValues("password"),
+          password: getValues('password'),
         });
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         props.setImage((prevImage) => prevImage + 1);
       }
     }
     if (activeStep === steps[2]) {
-      const validate = await triggerValidation(["username"]);
+      const validate = await triggerValidation(['username']);
       if (validate) {
         if (signupData?.username) {
           let finalData = {
@@ -133,7 +132,7 @@ export default function SignupForm(props) {
                 <>
                   <FormGroup className={classes.inputField}>
                     <TextField
-                    autoFocus
+                      autoFocus
                       defaultValue={data.fullName}
                       name="fullName"
                       placeholder="Full Name"
@@ -147,9 +146,9 @@ export default function SignupForm(props) {
                       })}
                       error={!!errors.fullName}
                       helperText={
-                        (errors.fullName?.type === "required" &&
-                          "Fullname is Required") ||
-                        (errors.fullName?.type === "pattern" && "Invalid Name.")
+                        (errors.fullName?.type === 'required' &&
+                          'Fullname is Required') ||
+                        (errors.fullName?.type === 'pattern' && 'Invalid Name.')
                       }
                     />
                   </FormGroup>
@@ -167,9 +166,9 @@ export default function SignupForm(props) {
                       })}
                       error={!!errors.email}
                       helperText={
-                        (errors.email?.type === "required" &&
-                          "email is Required") ||
-                        (errors.email?.type === "pattern" && "Invalid Email.")
+                        (errors.email?.type === 'required' &&
+                          'email is Required') ||
+                        (errors.email?.type === 'pattern' && 'Invalid Email.')
                       }
                     />
                   </FormGroup>
@@ -191,12 +190,12 @@ export default function SignupForm(props) {
                       })}
                       error={!!errors.password}
                       helperText={
-                        (errors.password?.type === "required" &&
-                          "password is Required") ||
-                        (errors.password?.type === "minLength" &&
-                          "Password must be above 8 characters.") ||
-                        (errors.password?.type === "maxLength" &&
-                          "Password must be below 76 characters.")
+                        (errors.password?.type === 'required' &&
+                          'password is Required') ||
+                        (errors.password?.type === 'minLength' &&
+                          'Password must be above 8 characters.') ||
+                        (errors.password?.type === 'maxLength' &&
+                          'Password must be below 76 characters.')
                       }
                       defaultValue={data.password}
                       onChange={handlePassword}
@@ -231,7 +230,7 @@ export default function SignupForm(props) {
                     })}
                     onChange={(e) => handleUsername(e.target.value)}
                     error={!!errors.username}
-                    helperText={errors.username && "invalid username"}
+                    helperText={errors.username && 'invalid username'}
                     InputProps={{
                       endAdornment: (
                         <InputAdornment>
@@ -293,8 +292,8 @@ export default function SignupForm(props) {
               </Toolbar>
               <Divider className={classes.Divider} />
               <Toolbar className={classes.headText}>
-                <Link style={{ textDecoration: "none" }} to="/login">
-                  {" "}
+                <Link style={{ textDecoration: 'none' }} to="/login">
+                  {' '}
                   <Button variant="text" color="secondary">
                     Login ?
                   </Button>
@@ -309,10 +308,10 @@ export default function SignupForm(props) {
 }
 const useStyles = makeStyles((theme) => ({
   headText: {
-    justifyContent: "center",
+    justifyContent: 'center',
   },
   text: {
-    color: "#a00fc7",
+    color: '#a00fc7',
   },
   inputField: {
     margin: theme.spacing(2),
@@ -321,8 +320,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2.9),
   },
   loginButtonHolder: {
-    display: "flex",
-    justifyContent: "flex-end",
+    display: 'flex',
+    justifyContent: 'flex-end',
   },
   loginButton: {
     marginLeft: theme.spacing(3),
@@ -340,6 +339,6 @@ const useStyles = makeStyles((theme) => ({
     left: 0,
   },
   signupForm: {
-    height: "inherit",
+    height: 'inherit',
   },
 }));
