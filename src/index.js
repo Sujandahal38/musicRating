@@ -29,14 +29,14 @@ mongoose.connect(DB_URL, {
     });
     if (!checkRoot) {
       const username = 'root';
-      const adminType = 'root';
       const fullName = 'root';
       const hash = await bcrypt.hashSync(ROOT_PASSWORD, 12);
       const rootAdmin = new Admin({
         email: ROOT_EMAIL,
         password: hash,
         fullName,
-        adminType,
+        isAdmin: true,
+        isRoot: true,
         username,
       });
       const createRoot = rootAdmin.save();

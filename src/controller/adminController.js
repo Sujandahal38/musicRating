@@ -159,3 +159,48 @@ exports.CheckUsername = async (req, res, next) => {
     next(error)
   }
 }
+
+exports.changeAuthorization = async (req, res, next) => {
+  try {
+    const { id, isAdmin, isRoot } = req.body;
+    const findUser = await Admin.find({_id: id});
+    if (findUser) {
+      const changeAuth = await Admin.findOneAndUpdate({ _id: id }, {
+        $set : {
+          isAdmin,
+          isRoot
+        }
+      });
+      if (changeAuth) {
+        res.status(200).json({
+          message: 'Access granted 🎉'
+        })
+      }
+    }
+    if (!findUser) {
+      res.status(404).json({
+        message: 'admin not found',
+      })
+    }
+  } catch ({error}) {
+    next(error);
+  }
+}
+
+exports.adminData = async (req, res, next) => {
+  try {
+    const adminData = await Admin.find().sort({ _id: -1 });
+    if (adminData) {
+      res.status(200).json({
+        adminData
+      })
+    }
+    if (!adminData) {
+      res.status(400).json({
+        message: 'admin not found',
+      })
+    }
+  } catch (error) {
+    next(error);
+  }
+}

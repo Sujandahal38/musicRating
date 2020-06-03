@@ -10,6 +10,7 @@ import AddVideoPage from "./AddVideoPage";
 import VideoInfo from "../components/video/VideoInfo";
 import VideoTable from "../components/Table/VideoTable";
 import EditVideo from "../components/Forms/editVideo";
+import AdminCard from "../components/cards/adminCard";
 const device = () => {
   let x = window.matchMedia("(min-width: 700px");
   if (x.matches) {
@@ -51,6 +52,7 @@ export default function (props) {
           <Route path="/dashboard/videos/:id" component={VideoInfo}/>
           <Route path="/dashboard/managevideo" component={VideoTable}/>
           <Route path="/dashboard/editvideo/:id" component={EditVideo}/>
+          <Route path='/dashboard/manageadmin' component={AdminCard}/>
         </Switch>
         </Container>
       </div>

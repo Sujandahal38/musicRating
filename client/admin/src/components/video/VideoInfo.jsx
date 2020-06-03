@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   makeStyles,
   Card,
@@ -12,21 +12,21 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { useParams, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { getVideoByID } from "../../Redux";
-import Moment from "react-moment";
-import Youtube from "react-youtube";
-import { BeatLoader } from "react-spinners";
+} from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
+import { useParams, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { getVideoByID } from '../../Redux';
+import Moment from 'react-moment';
+import Youtube from 'react-youtube';
+import { BeatLoader } from 'react-spinners';
 import {
   AiOutlineDelete,
   BsGraphUp,
   AiOutlineCloudDownload,
-} from "react-icons/all";
-import { useHistory } from "react-router-dom";
-import { setCommentFetch, deleteVideo } from "../../Redux";
+} from 'react-icons/all';
+import { useHistory } from 'react-router-dom';
+import { setCommentFetch, deleteVideo } from '../../Redux';
 
 export default function VideoInfo() {
   const location = useLocation();
@@ -52,8 +52,8 @@ export default function VideoInfo() {
   const fetchComment = (id) => {
     dispatch(setCommentFetch(id, location.pathname));
   };
-  if (video?.message === "Video deleted successfully.") {
-    history.push("/dashboard/addvideo");
+  if (video?.message === 'Video deleted successfully.') {
+    history.push('/dashboard/addvideo');
   }
   return (
     <>
@@ -72,7 +72,7 @@ export default function VideoInfo() {
         </CardMedia>
         <CardContent>
           <Box className={classes.contentHolder}>
-            {" "}
+            {' '}
             <Card className={classes.infoCard} elevation={5}>
               <Alert variant="filled" severity="info">
                 <CardHeader
@@ -99,8 +99,8 @@ export default function VideoInfo() {
                 variant="filled"
                 severity={
                   video?.videoDatabyId?.youtubeComments?.length
-                    ? "success"
-                    : "warning"
+                    ? 'success'
+                    : 'warning'
                 }
               >
                 <CardHeader
@@ -127,8 +127,8 @@ export default function VideoInfo() {
                 variant="filled"
                 severity={
                   video?.videoDatabyId?.mvdbComments?.length
-                    ? "success"
-                    : "warning"
+                    ? 'success'
+                    : 'warning'
                 }
               >
                 <CardHeader
@@ -157,7 +157,7 @@ export default function VideoInfo() {
             <Button
               variant="contained"
               size="large"
-              style={{ backgroundColor: "red", color: "white" }}
+              style={{ backgroundColor: 'red', color: 'white' }}
               startIcon={<AiOutlineDelete />}
               className={classes.Button}
               disabled={video?.fetching || video?.loading}
@@ -211,33 +211,34 @@ export default function VideoInfo() {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: "65vw",
-    height: "auto",
-    margin: theme.spacing(12),
+    width: '65vw',
+    height: 'auto',
+    marginLeft: theme.spacing(12),
+    marginTop: theme.spacing(12),
   },
   videoEmbed: {
     height: 350,
-    width: "65vw",
+    width: '65vw',
   },
   contentHolder: {
-    width: "60vw",
-    height: "auto",
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "centers",
+    width: '60vw',
+    height: 'auto',
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'centers',
   },
   infoCard: {
     width: theme.spacing(30),
-    height: "auto",
+    height: 'auto',
     marginLeft: theme.spacing(4),
   },
   hashloader: {
-    margin: "50%",
+    margin: '50%',
   },
   actionButton: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-around",
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-around',
     marginTop: theme.spacing(4),
   },
   Button: {

@@ -5,6 +5,7 @@ import signupReducer from './Signup/signupReducer';
 import snackReducer from './globalSnackBar/snackReducer';
 import videoReducer from './Video/videoReducer';
 import searchReducer from './search/searchReducer';
+import userReducer from './user/userReducer';
 
 const rootReducer = combineReducers({
  auth: authReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
  snack: snackReducer,
  video: videoReducer,
  search : searchReducer,
+ Admin: userReducer,
 });
 
 

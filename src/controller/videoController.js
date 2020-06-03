@@ -1,11 +1,11 @@
 /* eslint-disable no-loop-func */
 /* eslint-disable no-await-in-loop */
 /* eslint-disable no-undef */
-const Joi = require("@hapi/joi");
-const ytThumnail = require("youtube-thumbnail");
-const puppeteer = require("puppeteer");
+const Joi = require('@hapi/joi');
+const ytThumnail = require('youtube-thumbnail');
+const puppeteer = require('puppeteer');
 
-const Video = require("../model/Video");
+const Video = require('../model/Video');
 
 exports.AddVideo = async (req, res, next) => {
   try {
@@ -47,18 +47,18 @@ exports.AddVideo = async (req, res, next) => {
         const saveVideoData = await videoInfo.save();
         if (saveVideoData) {
           res.status(200).json({
-            message: "video added successfully 🎉",
+            message: 'video added successfully 🎉',
           });
         }
       }
       if (checkVideo) {
         res.status(400).json({
-          message: "Video already exists 🤷‍",
+          message: 'Video already exists 🤷‍',
         });
       }
     }
   } catch (error) {
-    if (error.name === "ValidationError") {
+    if (error.name === 'ValidationError') {
       res.status(422);
     }
     next(error);
@@ -92,7 +92,7 @@ exports.youtubeScrape = async (req, res, next) => {
       });
       const navigationPromise = page.waitForNavigation();
       await page.goto(youtubeLink, {
-        waitUntil: "load",
+        waitUntil: 'load',
         timeout: 0,
       });
       await navigationPromise;
@@ -101,18 +101,18 @@ exports.youtubeScrape = async (req, res, next) => {
       await page.evaluate(() => {
         window.scrollBy(0, 300);
       });
-      await page.waitForSelector("#content");
-      await page.waitForSelector("#comments");
+      await page.waitForSelector('#content');
+      await page.waitForSelector('#comments');
 
       await page.waitFor(2000);
 
       const totalCommentSelector =
-        ".style-scope:nth-child(1) > #title > #count > .count-text";
+        '.style-scope:nth-child(1) > #title > #count > .count-text';
       await getElText(page, totalCommentSelector);
       // eslint-disable-next-line radix
       // const total = Number(totalComments.replace(' Comments', '').replace(',', ''));
       const comments = [];
-      for (let i = 1; i < 200; i += 1) {
+      for (let i = 1; i < 201; i += 1) {
         try {
           const commentSelector = `.style-scope:nth-child(${i}) > #comment > #body > #main > #expander #content-text`;
           await page.waitForSelector(commentSelector);
@@ -142,7 +142,7 @@ exports.youtubeScrape = async (req, res, next) => {
         );
         if (commentSave) {
           res.status(200).json({
-            message: "comments saved successfully",
+            message: 'comments saved successfully',
           });
           await browser.close();
         }
@@ -150,12 +150,12 @@ exports.youtubeScrape = async (req, res, next) => {
     }
     if (!findVideo) {
       res.status(404).json({
-        message: "video not found.",
+        message: 'video not found.',
       });
     }
   } catch (error) {
-   next(error)
-}
+    next(error);
+  }
 };
 
 exports.deleteVideo = async (req, res, next) => {
@@ -170,13 +170,13 @@ exports.deleteVideo = async (req, res, next) => {
       });
       if (deleteVideo) {
         res.status(200).json({
-          message: "Video deleted successfully.",
+          message: 'Video deleted successfully.',
         });
       }
     }
     if (!findVideo) {
       res.status(400).json({
-        message: "Video do not exists",
+        message: 'Video do not exists',
       });
     }
   } catch (error) {
@@ -231,68 +231,98 @@ exports.editVideo = async (req, res, next) => {
         );
         if (editvideoInfo.nModified > 0) {
           res.status(200).json({
-            message: "videoInfo updated successfully 🎉",
+            message: 'videoInfo updated successfully 🎉',
           });
         }
         if (editvideoInfo.nModified === 0) {
           res.status(305).json({
-            message: 'not modified'
-          })
+            message: 'not modified',
+          });
         }
-
       }
       if (!checkVideo) {
         res.status(400).json({
-          message: "Video do not exists 🤷‍",
+          message: 'Video do not exists 🤷‍',
         });
       }
     }
   } catch (error) {
-    if (error.name === "ValidationError") {
+    if (error.name === 'ValidationError') {
       res.status(422);
     }
     next(error);
   }
 };
 
-
 exports.fetchVideo = async (req, res, next) => {
   try {
     const { limit } = req.params;
 
-  const fetchVideo = await Video.find().sort({_id: -1}).limit(parseInt(limit));
-  if (fetchVideo) {
-    res.status(200).json({
-      message: 'fetched successfully 🎉',
-      videoData: fetchVideo,
-    });
-  }
-  if (!fetchVideo) {
-    res.status(404).json({
-      message: 'No video available ❌',
-    });
-  }
+    const fetchVideo = await Video.find()
+      .sort({ _id: -1 })
+      .limit(parseInt(limit));
+    if (fetchVideo) {
+      res.status(200).json({
+        message: 'fetched successfully 🎉',
+        videoData: fetchVideo,
+      });
+    }
+    if (!fetchVideo) {
+      res.status(404).json({
+        message: 'No video available ❌',
+      });
+    }
   } catch (error) {
     next(error);
   }
-}
+};
 
 exports.VideoById = async (req, res, next) => {
   try {
-   const { id } = req.params;
-   const fetchVideo = await Video.findOne({_id: id});
-   if (!fetchVideo) {
-     res.status(404).json({
-       message: 'Video not Found 😢',
-     })
-   }
-   if (fetchVideo) {
-     res.status(200).json({
-       message: 'video fetched 🎉',
-       videoData: fetchVideo,
-     });
-   }
+    const { id } = req.params;
+    const fetchVideo = await Video.findOne({ _id: id });
+    if (!fetchVideo) {
+      res.status(404).json({
+        message: 'Video not Found 😢',
+      });
+    }
+    if (fetchVideo) {
+      res.status(200).json({
+        message: 'video fetched 🎉',
+        videoData: fetchVideo,
+      });
+    }
   } catch (error) {
     next(error);
   }
-}
+};
+
+exports.searchVideo = async (req, res, next) => {
+  try {
+    let { text } = req.params;
+    const searchData = await Video.find({
+      $or: [
+        {
+          title: { $regex: text, $options: 'i' },
+        },
+        {
+          artist: { $regex: text, $options: 'i' },
+        },
+        { description: { $regex: text, $options: 'i' } },
+      ],
+    }).limit(5);
+  if (!searchData) {
+      res.status(404).json({
+        message: 'No result found.'
+      })
+  }
+  if (searchData) {
+    res.status(200).json({
+      message: 'searched result found.',
+      data: searchData,
+    })
+  }
+  } catch (error) {
+    next(error)
+  }
+};

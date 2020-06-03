@@ -1,0 +1,7 @@
+export const CHANGE_AUTH_REQ = 'CHANGE_AUTH_REQ';
+export const CHANGE_AUTH_SUC = 'CHANGE_AUTH_SUC';
+export const CHANGE_AUTH_FAIL = 'CHANGE_AUTH_FAIL';
+
+export const FETCH_ADMIN_REQ = 'FETCH_ADMIN_REQ';
+export const FETCH_ADMIN_SUC = 'FETCH_ADMIN_SUC';
+export const FETCH_ADMIN_FAIL = 'FETCH_ADMIN_FAIL';

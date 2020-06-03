@@ -167,7 +167,8 @@ export default function VideoTable() {
       );
       setRows(holder);
     }
-  }, [video]);
+    // eslint-disable-next-line
+  }, [video.videoData]);
   return (
     <>
       <Paper className={classes.root}>
@@ -258,9 +259,11 @@ export default function VideoTable() {
                         <IconButton onClick={() => handleOpen(item.id)}>
                           <AiTwotoneDelete color="red" />
                         </IconButton>
-                       <Link to={`/dashboard/editvideo/${item.id}`}><IconButton>
-                          <FaEdit color="blue" />
-                        </IconButton></Link> 
+                        <Link to={`/dashboard/editvideo/${item.id}`}>
+                          <IconButton>
+                            <FaEdit color="blue" />
+                          </IconButton>
+                        </Link>
                       </Toolbar>
                     </TableCell>
                   </TableRow>

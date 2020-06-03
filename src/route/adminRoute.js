@@ -6,7 +6,9 @@ const {
   Signup,
   Login,
   AdminProfile,
-  CheckUsername
+  CheckUsername,
+  changeAuthorization,
+  adminData
 } = require('../controller/adminController');
 const {
   AddVideo,
@@ -14,7 +16,8 @@ const {
   deleteVideo,
   editVideo,
   fetchVideo,
-  VideoById
+  VideoById,
+  searchVideo
 } = require('../controller/videoController');
 const {
   verifyAdmin,
@@ -35,6 +38,9 @@ adminRouter.patch('/editvideo/:id', adminAuth, editVideo);
 adminRouter.get('/fetchvideo/:limit', adminAuth, fetchVideo);
 
 adminRouter.get('/videobyid/:id', adminAuth, VideoById);
+adminRouter.get('/search/:text', adminAuth, searchVideo);
 
+adminRouter.patch('/changeauth', adminAuth, changeAuthorization);
+adminRouter.get('/fetchadmin', adminAuth, adminData);
 
 module.exports = adminRouter;

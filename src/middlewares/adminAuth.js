@@ -22,11 +22,11 @@ exports.verifyAdmin = async (req, res, next) => {
         message: 'Email or Password Invalid',
       });
     }
-    if (isUser && (isUser.adminType === 'admin' || isUser.adminType === 'root')) {
+    if (isUser && (isUser.isAdmin || isUser.isRoot)) {
       req.adminInfo = isUser;
       next();
     }
-    if (isUser && !isUser.adminType) {
+    if (isUser && !isUser.isAdmin && !isUser.isRoot) {
       res.status(409).json({
         message: 'Unauthorized Admin',
       });

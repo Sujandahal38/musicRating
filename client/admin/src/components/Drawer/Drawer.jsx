@@ -56,7 +56,7 @@ export default function LeftDrawer(props) {
                 <ListItemText style={{ color: "white" }} primary="Manage Video" />
               </ListItem>
             </Link>
-            { userData?.adminType === 'root' && 
+            { userData?.isRoot && 
             <Link style={{textDecoration: 'none'}} to="/dashboard/manageadmin">
               <ListItem  selected={!!(location.pathname === '/dashboard/manageadmin')}  button>
                 <ListItemIcon>
