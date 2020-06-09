@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const volleyball = require('volleyball');
 const cors = require('cors');
 const chalk = require('chalk');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 const app = express();
@@ -23,7 +23,7 @@ mongoose.connect(DB_URL, {
   useUnifiedTopology: true,
 })
   .then(async () => {
-    console.log(chalk.cyanBright(`Database connected on url ${DB_URL} 🙌`));
+    console.log(chalk.cyanBright(`Database connected successfully 🙌`));
     const checkRoot = await Admin.findOne({
       email: ROOT_EMAIL,
     });
