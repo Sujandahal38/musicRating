@@ -225,12 +225,12 @@ const useStyles = makeStyles((theme) => ({
     height: 'auto',
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'centers',
+    justifyContent: 'center',
   },
   infoCard: {
     width: theme.spacing(30),
     height: 'auto',
-    marginLeft: theme.spacing(4),
+    marginLeft: theme.spacing(8),
   },
   hashloader: {
     margin: '50%',

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { useSelector, useDispatch } from 'react-redux';
-import {setAddVideoRequest } from '../../Redux'
+import { setAddVideoRequest } from '../../Redux';
 import {
   makeStyles,
   Card,
@@ -15,28 +15,28 @@ import {
   CardActions,
   Button,
   CircularProgress,
-} from "@material-ui/core";
-import { RestorePage, Save } from "@material-ui/icons";
+} from '@material-ui/core';
+import { RestorePage, Save } from '@material-ui/icons';
 
 export default function AddVideoForm(props) {
   const classes = useStyle();
   const { register, errors, reset, handleSubmit } = useForm();
-  const addVideo = useSelector(state => state.video);
+  const addVideo = useSelector((state) => state.video);
   const dispatch = useDispatch();
-  const [genre, setGenre] = useState("Pop");
+  const [genre, setGenre] = useState('Pop');
   const handleSelectGenre = (event) => {
     setGenre(event.target.value);
   };
   const onSave = (data) => {
-   const finalData = {
-    ...data,
-    genre,
-   }
-   dispatch(setAddVideoRequest(finalData));
-  }
+    const finalData = {
+      ...data,
+      genre,
+    };
+    dispatch(setAddVideoRequest(finalData));
+  };
   return (
     <>
-      {" "}
+      {' '}
       <form className={classes.root} onSubmit={handleSubmit(onSave)}>
         <Card className={classes.card} elevation={3}>
           <CardHeader className={classes.cardHeader} title="Add Video" />
@@ -51,12 +51,11 @@ export default function AddVideoForm(props) {
                     label="Title"
                     fullWidth
                     inputRef={register({ required: true, maxLength: 100 })}
-                    error={!!(errors.title)}
+                    error={!!errors.title}
                     helperText={
-                      (errors.title?.type === "required" &&
-                        "Add tittle") ||
-                      (errors.title?.type === "maxLength" &&
-                        "Title should contain below 100 charachters.")
+                      (errors.title?.type === 'required' && 'Add tittle') ||
+                      (errors.title?.type === 'maxLength' &&
+                        'Title should contain below 100 charachters.')
                     }
                   />
                 </Grid>
@@ -69,13 +68,13 @@ export default function AddVideoForm(props) {
                       required: true,
                       pattern: /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w]*)(&(amp;)?[\w=]*)?/,
                     })}
-                    error={!!(errors.youtubeLink)}
+                    error={!!errors.youtubeLink}
                     helperText={
-                     (errors.youtubeLink?.type === "required" &&
-                       "Add youtube link") ||
-                     (errors.youtubeLink?.type === "pattern" &&
-                       "Invalid youtube link")
-                   }
+                      (errors.youtubeLink?.type === 'required' &&
+                        'Add youtube link') ||
+                      (errors.youtubeLink?.type === 'pattern' &&
+                        'Invalid youtube link')
+                    }
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -84,13 +83,13 @@ export default function AddVideoForm(props) {
                     label="Artist"
                     fullWidth
                     inputRef={register({ required: true, maxLength: 75 })}
-                    error={!!(errors.artist)}
+                    error={!!errors.artist}
                     helperText={
-                     (errors.title?.type === "required" &&
-                       "Add artist name") ||
-                     (errors.title?.type === "maxLength" &&
-                       "Artist name should contain below 75 charachters.")
-                   }
+                      (errors.title?.type === 'required' &&
+                        'Add artist name') ||
+                      (errors.title?.type === 'maxLength' &&
+                        'Artist name should contain below 75 charachters.')
+                    }
                   />
                 </Grid>
 
@@ -118,14 +117,14 @@ export default function AddVideoForm(props) {
                     rows={4}
                     fullWidth
                     variant="filled"
-                    inputRef={register({ required: true, maxLength: 250 })}
-                    error={!!(errors.description)}
+                    inputRef={register({ required: true, maxLength: 500 })}
+                    error={!!errors.description}
                     helperText={
-                     (errors.description?.type === "required" &&
-                       "Add description") ||
-                     (errors.description?.type === "maxLength" &&
-                       "Description should contain below 250 charachters.")
-                   }
+                      (errors.description?.type === 'required' &&
+                        'Add description') ||
+                      (errors.description?.type === 'maxLength' &&
+                        'Description should contain below 500 charachters.')
+                    }
                   />
                 </Grid>
               </Grid>
@@ -149,16 +148,17 @@ export default function AddVideoForm(props) {
               variant="contained"
               startIcon={<Save />}
               color="primary"
-              disabled={!!(addVideo?.loading)}
+              disabled={!!addVideo?.loading}
             >
               Save
-              {addVideo?.loading ? 
+              {addVideo?.loading ? (
                 <CircularProgress
                   size={20}
                   className={classes.CircularProgress}
                 />
-                : ''
-              }
+              ) : (
+                ''
+              )}
             </Button>
           </CardActions>
         </Card>
@@ -170,28 +170,27 @@ export default function AddVideoForm(props) {
 const useStyle = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(12),
-    marginLeft: theme.spacing(4),
   },
   card: {
-    width: "50vw",
-    height: "inherit",
+    width: '100%',
+    height: 'inherit',
   },
   gridList: {
-    width: "100vw",
-    height: "inherit",
+    width: '100vw',
+    height: 'inherit',
   },
   Grid: {
-    marginTop: "1em",
+    marginTop: '1em',
   },
   cardHeader: {
     padding: theme.spacing(2),
-    fontSize: "35px",
+    fontSize: '35px',
   },
   headerUnderline: {
     marginLeft: theme.spacing(2),
     width: theme.spacing(5),
     height: theme.spacing(1),
-    backgroundColor: "#a00fc7",
+    backgroundColor: '#a00fc7',
   },
   form: {
     marginLeft: theme.spacing(1),
@@ -200,20 +199,20 @@ const useStyle = makeStyles((theme) => ({
   shiftAll: {
     width: `calc(100% - ${240}px)`,
     marginLeft: 240,
-    transition: theme.transitions.create(["margin", "width"], {
+    transition: theme.transitions.create(['margin', 'width'], {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
   Select: {
-    marginTop: "1em",
+    marginTop: '1em',
   },
   actions: {
-    marginLeft: "auto",
+    marginLeft: 'auto',
   },
   Button: {},
   description: {
-    backgroundColor: "#F9DDD1",
+    backgroundColor: '#F9DDD1',
   },
   CircularProgress: {
     marginLeft: theme.spacing(1),

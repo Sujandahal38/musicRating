@@ -1,7 +1,23 @@
 import React from 'react';
+import { makeStyles, Paper, Container } from '@material-ui/core';
 
 export default function Unauthorize() {
- return (
-  <>yoo</>
- )
-} 
+  const classes = useStyle();
+  return (
+    <>
+      <Container>
+        <Paper elevation={3} className={classes.root}>
+          <h1>Hello World 🎉</h1>
+        </Paper>
+      </Container>
+    </>
+  );
+}
+
+const useStyle = makeStyles((theme) => ({
+  root: {
+    justifyContent: 'center',
+    alignContent: 'center',
+    textAlign: 'center',
+  },
+}));
