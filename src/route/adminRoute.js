@@ -8,7 +8,7 @@ const {
   AdminProfile,
   CheckUsername,
   changeAuthorization,
-  adminData
+  adminData,
 } = require('../controller/adminController');
 const {
   AddVideo,
@@ -17,12 +17,14 @@ const {
   editVideo,
   fetchVideo,
   VideoById,
-  searchVideo
+  searchVideo,
 } = require('../controller/videoController');
 const {
   verifyAdmin,
   adminAuth,
 } = require('../middlewares/adminAuth');
+
+const { analyzeComments } = require('../controller/commentController')
 
 adminRouter.post('/signup', Signup);
 adminRouter.post('/login', verifyAdmin, Login);
@@ -42,5 +44,7 @@ adminRouter.get('/search/:text', adminAuth, searchVideo);
 
 adminRouter.patch('/changeauth', adminAuth, changeAuthorization);
 adminRouter.get('/fetchadmin', adminAuth, adminData);
+
+adminRouter.get('/analyze', analyzeComments);
 
 module.exports = adminRouter;

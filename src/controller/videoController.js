@@ -16,21 +16,23 @@ exports.AddVideo = async (req, res, next) => {
         .trim()
         .required()
         .regex(
-          /(https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/
+          /(https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/,
         ),
       genre: Joi.string().trim().max(75),
       artist: Joi.string().trim().max(70),
     });
     const validate = await validationSchema.validateAsync(req.body);
     if (validate) {
-      const { title, description, youtubeLink, artist, genre } = req.body;
+      const {
+        title, description, youtubeLink, artist, genre,
+      } = req.body;
       const createdBy = req.adminInfo.id;
       const checkVideo = await Video.findOne({
         youtubeLink,
       });
       if (!checkVideo) {
         const grabEmbedCode = String(youtubeLink).match(
-          /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/
+          /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/,
         );
         const embedCode = grabEmbedCode[2];
         const thumbnail = ytThumnail(youtubeLink);
@@ -70,7 +72,7 @@ function getElText(page, selector) {
   // eslint-disable-next-line no-shadow
   return page.evaluate(
     (selector) => document.querySelector(selector).innerText,
-    selector
+    selector,
   );
 }
 
@@ -106,8 +108,7 @@ exports.youtubeScrape = async (req, res, next) => {
 
       await page.waitFor(2000);
 
-      const totalCommentSelector =
-        '.style-scope:nth-child(1) > #title > #count > .count-text';
+      const totalCommentSelector = '.style-scope:nth-child(1) > #title > #count > .count-text';
       await getElText(page, totalCommentSelector);
       // eslint-disable-next-line radix
       // const total = Number(totalComments.replace(' Comments', '').replace(',', ''));
@@ -138,7 +139,7 @@ exports.youtubeScrape = async (req, res, next) => {
               updatedBy: req.adminInfo.id,
               updatedAt: Date.now(),
             },
-          }
+          },
         );
         if (commentSave) {
           res.status(200).json({
@@ -193,14 +194,16 @@ exports.editVideo = async (req, res, next) => {
         .trim()
         .required()
         .regex(
-          /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?[\w\?‌​=]*)?/
+          /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?[\w\?‌​=]*)?/,
         ),
       genre: Joi.string().trim().max(75),
       artist: Joi.string().trim().max(70),
     });
     const validate = await validationSchema.validateAsync(req.body);
     if (validate) {
-      const { title, description, youtubeLink, artist, genre } = req.body;
+      const {
+        title, description, youtubeLink, artist, genre,
+      } = req.body;
       const updatedBy = req.adminInfo.id;
       const { id } = req.params;
       const checkVideo = await Video.findOne({
@@ -208,7 +211,7 @@ exports.editVideo = async (req, res, next) => {
       });
       if (checkVideo) {
         const grabEmbedCode = String(youtubeLink).match(
-          /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/
+          /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#&?]*).*/,
         );
         const embedCode = grabEmbedCode[2];
         const thumbnail = ytThumnail(youtubeLink);
@@ -227,7 +230,7 @@ exports.editVideo = async (req, res, next) => {
               updatedBy,
               thumbnail: thumbnail.high.url,
             },
-          }
+          },
         );
         if (editvideoInfo.nModified > 0) {
           res.status(200).json({
@@ -299,7 +302,7 @@ exports.VideoById = async (req, res, next) => {
 
 exports.searchVideo = async (req, res, next) => {
   try {
-    let { text } = req.params;
+    const { text } = req.params;
     const searchData = await Video.find({
       $or: [
         {
@@ -311,18 +314,18 @@ exports.searchVideo = async (req, res, next) => {
         { description: { $regex: text, $options: 'i' } },
       ],
     }).limit(5);
-  if (!searchData) {
+    if (!searchData) {
       res.status(404).json({
-        message: 'No result found.'
-      })
-  }
-  if (searchData) {
-    res.status(200).json({
-      message: 'searched result found.',
-      data: searchData,
-    })
-  }
+        message: 'No result found.',
+      });
+    }
+    if (searchData) {
+      res.status(200).json({
+        message: 'searched result found.',
+        data: searchData,
+      });
+    }
   } catch (error) {
-    next(error)
+    next(error);
   }
 };

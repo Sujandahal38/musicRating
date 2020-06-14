@@ -23,7 +23,7 @@ mongoose.connect(DB_URL, {
   useUnifiedTopology: true,
 })
   .then(async () => {
-    console.log(chalk.cyanBright(`Database connected on url ${DB_URL} 🙌`));
+    console.log(chalk.cyanBright('Database connected successfully 🙌'));
     const checkRoot = await Admin.findOne({
       email: ROOT_EMAIL,
     });

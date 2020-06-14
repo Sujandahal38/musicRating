@@ -31,10 +31,10 @@ if(auth?.isLoggedIn ) {
   )
 }
   if(auth?.message === 'Unauthorized Admin') {
-   
-     
+
+
         return <Redirect to='/unauthorized'/>
-     
+
   }
 
   return (
@@ -129,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   loginForm: {
-    color: "blck",
+    color: "black",
     height: "inherit",
     [theme.breakpoints.down("sm")]: {
       width: "100vw",
