@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Paper,
   Container,
@@ -6,13 +6,13 @@ import {
   makeStyles,
   Toolbar,
   Fade,
-} from "@material-ui/core";
-import { useSelector } from "react-redux";
-import SignupForm from "../components/Forms/SignupForm";
-import personalInfo from "../assets/svg/signIn.svg";
-import security from "../assets/svg/security.svg";
-import mention from "../assets/svg/mention.svg";
-import { useHistory } from "react-router-dom";
+} from '@material-ui/core';
+import { useSelector } from 'react-redux';
+import SignupForm from '../components/Forms/SignupForm';
+import personalInfo from '../assets/svg/signIn.svg';
+import security from '../assets/svg/security.svg';
+import mention from '../assets/svg/mention.svg';
+import { useHistory } from 'react-router-dom';
 
 function step() {
   return [personalInfo, security, mention];
@@ -26,17 +26,17 @@ export default function SignupPage(props) {
   const [image, setImage] = useState(0);
 
   if (snack?.status === 409) {
-    history.push("/login");
+    history.push('/login');
   }
   if (snack?.status === 201) {
-    history.push("/login");
+    history.push('/login');
   }
   const [imageStep] = useState(0);
   return (
     <>
-      <Container>
+      <div className={classes.container}>
         <Paper className={classes.root} elevation={5}>
-          <Grid container spacing={3}>
+          <Grid container spacing={0}>
             <Grid item xs={12} sm={7} className={classes.descriptionBox}>
               <Container>
                 <Toolbar className={classes.imageContainer}>
@@ -59,47 +59,52 @@ export default function SignupPage(props) {
             </Grid>
           </Grid>
         </Paper>
-      </Container>
+      </div>
     </>
   );
 }
 
 const useStyle = makeStyles((theme) => ({
+  container: {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+  },
   root: {
-    width: "80vw",
+    width: '80%',
     marginLeft: theme.spacing(5),
     marginTop: theme.spacing(10),
-    height: "60vh",
-    [theme.breakpoints.down("sm")]: {
-      width: "100vw",
+    height: '60vh',
+    [theme.breakpoints.down('sm')]: {
+      width: '100vw',
       marginTop: theme.spacing(5),
-      marginLeft: "0px",
+      marginLeft: '0px',
     },
   },
   adminsvg: {
-    height: "60vh",
+    height: '60vh',
   },
   descriptionBox: {
-    backgroundColor: "#c52aef",
-    color: "white",
-    height: "60vh",
-    [theme.breakpoints.down("sm")]: {
-      display: "none",
+    backgroundColor: '#c52aef',
+    color: 'white',
+    height: '60vh',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
     },
   },
   imageContainer: {
-    width: "100%",
-    justifyContent: "center",
+    width: '100%',
+    justifyContent: 'center',
   },
   loginForm: {
-    color: "blck",
-    height: "60vh",
-    [theme.breakpoints.down("sm")]: {
-      width: "100vw",
+    color: 'black',
+    height: '60vh',
+    [theme.breakpoints.down('sm')]: {
+      width: '100vw',
     },
   },
   image: {
-    height: "55vh",
-    width: "100%",
+    height: 'inherit',
+    width: '100%',
   },
 }));
