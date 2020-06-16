@@ -25,24 +25,11 @@ const LoginForm = () => {
   const setLogin = (data) => {
     dispatch(login(data));
   };
-<<<<<<< HEAD
-if(auth?.isLoggedIn ) {
-  return (
-    <Redirect to='/dashboard/' />
-  )
-}
-  if(auth?.message === 'Unauthorized Admin') {
-
-
-        return <Redirect to='/unauthorized'/>
-
-=======
   if (auth?.isLoggedIn) {
     return <Redirect to="/dashboard/" />;
   }
   if (auth?.message === 'Unauthorized Admin') {
     return <Redirect to="/unauthorized" />;
->>>>>>> 7291c1e30584dab84d113f22217d51817280c205
   }
 
   return (

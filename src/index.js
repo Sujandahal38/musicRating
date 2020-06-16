@@ -18,16 +18,13 @@ const {
 
 const Admin = require('./model/Admin');
 
-mongoose.connect(DB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose
+  .connect(DB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(async () => {
-<<<<<<< HEAD
     console.log(chalk.cyanBright('Database connected successfully 🙌'));
-=======
-    console.log(chalk.cyanBright(`Database connected successfully 🙌`));
->>>>>>> 7291c1e30584dab84d113f22217d51817280c205
     const checkRoot = await Admin.findOne({
       email: ROOT_EMAIL,
     });
@@ -48,7 +45,8 @@ mongoose.connect(DB_URL, {
         console.log(chalk.whiteBright.greenBright('Root user created 🎉'));
       }
     }
-  }).catch((err) => {
+  })
+  .catch((err) => {
     console.log(chalk.redBright(err));
   });
 
@@ -70,5 +68,7 @@ app.use(notFound);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(chalk.yellowBright(`Server started at http://localhost:${PORT} 🍏`));
+  console.log(
+    chalk.yellowBright(`Server started at http://localhost:${PORT} 🍏`),
+  );
 });
