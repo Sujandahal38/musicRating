@@ -130,8 +130,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   loginForm: {
-    color: 'blck',
-    height: 'auto',
+    color: 'black',
+    height: 'inherit',
     [theme.breakpoints.down('sm')]: {
       width: '100vw',
     },

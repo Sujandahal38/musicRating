@@ -12,6 +12,7 @@ import LoginForm from '../components/Forms/loginForm';
 
 export default function LoginPage() {
   const classes = useStyle();
+  document.title = 'Login';
   return (
     <>
       <div className={classes.container}>
@@ -54,7 +55,7 @@ const useStyle = makeStyles((theme) => ({
     width: '90%',
     marginLeft: theme.spacing(5),
     marginTop: theme.spacing(10),
-    height: '60vh',
+    height: '60%',
     [theme.breakpoints.down('sm')]: {
       width: '100vw',
       marginTop: theme.spacing(5),
@@ -62,29 +63,22 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   adminsvg: {
-    height: '60vh',
+    width: '100%',
+    height: '400px',
   },
   descriptionBox: {
     backgroundColor: '#c52aef',
     color: 'white',
-    height: '60vh',
+    height: 'auto',
     [theme.breakpoints.down('sm')]: {
       display: 'none',
     },
   },
-  imageContainer: {
-    width: '100%',
-    justifyContent: 'center',
-  },
   loginForm: {
-    color: 'blck',
+    color: 'black',
     height: 'inherit',
     [theme.breakpoints.down('sm')]: {
       width: '100vw',
     },
-  },
-  signInSvg: {
-    height: '60vh',
-    width: '100%',
   },
 }));

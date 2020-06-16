@@ -21,8 +21,8 @@ export default function AdminCard() {
   const admin = useSelector((state) => state.Admin);
   const dispatch = useDispatch();
   const classes = useStyle();
-  const [isAdmin, setIsAdmin] = useState(null);
-  const [isRoot, setIsRoot] = useState(null);
+  // const [isAdmin, setIsAdmin] = useState(null);
+  // const [isRoot, setIsRoot] = useState(null);
   const [id, setId] = useState(null);
   const [open, setOpen] = useState(false);
   useEffect(() => {

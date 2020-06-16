@@ -19,15 +19,13 @@ function step() {
 }
 
 export default function SignupPage(props) {
+  document.title = 'Signup';
   const history = useHistory();
   const snack = useSelector((state) => state.snack);
   const classes = useStyle();
   const steps = step();
   const [image, setImage] = useState(0);
 
-  if (snack?.status === 409) {
-    history.push('/login');
-  }
   if (snack?.status === 201) {
     history.push('/login');
   }
@@ -74,7 +72,7 @@ const useStyle = makeStyles((theme) => ({
     width: '80%',
     marginLeft: theme.spacing(5),
     marginTop: theme.spacing(10),
-    height: '60vh',
+    height: '60%',
     [theme.breakpoints.down('sm')]: {
       width: '100vw',
       marginTop: theme.spacing(5),
@@ -82,7 +80,8 @@ const useStyle = makeStyles((theme) => ({
     },
   },
   adminsvg: {
-    height: '60vh',
+    width: '100%',
+    height: '400px',
   },
   descriptionBox: {
     backgroundColor: '#c52aef',
@@ -98,7 +97,7 @@ const useStyle = makeStyles((theme) => ({
   },
   loginForm: {
     color: 'black',
-    height: '60vh',
+    height: '60%',
     [theme.breakpoints.down('sm')]: {
       width: '100vw',
     },

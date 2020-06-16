@@ -37,19 +37,18 @@ exports.Signup = async (req, res, next) => {
           username,
         }],
       });
-      console.log(username);
       if (findUser) {
         res.status(409).json({
           message: `User already exists with email ${findUser.email} , please log in.`,
           email: findUser.email,
-        }).statusText('email');
+        });
       }
       if (!findUser) {
         const hash = await bcrypt.hashSync(password, 12);
         const avatar = await gravatar.url(email, {
           s: '200',
           r: 'pg',
-          d: '404'
+          d: '404',
         });
         const userData = new Admin({
           fullName,
