@@ -172,7 +172,7 @@ exports.changeAuthorization = async (req, res, next) => {
       });
       if (changeAuth) {
         res.status(200).json({
-          message: 'Access granted 🎉'
+          message: 'Changed Authorization. 🎉'
         })
       }
     }

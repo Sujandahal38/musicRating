@@ -27,14 +27,16 @@ const userReducer = (state = initialState, action) => {
       };
     case FETCH_ADMIN_REQ:
       return {
+        ...state,
         fetching: true,
       };
-    case FETCH_ADMIN_SUC: 
+    case FETCH_ADMIN_SUC:
     return {
+      ...state,
       fetching: false,
       adminData: action.payload,
     }
-    case FETCH_ADMIN_FAIL: 
+    case FETCH_ADMIN_FAIL:
     return {
       fetching: false,
       message: action.payload

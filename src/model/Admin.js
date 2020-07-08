@@ -17,9 +17,11 @@ const adminSchema = mongoose.Schema({
   },
   isAdmin: {
     type: Boolean,
+    default: false,
   },
   isRoot: {
-    type:Boolean
+    type:Boolean,
+    default: false
   },
   resetToken: String,
   resetTokenExpiresAt: Date,

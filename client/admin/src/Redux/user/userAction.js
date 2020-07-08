@@ -51,13 +51,14 @@ export const fetchAdminFail = (message) => {
 };
 
 export const setAuth = (data) => {
+  console.log('yoo')
   return (dispatch) => {
     dispatch(changeAuthReq());
     const token = localStorage.getItem('token');
     Axios.defaults.headers.common['Authorization'] = token;
     Axios.patch(`${API}/admin/changeauth`, data)
       .then((res) => {
-        dispatch(changeAuthSuc());
+        dispatch(changeAuthSuc(res.data.message));
         dispatch(showSnackbar(res.data.message, res.status));
         dispatch(fetchAdmin());
       })

@@ -63,8 +63,8 @@ export const setRequest = (data) => {
     dispatch(signupRequest());
     Axios.post(`${API}/admin/signup`, data)
       .then((res) => {
-        dispatch(signupSucccess(res.data.message));
         dispatch(showSnackbar(res.data.message, res.status));
+        dispatch(signupSucccess(res.data.message));
       })
       .catch((err) => {
         if (err && err.response && err.response.data.message) {

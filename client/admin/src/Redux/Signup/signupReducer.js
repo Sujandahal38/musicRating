@@ -30,7 +30,7 @@ const signupReducer = (state = intialState, action) => {
       return {
         isLoading: false,
         message: action.payload,
-        statue: 200,
+        status: 200,
       };
     case SIGNUP_FAILED:
       return {
@@ -58,10 +58,8 @@ const signupReducer = (state = intialState, action) => {
         status: 400,
         validUsername: false,
       };
-      case DESTROY_MESSAGE: 
+      case DESTROY_MESSAGE:
       return {
-        ...state,
-        message: '',
       }
     default:
       return {

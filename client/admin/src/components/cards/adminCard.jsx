@@ -9,36 +9,59 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogContentText,
   Switch,
   DialogActions,
+  FormControlLabel,
 } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { IoIosCheckbox, IoIosWarning } from 'react-icons/all';
-import { fetchAdmin } from '../../Redux';
+import { fetchAdmin, setAuth } from '../../Redux';
 
 export default function AdminCard() {
   const admin = useSelector((state) => state.Admin);
   const dispatch = useDispatch();
   const classes = useStyle();
-  // const [isAdmin, setIsAdmin] = useState(null);
-  // const [isRoot, setIsRoot] = useState(null);
+  const [adminAuth, setAdminAuth] = useState({
+    isAdmin: false,
+    isRoot: false
+  })
   const [id, setId] = useState(null);
   const [open, setOpen] = useState(false);
+  const [selectedAdmin, setSelectedAdmin] = useState([]);
   useEffect(() => {
     dispatch(fetchAdmin());
-    // eslint-disable-next-line
   }, []);
 
-  console.log(id);
   const onClickButton = (id) => {
     setId(id);
+    setSelectedAdmin(admin?.adminData?.filter((item) => item._id === id));
     setOpen(true);
   };
+
+  useEffect(() => {
+    setAdminAuth({
+      ...adminAuth,
+      isAdmin : selectedAdmin[0]?.isAdmin,
+      isRoot: selectedAdmin[0]?.isRoot
+    });
+  }, [selectedAdmin])
   const handleClose = () => {
     setOpen(false);
   };
-
+  const handleAuth = (event) => {
+     setAdminAuth({
+       ...adminAuth,
+       [event.target.name] : event.target.checked
+     })
+  }
+  const handleSubmit = () => {
+    const data = {
+      id,
+      ...adminAuth
+    }
+    dispatch(setAuth(data));
+  }
+  console.log(adminAuth)
   return (
     <>
       <div className={classes.root}>
@@ -73,10 +96,11 @@ export default function AdminCard() {
                     )}
                   </Toolbar>
                   <Button
-                    variant="default"
+                    variant="text"
                     size="small"
                     color="primary"
                     fullWidth
+                    disabled={!!(item.username === "root") }
                     onClick={() => onClickButton(item._id)}
                   >
                     Edit Authorization
@@ -88,22 +112,42 @@ export default function AdminCard() {
       </div>
       <Dialog open={open} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Change Authorization</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            To subscribe to this website, please enter your email address here.
-            We will send updates occasionally.
-          </DialogContentText>
-          <Switch
-            name="checkedA"
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-          />
+        <DialogContent className={classes.dialogContent}>
+          {selectedAdmin.length >> 0 ? (
+            <>
+              <FormControlLabel
+                label="Root"
+                control={
+                  <Switch
+                    name="isRoot"
+                    color="primary"
+                    checked={adminAuth.isRoot}
+                    onChange={handleAuth}
+                  />
+                }
+              />
+              <FormControlLabel
+                label="Admin"
+                control={
+                  <Switch
+                    checked={adminAuth.isAdmin}
+                    name="isAdmin"
+                    color="primary"
+                    onChange={handleAuth}
+                  />
+                }
+              />
+            </>
+          ) : (
+            'loading'
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
-            Subscribe
+          <Button onClick={handleSubmit} color="primary">
+            confirm
           </Button>
         </DialogActions>
       </Dialog>
@@ -164,5 +208,9 @@ const useStyle = makeStyles((theme) => ({
     fontWeight: 'bold',
     fontSize: theme.spacing(1.5),
     padding: theme.spacing(1),
+  },
+  dialogContent: {
+    display: 'flex',
+    flexDirection: 'column',
   },
 }));
