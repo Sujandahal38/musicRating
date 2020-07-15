@@ -19,7 +19,7 @@ Music Video Database (rating based on sentiment analysis)
 `./client/admin` for AdminPage.
 `./client/user` from userPage.
  
-NOTE:- separate app for user and admin because they do no share UI and any components.
+NOTE:- separate app for user and admin because they do not share UI and any components.
 ##USED TECHNOLOGIES:
 
 -Puppeteer for youtube scraping and..
