@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core';
 
 export default function AddVideoPage() {
   const classes = useStyle();
+  document.title = 'Add Video';
   return (
     <>
       <div className={classes.root}>

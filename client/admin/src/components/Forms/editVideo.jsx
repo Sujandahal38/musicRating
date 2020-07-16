@@ -133,7 +133,7 @@ export default function EditVideo(props) {
                       rows={4}
                       fullWidth
                       variant="filled"
-                      inputRef={register({ required: true, maxLength: 250 })}
+                      inputRef={register({ required: true, maxLength: 500 })}
                       error={!!errors.description}
                       helperText={
                         (errors.description?.type === 'required' &&

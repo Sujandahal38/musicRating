@@ -13,12 +13,14 @@ exports.Signup = async (req, res, next) => {
   try {
     const validationSchema = Joi.object({
       fullName: Joi.string().trim().max(78).required(),
-      email: Joi.string().email({
-        minDomainSegments: 2,
-        tlds: {
-          allow: ['com', 'net', 'np'],
-        },
-      }).required(),
+      email: Joi.string()
+        .email({
+          minDomainSegments: 2,
+          tlds: {
+            allow: ['com', 'net', 'np'],
+          },
+        })
+        .required(),
       password: Joi.string().trim().max(78).required(),
       username: Joi.string().trim().lowercase(),
     });
@@ -33,9 +35,11 @@ exports.Signup = async (req, res, next) => {
       const findUser = await Admin.findOne({
         $or: [{
           email,
-        }, {
+        },
+        {
           username,
-        }],
+        },
+        ],
       });
       if (findUser) {
         res.status(409).json({
@@ -91,12 +95,12 @@ exports.Login = async (req, res, next) => {
       }
       if (verifyPassword) {
         const token = await jwt.sign({
-            email: checkUser.email,
-            id: checkUser.id,
-          },
-          SECRET_KEY, {
-            expiresIn: '2h'
-          });
+          email: checkUser.email,
+          id: checkUser.id,
+        },
+        SECRET_KEY, {
+          expiresIn: '2h',
+        });
         if (token) {
           res.status(200).json({
             message: 'Logged in successfully 🎉',
@@ -113,10 +117,10 @@ exports.Login = async (req, res, next) => {
 exports.AdminProfile = async (req, res, next) => {
   try {
     const {
-      id
+      id,
     } = req.adminInfo;
     const findUser = await Admin.findOne({
-      _id: id
+      _id: id,
     });
     if (findUser) {
       res.status(200).json({
@@ -126,27 +130,25 @@ exports.AdminProfile = async (req, res, next) => {
     if (!findUser) {
       res.status(404).json({
         message: 'admin not found',
-      })
+      });
     }
   } catch (error) {
     next(error);
   }
 };
 
-
 exports.CheckUsername = async (req, res, next) => {
   try {
     const {
-      username
+      username,
     } = req.body;
     const checkUsername = await Admin.findOne({
-      username
+      username,
     });
-    console.log(username, checkUsername);
     if (checkUsername) {
       res.status(400).json({
         data: checkUsername.email,
-        message: 'Username already taken.'
+        message: 'Username already taken.',
       });
     }
     if (!checkUsername) {
@@ -155,51 +157,63 @@ exports.CheckUsername = async (req, res, next) => {
       });
     }
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 exports.changeAuthorization = async (req, res, next) => {
   try {
-    const { id, isAdmin, isRoot } = req.body;
-    const findUser = await Admin.find({_id: id});
+    const {
+      id,
+      isAdmin,
+      isRoot,
+    } = req.body;
+    const findUser = await Admin.find({
+      _id: id,
+    });
     if (findUser) {
-      const changeAuth = await Admin.findOneAndUpdate({ _id: id }, {
-        $set : {
+      const changeAuth = await Admin.findOneAndUpdate({
+        _id: id,
+      }, {
+        $set: {
           isAdmin,
-          isRoot
-        }
+          isRoot,
+        },
       });
       if (changeAuth) {
         res.status(200).json({
-          message: 'Changed Authorization. 🎉'
-        })
+          message: 'Changed Authorization. 🎉',
+        });
       }
     }
     if (!findUser) {
       res.status(404).json({
         message: 'admin not found',
-      })
+      });
     }
-  } catch ({error}) {
+  } catch ({
+    error,
+  }) {
     next(error);
   }
-}
+};
 
 exports.adminData = async (req, res, next) => {
   try {
-    const adminData = await Admin.find().sort({ _id: -1 });
+    const adminData = await Admin.find().sort({
+      _id: -1,
+    });
     if (adminData) {
       res.status(200).json({
-        adminData
-      })
+        adminData,
+      });
     }
     if (!adminData) {
       res.status(400).json({
         message: 'admin not found',
-      })
+      });
     }
   } catch (error) {
     next(error);
   }
-}
+};

@@ -18,18 +18,22 @@ import { IoIosCheckbox, IoIosWarning } from 'react-icons/all';
 import { fetchAdmin, setAuth } from '../../Redux';
 
 export default function AdminCard() {
+  document.title = 'Manage Admin';
   const admin = useSelector((state) => state.Admin);
   const dispatch = useDispatch();
   const classes = useStyle();
   const [adminAuth, setAdminAuth] = useState({
     isAdmin: false,
-    isRoot: false
-  })
+    isRoot: false,
+  });
   const [id, setId] = useState(null);
   const [open, setOpen] = useState(false);
   const [selectedAdmin, setSelectedAdmin] = useState([]);
-  useEffect(() => {
+  const fetchAdminData = () => {
     dispatch(fetchAdmin());
+  };
+  useEffect(() => {
+    fetchAdminData();
   }, []);
 
   const onClickButton = (id) => {
@@ -41,27 +45,27 @@ export default function AdminCard() {
   useEffect(() => {
     setAdminAuth({
       ...adminAuth,
-      isAdmin : selectedAdmin[0]?.isAdmin,
-      isRoot: selectedAdmin[0]?.isRoot
+      isAdmin: selectedAdmin[0]?.isAdmin,
+      isRoot: selectedAdmin[0]?.isRoot,
     });
-  }, [selectedAdmin])
+  }, [selectedAdmin]);
   const handleClose = () => {
     setOpen(false);
   };
   const handleAuth = (event) => {
-     setAdminAuth({
-       ...adminAuth,
-       [event.target.name] : event.target.checked
-     })
-  }
+    setAdminAuth({
+      ...adminAuth,
+      [event.target.name]: event.target.checked,
+    });
+  };
   const handleSubmit = () => {
     const data = {
       id,
-      ...adminAuth
-    }
+      ...adminAuth,
+    };
     dispatch(setAuth(data));
-  }
-  console.log(adminAuth)
+  };
+  console.log(adminAuth);
   return (
     <>
       <div className={classes.root}>
@@ -100,7 +104,7 @@ export default function AdminCard() {
                     size="small"
                     color="primary"
                     fullWidth
-                    disabled={!!(item.username === "root") }
+                    disabled={!!(item.username === 'root')}
                     onClick={() => onClickButton(item._id)}
                   >
                     Edit Authorization

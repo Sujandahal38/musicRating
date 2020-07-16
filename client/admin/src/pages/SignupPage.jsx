@@ -7,13 +7,11 @@ import {
   Toolbar,
   Fade,
 } from '@material-ui/core';
-import { useSelector, useDispatch } from 'react-redux';
 import SignupForm from '../components/Forms/SignupForm';
 import personalInfo from '../assets/svg/signIn.svg';
 import security from '../assets/svg/security.svg';
 import mention from '../assets/svg/mention.svg';
-import { useHistory } from 'react-router-dom';
-import { deleteMessage } from '../Redux'
+
 
 function step() {
   return [personalInfo, security, mention];
@@ -21,10 +19,6 @@ function step() {
 
 export default function SignupPage(props) {
   document.title = 'Signup';
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const snack = useSelector((state) => state.snack);
-  const signup = useSelector((state) => state.signup);
   const classes = useStyle();
   const steps = step();
   const [image, setImage] = useState(0);

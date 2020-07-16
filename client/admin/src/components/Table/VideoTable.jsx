@@ -29,6 +29,7 @@ import {
 import Moment from 'react-moment';
 import { HashLoader } from 'react-spinners';
 export default function VideoTable() {
+  document.title = 'Manage Video';
   const [rows, setRows] = useState([]);
   const [open, setOpen] = useState(false);
   const [id, setId] = useState(null);

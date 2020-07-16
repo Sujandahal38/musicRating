@@ -24,7 +24,11 @@ exports.AddVideo = async (req, res, next) => {
     const validate = await validationSchema.validateAsync(req.body);
     if (validate) {
       const {
-        title, description, youtubeLink, artist, genre,
+        title,
+        description,
+        youtubeLink,
+        artist,
+        genre,
       } = req.body;
       const createdBy = req.adminInfo.id;
       const checkVideo = await Video.findOne({
@@ -71,19 +75,23 @@ exports.AddVideo = async (req, res, next) => {
 function getElText(page, selector) {
   // eslint-disable-next-line no-shadow
   return page.evaluate(
-    (selector) => document.querySelector(selector).innerText,
+    () => document.querySelector(selector).innerText,
     selector,
   );
 }
 
 exports.youtubeScrape = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const {
+      id,
+    } = req.params;
     const findVideo = await Video.findOne({
       _id: id,
     });
     if (findVideo) {
-      const { youtubeLink } = findVideo;
+      const {
+        youtubeLink,
+      } = findVideo;
       const browser = await puppeteer.launch({
         headless: false,
       });
@@ -129,18 +137,15 @@ exports.youtubeScrape = async (req, res, next) => {
         }
       }
       if (comments) {
-        const commentSave = await Video.updateOne(
-          {
-            _id: id,
+        const commentSave = await Video.updateOne({
+          _id: id,
+        }, {
+          $set: {
+            youtubeComments: comments,
+            updatedBy: req.adminInfo.id,
+            updatedAt: Date.now(),
           },
-          {
-            $set: {
-              youtubeComments: comments,
-              updatedBy: req.adminInfo.id,
-              updatedAt: Date.now(),
-            },
-          },
-        );
+        });
         if (commentSave) {
           res.status(200).json({
             message: 'comments saved successfully',
@@ -161,7 +166,9 @@ exports.youtubeScrape = async (req, res, next) => {
 
 exports.deleteVideo = async (req, res, next) => {
   try {
-    const { id } = req.params;
+    const {
+      id,
+    } = req.params;
     const findVideo = await Video.findOne({
       _id: id,
     });
@@ -202,10 +209,16 @@ exports.editVideo = async (req, res, next) => {
     const validate = await validationSchema.validateAsync(req.body);
     if (validate) {
       const {
-        title, description, youtubeLink, artist, genre,
+        title,
+        description,
+        youtubeLink,
+        artist,
+        genre,
       } = req.body;
       const updatedBy = req.adminInfo.id;
-      const { id } = req.params;
+      const {
+        id,
+      } = req.params;
       const checkVideo = await Video.findOne({
         _id: id,
       });
@@ -215,23 +228,20 @@ exports.editVideo = async (req, res, next) => {
         );
         const embedCode = grabEmbedCode[2];
         const thumbnail = ytThumnail(youtubeLink);
-        const editvideoInfo = await Video.updateOne(
-          {
-            _id: id,
+        const editvideoInfo = await Video.updateOne({
+          _id: id,
+        }, {
+          $set: {
+            title,
+            description,
+            youtubeLink,
+            genre,
+            artist,
+            embedCode,
+            updatedBy,
+            thumbnail: thumbnail.high.url,
           },
-          {
-            $set: {
-              title,
-              description,
-              youtubeLink,
-              genre,
-              artist,
-              embedCode,
-              updatedBy,
-              thumbnail: thumbnail.high.url,
-            },
-          },
-        );
+        });
         if (editvideoInfo.nModified > 0) {
           res.status(200).json({
             message: 'videoInfo updated successfully 🎉',
@@ -259,10 +269,14 @@ exports.editVideo = async (req, res, next) => {
 
 exports.fetchVideo = async (req, res, next) => {
   try {
-    const { limit } = req.params;
+    const {
+      limit,
+    } = req.params;
 
     const fetchVideo = await Video.find()
-      .sort({ _id: -1 })
+      .sort({
+        _id: -1,
+      })
       .limit(parseInt(limit));
     if (fetchVideo) {
       res.status(200).json({
@@ -282,8 +296,12 @@ exports.fetchVideo = async (req, res, next) => {
 
 exports.VideoById = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    const fetchVideo = await Video.findOne({ _id: id });
+    const {
+      id,
+    } = req.params;
+    const fetchVideo = await Video.findOne({
+      _id: id,
+    });
     if (!fetchVideo) {
       res.status(404).json({
         message: 'Video not Found 😢',
@@ -302,16 +320,28 @@ exports.VideoById = async (req, res, next) => {
 
 exports.searchVideo = async (req, res, next) => {
   try {
-    const { text } = req.params;
+    const {
+      text,
+    } = req.params;
     const searchData = await Video.find({
-      $or: [
-        {
-          title: { $regex: text, $options: 'i' },
+      $or: [{
+        title: {
+          $regex: text,
+          $options: 'i',
         },
-        {
-          artist: { $regex: text, $options: 'i' },
+      },
+      {
+        artist: {
+          $regex: text,
+          $options: 'i',
         },
-        { description: { $regex: text, $options: 'i' } },
+      },
+      {
+        description: {
+          $regex: text,
+          $options: 'i',
+        },
+      },
       ],
     }).limit(5);
     if (!searchData) {

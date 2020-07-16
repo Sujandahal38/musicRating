@@ -55,25 +55,25 @@ export default function Navbar(props) {
     if (searchedData?.loading || searchedData?.results) {
       setOpen(true);
     }
-  },[searchedData])
-  const handleClickAway =()=>  {
+  }, [searchedData]);
+  const handleClickAway = () => {
     setOpen(false);
-      dispatch(clearSearch())
-  }
+    dispatch(clearSearch());
+  };
   const onFocus = (text) => {
     if (text.length > 0) {
-    dispatch(setSearch(text))
+      dispatch(setSearch(text));
     }
-  }
+  };
   const handleBlur = (value) => {
     if (value.length === 0) {
-        dispatch(clearSearch())
+      dispatch(clearSearch());
     }
-  }  
+  };
   useEffect(() => {
     dispatch(clearSearch());
     // eslint-disable-next-line
-  },[])
+  }, []);
 
   return (
     <>
@@ -95,68 +95,69 @@ export default function Navbar(props) {
             MVDB
           </Typography>
           <ClickAwayListener onClickAway={handleClickAway}>
-          <div>
-            <ClickAwayListener onClickAway={handleBlur} >
-            <FormControl className={classes.FormControl}>
-              <Input
-                className={classes.Input}
-                type="text"
-                disableUnderline={true}
-                style={{ color: 'white' }}
-                placeholder="Search Music"
-                id="search music videos"
-                onFocus={(e) => onFocus(e.target.value)}
-                onBlur={(e) => handleBlur(e.target.value)}
-                onChange={(e) => handleSearch(e.target.value)}
-                startAdornment={
-                  <InputAdornment position="start">
-                    <SearchSharp />
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            </ClickAwayListener>
-            {open ? (
-              <Collapse in={open} timeout={500}>
-                <Paper elevation={5} className={classes.searchData}>
-                  {searchedData?.results?.data.map((item, index) => (
-                    <List key={index}>
-                      <ListItem>
-                        <ListItemAvatar>
-                          <Avatar
-                            fontSize={85}
-                            src={item.thumbnail}
-                            variant="square"
+            <div>
+              <ClickAwayListener onClickAway={handleBlur}>
+                <FormControl className={classes.FormControl}>
+                  <Input
+                    className={classes.Input}
+                    type="text"
+                    disableUnderline={true}
+                    style={{ color: 'white' }}
+                    placeholder="Search Music"
+                    id="search music videos"
+                    onFocus={(e) => onFocus(e.target.value)}
+                    onBlur={(e) => handleBlur(e.target.value)}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    startAdornment={
+                      <InputAdornment position="start">
+                        <SearchSharp />
+                      </InputAdornment>
+                    }
+                  />
+                </FormControl>
+              </ClickAwayListener>
+              {open ? (
+                <Collapse in={open} timeout={500}>
+                  <Paper elevation={5} className={classes.searchData}>
+                    {searchedData?.results?.data.map((item, index) => (
+                      <List key={index}>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar
+                              fontSize={85}
+                              src={item.thumbnail}
+                              variant="square"
+                            />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={
+                              <Link
+                                className={classes.link}
+                                to={`/dashboard/videos/${item._id}`}
+                              >
+                                <span className={classes.title}>
+                                  {item.title}
+                                </span>
+                              </Link>
+                            }
+                            secondary={
+                              <>
+                                <Typography
+                                  component="span"
+                                  variant="subtitle1"
+                                >
+                                  <Moment fromNow>{item.createdAt}</Moment>
+                                </Typography>
+                              </>
+                            }
                           />
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <Link
-                            
-                              className={classes.link}
-                              to={`/dashboard/videos/${item._id}`}
-                            >
-                              <span className={classes.title}>
-                                {item.title}
-                              </span>
-                            </Link>
-                          }
-                          secondary={
-                            <>
-                              <Typography component="span" variant="subtitle1">
-                                <Moment fromNow>{item.createdAt}</Moment>
-                              </Typography>
-                            </>
-                          }
-                        />
-                      </ListItem>
-                    </List>
-                  ))}
-                </Paper>
-              
-              </Collapse>
-            ) : null}
-          </div>
+                        </ListItem>
+                      </List>
+                    ))}
+                  </Paper>
+                </Collapse>
+              ) : null}
+            </div>
           </ClickAwayListener>
           <Typography className={classes.fullName} variant="h6">
             {userData?.username}
@@ -173,7 +174,13 @@ export default function Navbar(props) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <Link
+              style={{ textDecoration: 'none', color: 'black' }}
+              to="/dashboard/profile"
+            >
+              {' '}
+              <MenuItem onClick={handleClose}>Profile</MenuItem>{' '}
+            </Link>
             <MenuItem onClick={() => logout(history)}>Logout</MenuItem>
           </Menu>
         </Toolbar>

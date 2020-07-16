@@ -221,15 +221,13 @@ const useStyles = makeStyles((theme) => ({
     width: '65vw',
   },
   contentHolder: {
-    width: '60vw',
+    width: '100%',
     height: 'auto',
     display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
   },
   infoCard: {
-    width: theme.spacing(30),
-    height: 'auto',
+    width: theme.spacing(35),
+    height: 'inherit',
     marginLeft: theme.spacing(8),
   },
   hashloader: {

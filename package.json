@@ -22,8 +22,8 @@
     "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.10",
+    "porter-stemmer": "^0.9.1",
     "puppeteer": "^3.0.1",
-    "stemmer": "^1.0.5",
     "volleyball": "^1.5.1",
     "youtube-thumbnail": "^1.3.0"
   },

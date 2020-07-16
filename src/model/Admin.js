@@ -5,7 +5,7 @@ const adminSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  avatar : String,
+  avatar: String,
   username: String,
   email: {
     type: String,
@@ -20,8 +20,8 @@ const adminSchema = mongoose.Schema({
     default: false,
   },
   isRoot: {
-    type:Boolean,
-    default: false
+    type: Boolean,
+    default: false,
   },
   resetToken: String,
   resetTokenExpiresAt: Date,
