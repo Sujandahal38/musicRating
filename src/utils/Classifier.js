@@ -5,9 +5,6 @@ function naiveBayes() {
     return new naiveBayes();
   }
   this.token_stem = token_stem;
-  /* A collection of added documents
-   * Each document is an object containing the class, and array of stemmed words.
-   */
   this.docs = [];
   this.lastAdded = 0; //index of last document
   this.features = {};

@@ -4,9 +4,9 @@
 const Joi = require('@hapi/joi');
 const ytThumnail = require('youtube-thumbnail');
 const puppeteer = require('puppeteer');
-
 const Video = require('../model/Video');
 
+//addVideo
 exports.AddVideo = async (req, res, next) => {
   try {
     const validationSchema = Joi.object({
@@ -75,11 +75,13 @@ exports.AddVideo = async (req, res, next) => {
 function getElText(page, selector) {
   // eslint-disable-next-line no-shadow
   return page.evaluate(
-    () => document.querySelector(selector).innerText,
-    selector,
+    (selector) => {
+      document.querySelector(selector).innerText
+    },selector,
   );
 }
 
+//scrape youtube comments
 exports.youtubeScrape = async (req, res, next) => {
   try {
     const {
@@ -105,23 +107,24 @@ exports.youtubeScrape = async (req, res, next) => {
         waitUntil: 'load',
         timeout: 0,
       });
+      await page.evaluate(() => {
+        window.scrollBy(0, 400);
+      });
+      await page.waitForSelector('h1.title');
+      await page.waitFor(2000);
+      
       await navigationPromise;
       await page.waitFor(2000); // time to load page
-
-      await page.evaluate(() => {
-        window.scrollBy(0, 300);
-      });
-      await page.waitForSelector('#content');
       await page.waitForSelector('#comments');
+      await page.waitForSelector('#sections');
+      await page.waitForSelector('#content');
 
-      await page.waitFor(2000);
 
       const totalCommentSelector = '.style-scope:nth-child(1) > #title > #count > .count-text';
       await getElText(page, totalCommentSelector);
-      // eslint-disable-next-line radix
-      // const total = Number(totalComments.replace(' Comments', '').replace(',', ''));
+      
       const comments = [];
-      for (let i = 1; i < 201; i += 1) {
+      for (let i = 1; i < 50; i += 1) {
         try {
           const commentSelector = `.style-scope:nth-child(${i}) > #comment > #body > #main > #expander #content-text`;
           await page.waitForSelector(commentSelector);
@@ -130,6 +133,8 @@ exports.youtubeScrape = async (req, res, next) => {
           await page.evaluate((_) => {
             window.scrollBy(0, 300);
           });
+          // const total = Number(totalComments.replace(' Comments', '').replace(',', ''));
+      
           comments.push(fetchedComments);
         } catch (error) {
           // eslint-disable-next-line no-continue
@@ -164,6 +169,7 @@ exports.youtubeScrape = async (req, res, next) => {
   }
 };
 
+//deleteVideo
 exports.deleteVideo = async (req, res, next) => {
   try {
     const {
@@ -192,6 +198,8 @@ exports.deleteVideo = async (req, res, next) => {
   }
 };
 
+
+//updateVideo
 exports.editVideo = async (req, res, next) => {
   try {
     const validationSchema = Joi.object({
@@ -207,6 +215,7 @@ exports.editVideo = async (req, res, next) => {
       artist: Joi.string().trim().max(70),
     });
     const validate = await validationSchema.validateAsync(req.body);
+    
     if (validate) {
       const {
         title,
@@ -228,6 +237,7 @@ exports.editVideo = async (req, res, next) => {
         );
         const embedCode = grabEmbedCode[2];
         const thumbnail = ytThumnail(youtubeLink);
+
         const editvideoInfo = await Video.updateOne({
           _id: id,
         }, {
@@ -247,7 +257,7 @@ exports.editVideo = async (req, res, next) => {
             message: 'videoInfo updated successfully 🎉',
           });
         }
-        if (editvideoInfo.nModified === 0) {
+        if (editvideoInfo.nModified === 0 ) {
           res.status(305).json({
             message: 'not modified',
           });
@@ -267,6 +277,8 @@ exports.editVideo = async (req, res, next) => {
   }
 };
 
+
+//fetch youtubevideo
 exports.fetchVideo = async (req, res, next) => {
   try {
     const {
@@ -318,6 +330,7 @@ exports.VideoById = async (req, res, next) => {
   }
 };
 
+//search video
 exports.searchVideo = async (req, res, next) => {
   try {
     const {
