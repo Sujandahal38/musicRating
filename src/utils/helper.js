@@ -4,9 +4,8 @@ const natural = require('natural');
 
 const stopWordPath = path.join(__dirname, '../assets/stopword.csv');
 
-exports.token_stem = async (comment) => {
-  let words = comment.toLowerCase().replace(/\W/g, ' ').replace(/\s+/g, ' ').trim().split(' ');
-  words=words.filter((word)=> word.length>1);
+const token_stem = async (comment) => {
+  let words = comment.split(' ');
   let stopword = [];
   const stopJson = await csvtojson()
     .fromFile(stopWordPath)
@@ -18,8 +17,28 @@ exports.token_stem = async (comment) => {
     return stopword.indexOf(word) == -1;
   });
   const finalWords = [];
-  words.map((word) => {
-    finalWords.push(natural.PorterStemmer.stem(word));
-  });
+ for (word of words) {
+   console.log(word)
+   const stemWord = await natural.PorterStemmer.stem(word);
+   finalWords.push(stemWord);
+ }
   return finalWords;
 };
+
+exports.tokenAndStemDoc = async (positive, negative) => {
+  const finalPositiveDoc = [];
+    for (comment of positive) {
+      let stem = await token_stem(comment);
+      finalPositiveDoc.push(stem)
+    }
+    const finalNegativeDoc = [];
+    for (comment of negative) {
+      let stem = await token_stem(comment);
+      finalNegativeDoc.push(stem)
+    }
+    let finalObj = {
+      positiveDoc : finalPositiveDoc,
+      negativeDoc : finalNegativeDoc
+    }
+    return finalObj;
+}

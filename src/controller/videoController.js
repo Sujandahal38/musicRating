@@ -108,11 +108,11 @@ exports.youtubeScrape = async (req, res, next) => {
         timeout: 0,
       });
       await page.evaluate(() => {
-        window.scrollBy(0, 400);
+        window.scrollBy(0, 350);
       });
       await page.waitForSelector('h1.title');
       await page.waitFor(2000);
-      
+
       await navigationPromise;
       await page.waitFor(2000); // time to load page
       await page.waitForSelector('#comments');
@@ -122,19 +122,19 @@ exports.youtubeScrape = async (req, res, next) => {
 
       const totalCommentSelector = '.style-scope:nth-child(1) > #title > #count > .count-text';
       await getElText(page, totalCommentSelector);
-      
+
       const comments = [];
-      for (let i = 1; i < 50; i += 1) {
+      for (let i = 1; i < 201; i += 1) {
         try {
           const commentSelector = `.style-scope:nth-child(${i}) > #comment > #body > #main > #expander #content-text`;
           await page.waitForSelector(commentSelector);
           const fetchedComments = await getElText(page, commentSelector);
           // eslint-disable-next-line no-unused-vars
-          await page.evaluate((_) => {
+          await page.evaluate(() => {
             window.scrollBy(0, 300);
           });
           // const total = Number(totalComments.replace(' Comments', '').replace(',', ''));
-      
+
           comments.push(fetchedComments);
         } catch (error) {
           // eslint-disable-next-line no-continue
@@ -215,7 +215,7 @@ exports.editVideo = async (req, res, next) => {
       artist: Joi.string().trim().max(70),
     });
     const validate = await validationSchema.validateAsync(req.body);
-    
+
     if (validate) {
       const {
         title,
