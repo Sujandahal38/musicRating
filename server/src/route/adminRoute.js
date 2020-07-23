@@ -45,6 +45,6 @@ adminRouter.get('/search/:text', adminAuth, searchVideo);
 adminRouter.patch('/changeauth', adminAuth, changeAuthorization);
 adminRouter.get('/fetchadmin', adminAuth, adminData);
 
-adminRouter.get('/analyze', analyzeComments);
+adminRouter.get('/analyze/:id', analyzeComments);
 
 module.exports = adminRouter;
