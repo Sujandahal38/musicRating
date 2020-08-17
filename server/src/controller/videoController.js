@@ -23,13 +23,7 @@ exports.AddVideo = async (req, res, next) => {
     });
     const validate = await validationSchema.validateAsync(req.body);
     if (validate) {
-      const {
-        title,
-        description,
-        youtubeLink,
-        artist,
-        genre,
-      } = req.body;
+      const { title, description, youtubeLink, artist, genre } = req.body;
       const createdBy = req.adminInfo.id;
       const checkVideo = await Video.findOne({
         youtubeLink,
@@ -72,28 +66,22 @@ exports.AddVideo = async (req, res, next) => {
 };
 
 // helperFunction
-function getElText(page, selector) {
+const getElText = async (page, selector) => {
   // eslint-disable-next-line no-shadow
-  return page.evaluate(
-    (selector) => {
-      document.querySelector(selector).innerText
-    },selector,
-  );
-}
+  return await page.evaluate((selector) => {
+    return document.querySelector(selector).innerText;
+  }, selector);
+};
 
 //scrape youtube comments
 exports.youtubeScrape = async (req, res, next) => {
   try {
-    const {
-      id,
-    } = req.params;
+    const { id } = req.params;
     const findVideo = await Video.findOne({
       _id: id,
     });
     if (findVideo) {
-      const {
-        youtubeLink,
-      } = findVideo;
+      const { youtubeLink } = findVideo;
       const browser = await puppeteer.launch({
         headless: false,
       });
@@ -119,8 +107,8 @@ exports.youtubeScrape = async (req, res, next) => {
       await page.waitForSelector('#sections');
       await page.waitForSelector('#content');
 
-
-      const totalCommentSelector = '.style-scope:nth-child(1) > #title > #count > .count-text';
+      const totalCommentSelector =
+        '.style-scope:nth-child(1) > #title > #count > .count-text';
       await getElText(page, totalCommentSelector);
 
       const comments = [];
@@ -130,6 +118,7 @@ exports.youtubeScrape = async (req, res, next) => {
           await page.waitForSelector(commentSelector);
           const fetchedComments = await getElText(page, commentSelector);
           // eslint-disable-next-line no-unused-vars
+
           await page.evaluate(() => {
             window.scrollBy(0, 300);
           });
@@ -142,15 +131,18 @@ exports.youtubeScrape = async (req, res, next) => {
         }
       }
       if (comments) {
-        const commentSave = await Video.updateOne({
-          _id: id,
-        }, {
-          $set: {
-            youtubeComments: comments,
-            updatedBy: req.adminInfo.id,
-            updatedAt: Date.now(),
+        const commentSave = await Video.updateOne(
+          {
+            _id: id,
           },
-        });
+          {
+            $set: {
+              youtubeComments: comments,
+              updatedBy: req.adminInfo.id,
+              updatedAt: Date.now(),
+            },
+          },
+        );
         if (commentSave) {
           res.status(200).json({
             message: 'comments saved successfully',
@@ -172,9 +164,7 @@ exports.youtubeScrape = async (req, res, next) => {
 //deleteVideo
 exports.deleteVideo = async (req, res, next) => {
   try {
-    const {
-      id,
-    } = req.params;
+    const { id } = req.params;
     const findVideo = await Video.findOne({
       _id: id,
     });
@@ -198,7 +188,6 @@ exports.deleteVideo = async (req, res, next) => {
   }
 };
 
-
 //updateVideo
 exports.editVideo = async (req, res, next) => {
   try {
@@ -217,17 +206,9 @@ exports.editVideo = async (req, res, next) => {
     const validate = await validationSchema.validateAsync(req.body);
 
     if (validate) {
-      const {
-        title,
-        description,
-        youtubeLink,
-        artist,
-        genre,
-      } = req.body;
+      const { title, description, youtubeLink, artist, genre } = req.body;
       const updatedBy = req.adminInfo.id;
-      const {
-        id,
-      } = req.params;
+      const { id } = req.params;
       const checkVideo = await Video.findOne({
         _id: id,
       });
@@ -238,26 +219,29 @@ exports.editVideo = async (req, res, next) => {
         const embedCode = grabEmbedCode[2];
         const thumbnail = ytThumnail(youtubeLink);
 
-        const editvideoInfo = await Video.updateOne({
-          _id: id,
-        }, {
-          $set: {
-            title,
-            description,
-            youtubeLink,
-            genre,
-            artist,
-            embedCode,
-            updatedBy,
-            thumbnail: thumbnail.high.url,
+        const editvideoInfo = await Video.updateOne(
+          {
+            _id: id,
           },
-        });
+          {
+            $set: {
+              title,
+              description,
+              youtubeLink,
+              genre,
+              artist,
+              embedCode,
+              updatedBy,
+              thumbnail: thumbnail.high.url,
+            },
+          },
+        );
         if (editvideoInfo.nModified > 0) {
           res.status(200).json({
             message: 'videoInfo updated successfully 🎉',
           });
         }
-        if (editvideoInfo.nModified === 0 ) {
+        if (editvideoInfo.nModified === 0) {
           res.status(305).json({
             message: 'not modified',
           });
@@ -277,13 +261,10 @@ exports.editVideo = async (req, res, next) => {
   }
 };
 
-
 //fetch youtubevideo
 exports.fetchVideo = async (req, res, next) => {
   try {
-    const {
-      limit,
-    } = req.params;
+    const { limit } = req.params;
 
     const fetchVideo = await Video.find()
       .sort({
@@ -308,9 +289,7 @@ exports.fetchVideo = async (req, res, next) => {
 
 exports.VideoById = async (req, res, next) => {
   try {
-    const {
-      id,
-    } = req.params;
+    const { id } = req.params;
     const fetchVideo = await Video.findOne({
       _id: id,
     });
@@ -333,28 +312,27 @@ exports.VideoById = async (req, res, next) => {
 //search video
 exports.searchVideo = async (req, res, next) => {
   try {
-    const {
-      text,
-    } = req.params;
+    const { text } = req.params;
     const searchData = await Video.find({
-      $or: [{
-        title: {
-          $regex: text,
-          $options: 'i',
+      $or: [
+        {
+          title: {
+            $regex: text,
+            $options: 'i',
+          },
         },
-      },
-      {
-        artist: {
-          $regex: text,
-          $options: 'i',
+        {
+          artist: {
+            $regex: text,
+            $options: 'i',
+          },
         },
-      },
-      {
-        description: {
-          $regex: text,
-          $options: 'i',
+        {
+          description: {
+            $regex: text,
+            $options: 'i',
+          },
         },
-      },
       ],
     }).limit(5);
     if (!searchData) {
@@ -372,3 +350,54 @@ exports.searchVideo = async (req, res, next) => {
     next(error);
   }
 };
+
+exports.fetchAllGenre = async (req, res, next) => {
+  try {
+    const allVideos = await Video.find();
+    const { limit } = req.params;
+    if (allVideos) {
+      const hiphop = await Video.find({genre: 'Hiphop'}).sort({_id: -1}).limit(parseInt(limit));
+      const pop = await Video.find({genre: 'Pop'}).sort({_id: -1}).limit(parseInt(limit));
+      const Rythm_Blues = await Video.find({genre: 'Rythm & Blues'}).sort({_id: -1}).limit(parseInt(limit));
+      const country = await Video.find({genre: 'Country'}).sort({_id: -1}).limit(parseInt(limit));
+      const rock = await Video.find({genre: 'Rock'}).sort({_id: -1}).limit(parseInt(limit));
+       const videos = [
+        { genre: 'Hiphop', info: hiphop },
+        { genre: 'Pop', info: pop },
+        { genre: 'Rythm & Blues', info: Rythm_Blues },
+        { genre: 'Country', info: country },
+        { genre: 'Rock', info: rock },
+      ];
+      res.status(200).json({
+       videos,
+      });
+    }
+    if (!allVideos) {
+      res.status(404).json({
+        message: 'videos not found',
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.fetchVideoByGenre = async (req, res, next) => {
+  try {
+    const { genre } = req.params;
+    const fetchVideo =  await Video.find({genre});
+    if (!fetchVideo) {
+      res.status(404).json({
+        message: 'Video not found',
+      });
+    }
+    if (fetchVideo) {
+      res.status(200).json({
+        message: "videos fetched.",
+        videos: fetchVideo
+      })
+    }
+  } catch (error) {
+    next(error);
+  }
+}

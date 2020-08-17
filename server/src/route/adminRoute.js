@@ -24,7 +24,7 @@ const {
   adminAuth,
 } = require('../middlewares/adminAuth');
 
-const { analyzeComments } = require('../controller/commentController')
+const { analyzeComments, createCommentsCsv } = require('../controller/commentController')
 
 adminRouter.post('/signup', Signup);
 adminRouter.post('/login', verifyAdmin, Login);
@@ -46,5 +46,7 @@ adminRouter.patch('/changeauth', adminAuth, changeAuthorization);
 adminRouter.get('/fetchadmin', adminAuth, adminData);
 
 adminRouter.get('/analyze/:id', analyzeComments);
+
+adminRouter.get('/allComments', createCommentsCsv )
 
 module.exports = adminRouter;

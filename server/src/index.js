@@ -9,16 +9,11 @@ require('dotenv').config();
 
 const app = express();
 
-const {
-  PORT,
-  DB_URL,
-  ROOT_EMAIL,
-  ROOT_PASSWORD,
-} = process.env;
+const { PORT, DB_URL, ROOT_EMAIL, ROOT_PASSWORD } = process.env;
 
 const Admin = require('./model/Admin');
 
-mongoose
+const connect = mongoose
   .connect(DB_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -56,10 +51,7 @@ app.use(express.json());
 
 const userRouter = require('./route/userRoute');
 const adminRouter = require('./route/adminRoute');
-const {
-  notFound,
-  errorHandler,
-} = require('./error');
+const { notFound, errorHandler } = require('./error');
 
 app.use('/', userRouter);
 app.use('/admin', adminRouter);
@@ -67,8 +59,10 @@ app.use('/admin', adminRouter);
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(
     chalk.yellowBright(`Server started at http://localhost:${PORT} 🍏`),
   );
 });
+
+module.exports = server;

@@ -10,6 +10,7 @@ const User = require('../model/User');
 
 exports.Signup = async (req, res, next) => {
   try {
+    console.log(req.body)
     const validationSchema = Joi.object({
       fullName: Joi.string().trim().max(78).required(),
       email: Joi.string().email({
@@ -61,6 +62,7 @@ exports.Signup = async (req, res, next) => {
     if (error.name === 'ValidationError') {
       res.status(422);
     }
+    console.log(error)
     next(error);
   }
 };
@@ -111,6 +113,57 @@ exports.login = async (req, res, next) => {
           message: 'username/email or password invalid',
         });
       }
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.userData = async (req, res, next) => {
+  try {
+    const { _id } = req.userInfo;
+    const user = await User.find({_id: _id});
+    if (user) {
+      const { fullName, email, _id, username } = user[0];
+      const data = [{
+        fullName,
+        email,
+        username,
+        id: _id
+      }]
+      console.log(data)
+      res.status(200).json({
+        userData: data
+      })
+    }
+    if (!user) {
+      res.status(404).json({
+        message: 'user not found'
+      })
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
+exports.verifyUsername = async (req, res, next) => {
+  try {
+    const {
+      username,
+    } = req.body;
+    const checkUsername = await User.findOne({
+      username,
+    });
+    if (checkUsername) {
+      res.status(400).json({
+        data: checkUsername.email,
+        message: 'Username already taken.',
+      });
+    }
+    if (!checkUsername) {
+      res.status(200).json({
+        message: 'valid Username',
+      });
     }
   } catch (error) {
     next(error);

@@ -18,7 +18,6 @@ const token_stem = async (comment) => {
   });
   const finalWords = [];
  for (word of words) {
-   console.log(word)
    const stemWord = await natural.PorterStemmer.stem(word);
    finalWords.push(stemWord);
  }
@@ -31,7 +30,9 @@ exports.tokenAndStemDoc = async (positive, negative) => {
       let stem = await token_stem(comment);
       finalPositiveDoc.push(stem)
     }
-    const finalNegativeDoc = [];
+    let finalNegativeDoc = [];
+    console.log(negative);
+
     for (comment of negative) {
       let stem = await token_stem(comment);
       finalNegativeDoc.push(stem)
