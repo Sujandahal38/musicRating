@@ -16,7 +16,10 @@ import {
   DELETE_VIDEO_FAIL,
   EDIT_VIDEO_REQ,
   EDIT_VIDEO_SUC,
-  EDIT_VIDEO_FAIL
+  EDIT_VIDEO_FAIL,
+  ANALYZE_REQ,
+  ANALYZE_SUC,
+  ANALYZE_FAIL
 } from './videoType';
 import Axios from 'axios';
 import {
@@ -141,6 +144,26 @@ export const editVideoFail = (message) => {
     payload: message,
   }
 }
+export const analyzeReq = () => {
+  return {
+    type: ANALYZE_REQ,
+  }
+}
+export const analyzeSuc = (message, rating, status) => {
+  return {
+    type: ANALYZE_SUC,
+    message: message,
+    rating: rating,
+    status: status
+  }
+}
+export const analyzeFailed = (message, status) => {
+  return {
+    type: ANALYZE_FAIL,
+    message: message,
+    status: status
+  }
+}
 
 export const deleteVideo = (id, params) => {
   return (dispatch) => {
@@ -154,7 +177,7 @@ export const deleteVideo = (id, params) => {
         dispatch(setFetchVideo(0));
         }
       dispatch(showSnackbar(res.data.message, res.status));
-      
+
     }).catch(err => {
       if (err && err.response && err.response.data.message) {
         dispatch(deleteVideoFail(err.response.data.message));
@@ -282,4 +305,27 @@ export const editVideo = (id, data) => {
       }
     })
 }
+  }
+
+  export const analyzeVideo = (id) => {
+    return (dispatch)=> {
+      dispatch(analyzeReq())
+      const token = localStorage.getItem('token');
+      Axios.defaults.headers.common["Authorization"] = token;
+      Axios.get(`${API}/admin/analyze/${id}`).then((res) => {
+        dispatch(analyzeSuc(res.data.message, res.data.ratings, res.status))
+        dispatch(showSnackbar(res.data.message, res.status))
+      }).catch((err) => {
+        if (err && err.response && err.response.data.message) {
+          dispatch(
+            analyzeFailed(err.response.data.message)
+          );
+          dispatch(showSnackbar(err.response.data.message, err.status));
+        }
+        if (err && !err.response) {
+          dispatch(analyzeFailed(err.message));
+          dispatch(showSnackbar(err.message, err.status));
+        }
+      })
+    }
   }

@@ -26,7 +26,9 @@ const videoSchema = mongoose.Schema({
   mvdbComments: {
     type: Array,
   },
-  ratings: Number,
+  ratings: {
+    type: Number,
+  },
   genre: {
     type: String,
     required: true,

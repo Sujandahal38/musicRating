@@ -4,6 +4,7 @@ const { SECRET_KEY } = process.env;
 exports.userAuth = async (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
+    console.log(token);
     if (token) {
       const verify = await jwt.verify(token, SECRET_KEY);
       if (verify) {

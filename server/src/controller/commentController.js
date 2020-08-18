@@ -22,7 +22,7 @@ exports.analyzeComments = async (req, res, next) => {
         const data = JSON.parse(jsonFile);
         const positiveComments = [];
         const negativeComments = [];
-        const comments = [...mvdb_comments];
+        const comments = [...youtubeComments,...mvdb_comments];
         const positivePath = path.join(__dirname, '../assets/positiveDoc.txt');
         const negativePath = path.join(__dirname, '../assets/negativeDoc.txt');
         fs.readFileSync(positivePath, 'utf8')
@@ -51,12 +51,28 @@ exports.analyzeComments = async (req, res, next) => {
             positiveCount++;
           }
         }
-        console.log(positiveCount, comments.length);
-        const rating = (positiveCount / comments.length) * 5;
-        console.log('here',rating);
+
+        const ratings = (positiveCount / comments.length) * 5;
+       const saveRating = await Video.updateOne({_id: id}, {
+         $set: {
+           ratings,
+         }
+       });
+       console.log(saveRating);
+       if (saveRating.nModified === 1) {
+        res.status(200).json({
+          message: 'rated successfully',
+          ratings,
+        });
+       }
+       if (saveRating.nModified === 0) {
+         res.status(422).json({
+           message: 'already rated with same value.'
+         })
+       }
     }
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };
 

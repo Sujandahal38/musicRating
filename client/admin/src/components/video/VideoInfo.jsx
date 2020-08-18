@@ -26,7 +26,7 @@ import {
   AiOutlineCloudDownload,
 } from 'react-icons/all';
 import { useHistory } from 'react-router-dom';
-import { setCommentFetch, deleteVideo } from '../../Redux';
+import { setCommentFetch, deleteVideo, analyzeVideo } from '../../Redux';
 
 export default function VideoInfo() {
   const location = useLocation();
@@ -55,6 +55,7 @@ export default function VideoInfo() {
   if (video?.message === 'Video deleted successfully.') {
     history.push('/dashboard/addvideo');
   }
+  console.log(video);
   return (
     <>
       <Card elevation={5} className={classes.root}>
@@ -94,6 +95,30 @@ export default function VideoInfo() {
                 </CardContent>
               </Alert>
             </Card>
+            {
+             ( video?.ratings || video?.videoDatabyId?.ratings) ?
+              <Card className={classes.infoCard} elevation={5}>
+              <Alert variant="filled" severity="info">
+                <CardHeader
+                  title={
+                    <Typography align="center" variant="body1">
+                      Rating
+                    </Typography>
+                  }
+                />
+
+                <CardContent>
+                  <Typography component="span" align="center" variant="body1">
+                    {video?.loading ? (
+                      <BeatLoader margin={2} size={10} color="white" />
+                    ) : (
+                      video?.ratings || video?.videoDatabyId?.ratings
+                    )}
+                  </Typography>
+                </CardContent>
+              </Alert>
+            </Card>: null
+            }
             <Card className={classes.infoCard} elevation={5}>
               <Alert
                 variant="filled"
@@ -171,7 +196,8 @@ export default function VideoInfo() {
               color="secondary"
               startIcon={<BsGraphUp />}
               className={classes.Button}
-              disabled={video?.fetching || video?.loading}
+              onClick = {() => dispatch(analyzeVideo(id))}
+              disabled={ (video?.videoDatabyId?.youtubeComments?.length === 0 && video?.videoDatabyId?.mvdbComments?.length === 0   )}
             >
               Analyze Video
             </Button>

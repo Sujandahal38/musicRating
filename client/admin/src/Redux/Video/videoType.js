@@ -21,3 +21,7 @@ export const DELETE_VIDEO_FAIL = 'DELETE_VIDEO_FAIL';
 export const EDIT_VIDEO_REQ = 'EDIT_VIDEO_REQ';
 export const EDIT_VIDEO_SUC = 'EDIT_VIDEO_SUC';
 export const EDIT_VIDEO_FAIL = 'EDIT_VIDEO_FAIL';
+
+export const ANALYZE_REQ = 'ANALYZE_REQ';
+export const ANALYZE_SUC = 'ANALYZE_SUC';
+export const ANALYZE_FAIL = 'ANALYZE_FAIL';

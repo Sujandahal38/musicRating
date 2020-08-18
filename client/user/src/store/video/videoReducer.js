@@ -1,4 +1,4 @@
-import { FETCH_VIDEO_REQ, FETCH_VIDEO_SUCCESS, FETCH_VIDEO_FAILED, FETCH_ID_REQ, FETCH_ID_SUCCESS, FETCH_ID_FAILED } from './videoTypes';
+import { FETCH_VIDEO_REQ, FETCH_VIDEO_SUCCESS, FETCH_VIDEO_FAILED, FETCH_ID_REQ, FETCH_ID_SUCCESS, FETCH_ID_FAILED, FETCH_NEW_REQ, FETCH_NEW_SUC, FETCH_NEW_FAILED } from './videoTypes';
 
 const initialState = {
 
@@ -12,6 +12,7 @@ const videoReducer = (state = initialState, action) => {
             }
         case FETCH_VIDEO_SUCCESS:
             return {
+                ...state,
                 loading: false,
                 videoData: action.videos
             }
@@ -39,6 +40,24 @@ const videoReducer = (state = initialState, action) => {
                 message: action.message,
                 status: action.status
             }
+            case FETCH_NEW_REQ:
+                return {
+                    ...state,
+                    fetching: true,
+                }
+            case FETCH_NEW_SUC:
+            return {
+                ...state,
+                fetching: true,
+                message: action.message,
+                latestVideo: action.videos,
+            }
+            case FETCH_NEW_FAILED:
+                return {
+                    ...state,
+                    fetching: true,
+                    message: action.message,
+                }
         default:
            return {
                 ...state

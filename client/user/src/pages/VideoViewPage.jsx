@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchVideoById } from '../store';
@@ -6,14 +6,13 @@ import VideoViewCard from '../components/view/videoViewCard';
 import Moment from 'react-moment';
 import {
   makeStyles,
-  Grid,
-  Paper,
   Container,
   Typography,
   Divider,
 } from '@material-ui/core';
 import { Skeleton, Rating } from '@material-ui/lab';
 import AddCommentForm from '../components/forms/AddCommentForm';
+import ViewComment from '../components/view/ViewComments';
 const VideoViewPage = () => {
   const { id } = useParams();
   const classes = useStyles();
@@ -23,6 +22,7 @@ const VideoViewPage = () => {
     dispatch(fetchVideoById(id));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+  console.log(video?.videoById?.ratings);
   return (
     <>
       <Container>
@@ -39,8 +39,18 @@ const VideoViewPage = () => {
               <Typography className={classes.title} variant="h5">
                 {video?.videoById?.title}
               </Typography>
+              <div><Typography  className={classes.artist}  component="p" >
+                {
+
+                }
+              Ratings: {  video?.videoById?.ratings > 0 ? <>{video?.videoById?.ratings.toFixed(1)}/5}</>: 'N/A'}
+                    </Typography></div>
               <div>
-                  <Rating name='rating' size='medium' value={video?.videoById?.rating} />
+                {
+                  video?.videoById?.ratings &&
+                  <Rating name='rating' value={video?.videoById?.ratings} readOnly size='medium' />
+                }
+
               </div>
               <Typography className={classes.artist} variant="h6">
                Artist: {video?.videoById?.artist}
@@ -57,6 +67,7 @@ const VideoViewPage = () => {
             <div className={classes.addComentSection}>
                 <AddCommentForm id={video?.videoById?._id} title={video?.videoById?.title} />
             </div>
+            <ViewComment id={id}/>
           </div>
           <div className={classes.moreVideoContainer}>
             {/* similar videos section */}
@@ -79,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
   },
   videoContainer: {
     width: '70%',
-    height: '1000px',
     display: 'flex',
     flexDirection: 'column',
   },

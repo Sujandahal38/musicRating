@@ -7,10 +7,10 @@ const Banner = ({info }) => {
   return (
     <>
         <Card className={classes.card}>
-          <CardMedia className={classes.media} image={info.image} />
+          <CardMedia className={classes.media} image={info.thumbnail} />
           <h1 className={classes.title}>{info.title}</h1>
           <Toolbar  className={classes.description} >
-          <Rating size='large' readOnly={true} value={info.rating} />
+          <Rating size='large' readOnly={true} value={info.ratings} />
           </Toolbar>
         </Card>
     </>

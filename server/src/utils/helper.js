@@ -31,8 +31,6 @@ exports.tokenAndStemDoc = async (positive, negative) => {
       finalPositiveDoc.push(stem)
     }
     let finalNegativeDoc = [];
-    console.log(negative);
-
     for (comment of negative) {
       let stem = await token_stem(comment);
       finalNegativeDoc.push(stem)

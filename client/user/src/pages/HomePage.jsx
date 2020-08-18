@@ -5,7 +5,7 @@ import { makeStyles, Container } from '@material-ui/core';
 import GenreList from '../components/List/GenreList';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchVideo } from '../store';
+import { fetchVideo, fetchLatestVideo } from '../store';
 
 const HomePage = () => {
   document.title = 'Music video Database';
@@ -36,6 +36,7 @@ const HomePage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchVideo());
+    dispatch(fetchLatestVideo(5));
   },[])
   console.log(videos)
   return (
@@ -43,16 +44,16 @@ const HomePage = () => {
       <Container>
         <section>
           <div className={classes.slider}>
-            {/* <Carousel
+            { videos?.latestVideo?.length > 0 && <Carousel
               interval={2000}
               timeout={1200}
               className={classes.slider}
               animation="fade"
             >
-              {info.map((item, i) => (
-                <Banner key={i} info={item} />
+              {videos?.latestVideo.map((item, i) => (
+                <Banner key={item._id} info={item} />
               ))}
-            </Carousel> */}
+            </Carousel>}
           </div>
         </section>
         <section>

@@ -11,19 +11,25 @@ const AddCommentForm = ({ title, id }) => {
   const user = useSelector((state) => state.user.userData);
   const dispatch = useDispatch();
   const commentState = useSelector((state) => state.comment);
+  const auth = useSelector(state => state.auth)
   const handleComment = (e) => {
     if (e.key === 'enter') {
       if (comment.length > 0) {
-        dispatch(addComment(id, comment));
+        if(auth.isLoggedIn) {
+          dispatch(addComment(id, comment));
+        }
       }
     }
   };
   const handleChange = (e) => {
     setComment(e.target.value);
   };
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
     if (comment.length > 0) {
-      dispatch(addComment(id, comment));
+      if(auth.isLoggedIn) {
+        dispatch(addComment(id, comment));
+      }
     }
   };
   useEffect(() => {
@@ -41,10 +47,10 @@ const AddCommentForm = ({ title, id }) => {
         </div>
       ) : (
         <>
-          <form>
+          <form onSubmit={handleSubmit}>
             <div className={classes.root}>
               {user.length > 0 ? (
-                <Avatar size={20} className={classes.orange}>
+                <Avatar size={30} className={classes.orange}>
                   {user[0].fullName}
                 </Avatar>
               ) : (
@@ -66,7 +72,7 @@ const AddCommentForm = ({ title, id }) => {
             <div className={classes.buttonHolder}>
               <Button
                 disabled={comment.length > 0 ? false : true}
-                onClick={handleSubmit}
+                type='submit'
                 variant="contained"
               >
                 Comment
@@ -82,6 +88,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'row',
+    marginTop: theme.spacing(1)
   },
   orange: {
     color: theme.palette.getContrastText(deepOrange[500]),
@@ -92,6 +99,7 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(0.5),
   },
   buttonHolder: {
+    marginTop: theme.spacing(1),
     display: 'flex',
     justifyContent: 'flex-end',
   },

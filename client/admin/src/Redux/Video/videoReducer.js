@@ -16,7 +16,10 @@ import {
   DELETE_VIDEO_FAIL,
   EDIT_VIDEO_REQ,
   EDIT_VIDEO_SUC,
-  EDIT_VIDEO_FAIL
+  EDIT_VIDEO_FAIL,
+  ANALYZE_REQ,
+  ANALYZE_SUC,
+  ANALYZE_FAIL
 } from './videoType';
 
 
@@ -110,7 +113,7 @@ const videoReducer = (state = initialState, action) => {
                                     deleting: false,
                                     message: action.payload,
                                   }
-                                  case EDIT_VIDEO_REQ: 
+                                  case EDIT_VIDEO_REQ:
                                   return {
                                     ...state,
                                     editing : true,
@@ -120,13 +123,31 @@ const videoReducer = (state = initialState, action) => {
                                       ...state,
                                       editing: false,
                                       message: action.payload,
-                                     } 
-                                     case EDIT_VIDEO_FAIL: 
+                                     }
+                                     case EDIT_VIDEO_FAIL:
                                      return {
                                        ...state,
                                        editing: false,
                                        message: action.payload,
                                      }
+                                     case ANALYZE_REQ:
+                                       return {
+                                         ...state,
+                                         analyzing: true,
+                                       }
+                                       case ANALYZE_SUC:
+                                       return {
+                                        ...state,
+                                        analyzing: false,
+                                        message: action.message,
+                                        ratings: action.rating
+                                       }
+                                       case ANALYZE_FAIL:
+                                         return {
+                                          ...state,
+                                          analyzing: false,
+                                          message: action.message,
+                                         }
                             default:
                               return {
                                 ...state

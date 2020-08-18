@@ -30,24 +30,39 @@ const GenreList = ({ genre, list }) => {
         >
           <ListItem className={classes.listItem}>
             {list.map((item, index) => (
-              <Link style={{textDecoration: 'none'}} key={item._id} to={`/video/${item._id}`}>
-              <Card  elevation={3} className={classes.card}>
-                <CardMedia
-                  image={item.thumbnail}
-                  className={classes.imgCover}
-                />
-                <div className={classes.details}>
-                  <CardContent className={classes.content}>
-                    <Typography className={classes.title} component="p">
-                      {item.title}
-                    </Typography>
-                    <Typography  className={classes.title}  component="p" >
-                     {item.artist}
-                    </Typography>
-                    <Rating readOnly={true} size="small" value={item.rating} />
-                  </CardContent>
-                </div>
-              </Card>
+              <Link
+                style={{ textDecoration: 'none' }}
+                key={item._id}
+                to={`/video/${item._id}`}
+              >
+                <Card elevation={3} className={classes.card}>
+                  <CardMedia
+                    image={item.thumbnail}
+                    className={classes.imgCover}
+                  />
+                  <div className={classes.details}>
+                    <CardContent className={classes.content}>
+                      <Typography className={classes.title} component="p">
+                        Rating{item.title}
+                      </Typography>
+                      <Typography className={classes.title} component="p">
+                        {item.artist}
+                      </Typography>
+                      <div>
+                        {item?.ratings && (
+                          <Typography className={classes.title} component="p">
+                            {item?.ratings?.toFixed(1)}/5
+                          </Typography>
+                        )}
+                      </div>
+                      <Rating
+                        readOnly={true}
+                        size="small"
+                        value={item.ratings}
+                      />
+                    </CardContent>
+                  </div>
+                </Card>
               </Link>
             ))}
           </ListItem>
@@ -55,7 +70,7 @@ const GenreList = ({ genre, list }) => {
         <Link to="/" style={{ textDecoration: 'none' }}>
           <Toolbar>
             <Button
-              style={{ color: 'white', bottom: 0, position: 'absolute'}}
+              style={{ color: 'white', bottom: 0, position: 'absolute' }}
               fullWidth={true}
               variant="text"
               color="secondary"
@@ -101,8 +116,8 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
   },
   title: {
-    fontSize: theme.spacing(1.6)
-  }
+    fontSize: theme.spacing(1.6),
+  },
 }));
 
 export default GenreList;
