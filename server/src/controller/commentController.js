@@ -23,7 +23,6 @@ exports.analyzeComments = async (req, res, next) => {
         const positiveComments = [];
         const negativeComments = [];
         const comments = [...mvdb_comments];
-        console.log(positiveComments.length)
         const positivePath = path.join(__dirname, '../assets/positiveDoc.txt');
         const negativePath = path.join(__dirname, '../assets/negativeDoc.txt');
         fs.readFileSync(positivePath, 'utf8')
@@ -31,7 +30,6 @@ exports.analyzeComments = async (req, res, next) => {
           .forEach(function (line) {
             positiveComments.push(line);
           });
-          console.log(positiveComments.length);
         fs.readFileSync(negativePath, 'utf8')
           .split(/\r?\n/)
           .forEach(function (line) {
@@ -42,15 +40,13 @@ exports.analyzeComments = async (req, res, next) => {
           positiveComments,
           negativeComments,
         );
-        console.log(positiveDoc)
-        Classifier.addDocuments(positiveDoc, 'positive');
-        Classifier.addDocuments(negativeDoc, 'negative');
+        Classifier.addTotalComment(positiveDoc, 'positive');
+        Classifier.addTotalComment(negativeDoc, 'negative');
 
         Classifier.train();
         let positiveCount = 0;
         for (comment of comments) {
           const value = Classifier.classify(comment);
-          console.log(typeof value, value);
           if (value === 'positive') {
             positiveCount++;
           }
@@ -74,7 +70,6 @@ exports.createCommentsCsv = async (req, res, next) => {
         (video) =>
           comments.push(video.youtubeComments,video.mvdbComments)
       );
-      console.log(comments.length);
       const csvWritePath = path.join(
         __dirname,
         '../assets/datasets/comments.json',
@@ -133,7 +128,6 @@ exports.AddComment = async (req, res, next) => {
           })
         }
       }
-
     }
   } catch (error) {
       next(error);

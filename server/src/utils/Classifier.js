@@ -1,211 +1,168 @@
 var stemmer = require('./helper');
 
-function BayesClassifier() {
+function naiveBayes() {
 
-if (!(this instanceof BayesClassifier)) {
-  return new BayesClassifier();
-}
+  if (!(this instanceof naiveBayes)) {
+    return new naiveBayes();
+  }
+  //initialised
+  this.stemmer = stemmer.token_stem;
+  this.totalComment = [];
+  this.lastAddedComment = 0;
+  this.mapping = {};
+  this.classMapping = {};
+  this.classTotal = {};
+  this.totalTrained = 1;
+  this.laplaceSmoothing = 1;
+  }
 
-this.stemmer = stemmer.token_stem;
+  naiveBayes.prototype.addComment =  function(doc, label) {
+    if (!this._size(doc)) {
+      return;
+  }
 
-
-this.docs = [];
-
-this.lastAdded = 0;
-
-this.features = {};
-
-
-this.classFeatures = {};
-
-this.classTotals = {};
-
-this.totalExamples = 1;
-
-this.smoothing = 1;
-}
-
-
-BayesClassifier.prototype.addDocument =  function(doc, label) {
-if (!this._size(doc)) {
-  return;
-}
-
-var docObj = {
-  label: label,
-  value: doc
+  let docObj = {
+    label: label,
+    value: doc
 };
 
-this.docs.push(docObj);
-
-for (var i = 0; i < doc.length; i++) {
-  this.features[doc[i]] = 1;
-}
+  this.totalComment.push(docObj);
+    for (let i = 0; i < doc.length; i++) {
+      this.mapping[doc[i]] = 1;
+    }
 };
 
-
-BayesClassifier.prototype.addDocuments = function(docs, label) {
-for (var i = 0; i < docs.length; i++) {
-  this.addDocument(docs[i], label);
-}
+naiveBayes.prototype.addTotalComment = function(docs, label) {
+  for (let i = 0; i < docs.length; i++) {
+    this.addComment(docs[i], label);
+  }
 };
 
-BayesClassifier.prototype.docToFeatures = function(doc) {
-var features = [];
+//feature mapping 
+naiveBayes.prototype.docToFeatures = function(doc) {
+  let featureMap = [];
 
-for (var feature in this.features) {
-  features.push(Number(!!~doc.indexOf(feature)));
-}
+  for (let feature in this.mapping) {
+    featureMap.push(Number(!!~doc.indexOf(feature)));
+  }
 
-return features;
+  return featureMap;
 };
 
+//classify gareko!!highest probability 
+naiveBayes.prototype.classify = function(doc) {
+  let classifications = this.getClassifications(doc);
 
-BayesClassifier.prototype.classify = function(doc) {
-var classifications = this.getClassifications(doc);
-
-if (!this._size(classifications)) {
-  throw 'Not trained';
-}
-return classifications[0].label;
+  if (!this._size(classifications)) {
+    throw 'Not trained';
+  }
+  return classifications[0].label;
 };
 
-BayesClassifier.prototype.train = function() {
-var totalDocs = this.docs.length;
-for (var i = this.lastAdded; i < totalDocs; i++) {
-  var features = this.docToFeatures(this.docs[i].value);
-  this.addExample(features, this.docs[i].label);
-  this.lastAdded++;
-}
+naiveBayes.prototype.train = function() {
+  let totalDocs = this.totalComment.length;
+  for (let i = this.lastAddedComment; i < totalDocs; i++) {
+    let features = this.docToFeatures(this.totalComment[i].value);
+    this.addTrainData(features, this.totalComment[i].label);
+    this.lastAddedComment++;
+  }
 };
-BayesClassifier.prototype.addExample = function(docFeatures, label) {
-if (!this.classFeatures[label]) {
-  this.classFeatures[label] = {};
-  this.classTotals[label] = 1;
-}
 
-this.totalExamples++;
+naiveBayes.prototype.addTrainData = function(docFeatures, label) {
+  if (!this.classMapping[label]) {
+    this.classMapping[label] = {};
+    this.classTotal[label] = 1;
+  }
 
-if (Array.isArray(docFeatures)) {
-  var i = docFeatures.length;
-  this.classTotals[label]++;
+  this.totalTrained++;
+  if (this._isArray(docFeatures)) {
+    let i = docFeatures.length;
+    this.classTotal[label]++;
 
-  while(i--) {
-    if (docFeatures[i]) {
-      if (this.classFeatures[label][i]) {
-        this.classFeatures[label][i]++;
-      } else {
-        this.classFeatures[label][i] = 1 + this.smoothing;
+    while(i--) {
+      if (docFeatures[i]) {
+        if (this.classMapping[label][i]) {
+          this.classMapping[label][i]++;
+        } 
+        else {
+          this.classMapping[label][i] = 1 + this.laplaceSmoothing;
+        }
       }
     }
   }
-} else {
-  for (var key in docFeatures) {
-    value = docFeatures[key];
-
-    if (this.classFeatures[label][value]) {
-      this.classFeatures[label][value]++;
-    } else {
-      this.classFeatures[label][value] = 1 + this.smoothing;
+  else {
+    for (let key in docFeatures) {
+      value = docFeatures[key];
+      if (this.classMapping[label][value]) {
+        this.classMapping[label][value]++;
+      } 
+      else {
+        this.classMapping[label][value] = 1 + this.laplaceSmoothing;
+      }
     }
   }
-}
 };
-BayesClassifier.prototype.probabilityOfClass = function(docFeatures, label) {
-var count = 0;
-var prob = 0;
 
-if (this._isArray(docFeatures)) {
-  var i = docFeatures.length;
+//algorithm of Naive Bayes ,algorithm use gareko
+naiveBayes.prototype.probabilityOfClass = function(docFeatures, label) {
+  let countDocFeature = 0;
+  let probability = 0;
 
-  // Iterate though each feature in document.
-  while(i--) {
-    // Proceed if feature collection.
-    if (docFeatures[i]) {
-      /*
-       * The number of occurances of the document feature in class.
-       */
-      count = this.classFeatures[label][i] || this.smoothing;
-
-      /* This is the `P(d|c)` part of the model.
-       * How often the class occurs. We simply count the relative
-       * feature frequencies in the corpus (document body).
-       *
-       * We divide the count by the total number of features for the class,
-       * and add it to the probability total.
-       * We're using Natural Logarithm here to prevent Arithmetic Underflow
-       * http://en.wikipedia.org/wiki/Arithmetic_underflow
-       */
-      prob += Math.log(count / this.classTotals[label]);
+  if (this._isArray(docFeatures)) {
+    let i = docFeatures.length;
+    while(i--) {
+      if (docFeatures[i]) {
+        countDocFeature = this.classMapping[label][i] || this.laplaceSmoothing;
+        probability += Math.log(countDocFeature / this.classTotal[label]);
+      }
+    }
+  } 
+  else {
+    for (let key in docFeatures) {
+      countDocFeature = this.classMapping[label][docFeatures[key]] || this.laplaceSmoothing;
+      probability += Math.log(countDocFeature / this.classTotal[label]);
     }
   }
-} else {
-  for (var key in docFeatures) {
-    count = this.classFeatures[label][docFeatures[key]] || this.smoothing;
-    prob += Math.log(count / this.classTotals[label]);
-  }
-}
 
-/*
- * This is the `P(c)` part of the model.
- *
- * Divide the the total number of features in class by total number of all features.
- */
-var featureRatio = (this.classTotals[label] / this.totalExamples);
+  let featureRatio = (this.classTotal[label] / this.totalTrained);
+  probability = featureRatio * Math.exp(probability);
 
-/**
- * probability of class given document = P(d|c)P(c)
- */
-prob = featureRatio * Math.exp(prob);
-
-return prob;
+  return probability;
 };
 
-/**
-* getClassifications
-* @desc Return array of document classes their probability values.
-* @param {string} doc - document
-* @return classification ordered by highest probability.
-*/
-BayesClassifier.prototype.getClassifications = function(doc) {
-var classifier = this;
-var labels = [];
+naiveBayes.prototype.getClassifications = function(doc) {
+  let classifier = this;
+  let labels = [];
 
-for (var className in this.classFeatures) {
-  labels.push({
-    label: className,
-    value: classifier.probabilityOfClass(this.docToFeatures(doc), className)
+  for (let className in this.classMapping) {
+    labels.push({
+      label: className,
+      value: classifier.probabilityOfClass(this.docToFeatures(doc), className)
+    });
+  }
+
+  return labels.sort(function(x, y) {
+    return y.value - x.value;
   });
-}
-
-return labels.sort(function(x, y) {
-  return y.value - x.value;
-});
 };
 
-/*
-* Helper utils
-*/
-BayesClassifier.prototype._isString = function(s) {
-return typeof(s) === 'string' || s instanceof String;
+naiveBayes.prototype._isString = function(s) {
+  return typeof(s) === 'string' || s instanceof String;
 };
 
-BayesClassifier.prototype._isArray = function(s) {
-return Array.isArray(s);
+naiveBayes.prototype._isArray = function(s) {
+  return Array.isArray(s);
 };
 
-BayesClassifier.prototype._isObject = function(s) {
-return typeof(s) === 'object' || s instanceof Object;
+naiveBayes.prototype._isObject = function(s) {
+  return typeof(s) === 'object' || s instanceof Object;
 };
 
-BayesClassifier.prototype._size = function(s) {
-if (this._isArray(s) || this._isString(s) || this._isObject(s)) {
-  return s.length;
-}
-return 0;
+naiveBayes.prototype._size = function(s) {
+  if (this._isArray(s) || this._isString(s) || this._isObject(s)) {
+    return s.length;
+  }
+  return 0;
 };
 
-/*
-* Export constructor
-*/
-module.exports = BayesClassifier;
+module.exports = naiveBayes;
