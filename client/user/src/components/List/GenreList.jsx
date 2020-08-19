@@ -43,7 +43,7 @@ const GenreList = ({ genre, list }) => {
                   <div className={classes.details}>
                     <CardContent className={classes.content}>
                       <Typography className={classes.title} component="p">
-                        Rating{item.title}
+                       {item.title}
                       </Typography>
                       <Typography className={classes.title} component="p">
                         {item.artist}
@@ -51,7 +51,7 @@ const GenreList = ({ genre, list }) => {
                       <div>
                         {item?.ratings && (
                           <Typography className={classes.title} component="p">
-                            {item?.ratings?.toFixed(1)}/5
+                            Rating: {item?.ratings?.toFixed(1)}/5
                           </Typography>
                         )}
                       </div>

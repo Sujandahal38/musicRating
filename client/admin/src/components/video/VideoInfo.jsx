@@ -12,6 +12,7 @@ import {
   Dialog,
   DialogTitle,
   DialogActions,
+  CircularProgress,
 } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
 import { useParams, useLocation } from 'react-router-dom';
@@ -112,7 +113,7 @@ export default function VideoInfo() {
                     {video?.loading ? (
                       <BeatLoader margin={2} size={10} color="white" />
                     ) : (
-                      video?.ratings || video?.videoDatabyId?.ratings
+                      video?.ratings?.toFixed(1) || video?.videoDatabyId?.ratings?.toFixed(1)
                     )}
                   </Typography>
                 </CardContent>
@@ -197,7 +198,8 @@ export default function VideoInfo() {
               startIcon={<BsGraphUp />}
               className={classes.Button}
               onClick = {() => dispatch(analyzeVideo(id))}
-              disabled={ (video?.videoDatabyId?.youtubeComments?.length === 0 && video?.videoDatabyId?.mvdbComments?.length === 0   )}
+              endIcon={ video?.analyzing &&  <CircularProgress color="secondary" size={15} /> }
+              disabled={ video?.analyzing ||(video?.videoDatabyId?.youtubeComments?.length === 0 && video?.videoDatabyId?.mvdbComments?.length === 0   )}
             >
               Analyze Video
             </Button>

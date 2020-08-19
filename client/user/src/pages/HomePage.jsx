@@ -10,35 +10,12 @@ import { fetchVideo, fetchLatestVideo } from '../store';
 const HomePage = () => {
   document.title = 'Music video Database';
   const classes = useStyles();
-  // const list = [
-  //   {
-  //     genre: 'R&B',
-  //     info: info,
-  //   },
-  //   {
-  //     genre: 'Hiphop',
-  //     info: info,
-  //   },
-  //   {
-  //     genre: 'Rock',
-  //     info: info,
-  //   },
-  //   {
-  //     genre: 'Pop',
-  //     info: info,
-  //   },
-  //   {
-  //     genre: 'Country',
-  //     info: info,
-  //   },
-  // ];
   const videos = useSelector(state => state.video);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchVideo());
     dispatch(fetchLatestVideo(5));
   },[])
-  console.log(videos)
   return (
     <>
       <Container>
