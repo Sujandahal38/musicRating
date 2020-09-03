@@ -96,7 +96,7 @@ exports.youtubeScrape = async (req, res, next) => {
         timeout: 0,
       });
       await page.evaluate(() => {
-        window.scrollBy(0, 350);
+        window.scrollBy(0, 400);
       });
       await page.waitForSelector('h1.title');
       await page.waitFor(2000);
@@ -143,7 +143,7 @@ exports.youtubeScrape = async (req, res, next) => {
             },
           },
         );
-        if (commentSave) {
+        if (commentSave.nModified > 0) {
           res.status(200).json({
             message: 'comments saved successfully',
           });

@@ -70,7 +70,7 @@ const GenreList = ({ genre, list }) => {
         <Link to="/" style={{ textDecoration: 'none' }}>
           <Toolbar>
             <Button
-              style={{ color: 'white', bottom: 0, position: 'absolute' }}
+              style={{ color: 'white', bottom: 0}}
               fullWidth={true}
               variant="text"
               color="secondary"
@@ -89,6 +89,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(3.6),
     marginTop: theme.spacing(3),
     width: '30%',
+    display: 'flex',
+    flexDirection: 'column'
   },
   subHeader: {
     color: 'white',
@@ -99,12 +101,14 @@ const useStyles = makeStyles((theme) => ({
     height: 120,
     width: '100%',
     display: 'flex',
+    flexDirection: 'row',
     marginTop: theme.spacing(2),
   },
   imgCover: {
     width: 151,
   },
   details: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
   },

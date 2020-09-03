@@ -92,7 +92,7 @@ naiveBayes.prototype.addTrainData = function (docFeatures, label) {
   }
 };
 
-//algorithm of Naive Bayes ,algorithm use gareko
+//find probability
 naiveBayes.prototype.probabilityOfClass = function (docFeatures, label) {
   let countDocFeature = 0;
   let probability = 0;

@@ -70,16 +70,16 @@ export default function Navbar() {
                 }
               />
             </FormControl>
-            <Paper
-              innerRef={ref}
-              className={
-                searchResultOpen
-                  ? classes.searchData
-                  : classes.searchDataClicked
-              }
-            >
-              llad
-            </Paper>
+        {/* <Paper
+          innerRef={ref}
+          className={
+            searchResultOpen
+              ? classes.searchData
+              : classes.searchDataClicked
+          }
+        >
+          llad
+        </Paper> */}
           </div>
           {Auth.isLoggedIn ? (
             <>
