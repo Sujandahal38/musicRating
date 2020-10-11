@@ -9,9 +9,7 @@ import {
 } from './authTypes';
 import Axios from 'axios';
 import { HOST } from '../../host';
-import {
-  showSnackbar,
-} from '../globalSnackBar/snackAction';
+import { showSnackbar } from '../globalSnackBar/snackAction';
 import { FetchUser } from '../user/userAction';
 export const loginRequest = () => {
   return {
@@ -61,8 +59,8 @@ export const verificationFailed = (message, status) => {
 export const logout = () => {
   return {
     type: LOGOUT,
-  }
-}
+  };
+};
 
 export const login = (data) => {
   return (dispatch) => {
@@ -93,6 +91,7 @@ export const verifyToken = (token) => {
         dispatch(FetchUser(token));
       })
       .catch((err) => {
+        console.log(err);
         dispatch(
           verificationSuccess(err.response.data.message, err.response.status),
         );
@@ -102,8 +101,8 @@ export const verifyToken = (token) => {
 };
 
 export const getLogout = () => {
-    return (dispatch) => {
-      dispatch(logout());
-      localStorage.removeItem('token');
-    }
-}
+  return (dispatch) => {
+    dispatch(logout());
+    localStorage.removeItem('token');
+  };
+};
