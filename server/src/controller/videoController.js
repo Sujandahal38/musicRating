@@ -87,8 +87,8 @@ exports.youtubeScrape = async (req, res, next) => {
       });
       const page = await browser.newPage();
       await page.setViewport({
-        width: 1366,
-        height: 768,
+        width: 1920,
+        height: 1080,
       });
       const navigationPromise = page.waitForNavigation();
       await page.goto(youtubeLink, {

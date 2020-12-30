@@ -43,7 +43,7 @@ const VideoViewPage = () => {
                 {
 
                 }
-              Ratings: {  video?.videoById?.ratings > 0 ? <>{video?.videoById?.ratings.toFixed(1)}/5}</>: 'N/A'}
+              Ratings: {  video?.videoById?.ratings > 0 ? <>{video?.videoById?.ratings.toFixed(1)}/5</>: 'N/A'}
                     </Typography></div>
               <div>
                 {

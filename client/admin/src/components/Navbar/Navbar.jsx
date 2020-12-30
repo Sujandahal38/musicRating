@@ -174,13 +174,6 @@ export default function Navbar(props) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <Link
-              style={{ textDecoration: 'none', color: 'black' }}
-              to="/dashboard/profile"
-            >
-              {' '}
-              <MenuItem onClick={handleClose}>Profile</MenuItem>{' '}
-            </Link>
             <MenuItem onClick={() => logout(history)}>Logout</MenuItem>
           </Menu>
         </Toolbar>

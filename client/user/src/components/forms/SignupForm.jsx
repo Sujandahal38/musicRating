@@ -1,5 +1,5 @@
 import React from 'react';
-import { Fade, TextField } from '@material-ui/core';
+import {  TextField } from '@material-ui/core';
 import { debounce } from 'lodash';
 import { useDispatch } from 'react-redux';
 import { setCheckUsername } from '../../store';
@@ -24,7 +24,6 @@ const SignupForm = ({ step, errors, register, getValues, setError, clearErrors, 
       dispatch(setCheckUsername(username));
     }
   }, 500);
-  console.log(step);
   return (
     <>
         <div>
