@@ -76,7 +76,7 @@ export default function VideoInfo() {
           <Box className={classes.contentHolder}>
             {' '}
             <Card className={classes.infoCard} elevation={5}>
-              <Alert variant="filled" severity="info">
+              <Alert className={classes.alert} variant="filled" severity="info">
                 <CardHeader
                   title={
                     <Typography align="center" variant="body1">
@@ -96,32 +96,37 @@ export default function VideoInfo() {
                 </CardContent>
               </Alert>
             </Card>
-            {
-             ( video?.ratings || video?.videoDatabyId?.ratings) ?
+            {video?.ratings || video?.videoDatabyId?.ratings ? (
               <Card className={classes.infoCard} elevation={5}>
-              <Alert variant="filled" severity="info">
-                <CardHeader
-                  title={
-                    <Typography align="center" variant="body1">
-                      Rating
-                    </Typography>
-                  }
-                />
+                <Alert
+                  className={classes.alert}
+                  variant="filled"
+                  severity="info"
+                >
+                  <CardHeader
+                    title={
+                      <Typography align="center" variant="body1">
+                        Rating
+                      </Typography>
+                    }
+                  />
 
-                <CardContent>
-                  <Typography component="span" align="center" variant="body1">
-                    {video?.loading ? (
-                      <BeatLoader margin={2} size={10} color="white" />
-                    ) : (
-                      video?.ratings?.toFixed(1) || video?.videoDatabyId?.ratings?.toFixed(1)
-                    )}
-                  </Typography>
-                </CardContent>
-              </Alert>
-            </Card>: null
-            }
+                  <CardContent>
+                    <Typography component="span" align="center" variant="body1">
+                      {video?.loading ? (
+                        <BeatLoader margin={2} size={10} color="white" />
+                      ) : (
+                        video?.ratings?.toFixed(1) ||
+                        video?.videoDatabyId?.ratings?.toFixed(1)
+                      )}
+                    </Typography>
+                  </CardContent>
+                </Alert>
+              </Card>
+            ) : null}
             <Card className={classes.infoCard} elevation={5}>
               <Alert
+                className={classes.alert}
                 variant="filled"
                 severity={
                   video?.videoDatabyId?.youtubeComments?.length
@@ -150,6 +155,7 @@ export default function VideoInfo() {
             </Card>
             <Card className={classes.infoCard} elevation={5}>
               <Alert
+                className={classes.alert}
                 variant="filled"
                 severity={
                   video?.videoDatabyId?.mvdbComments?.length
@@ -197,9 +203,17 @@ export default function VideoInfo() {
               color="secondary"
               startIcon={<BsGraphUp />}
               className={classes.Button}
-              onClick = {() => dispatch(analyzeVideo(id))}
-              endIcon={ video?.analyzing &&  <CircularProgress color="secondary" size={15} /> }
-              disabled={ video?.analyzing ||(video?.videoDatabyId?.youtubeComments?.length === 0 && video?.videoDatabyId?.mvdbComments?.length === 0   )}
+              onClick={() => dispatch(analyzeVideo(id))}
+              endIcon={
+                video?.analyzing && (
+                  <CircularProgress color="secondary" size={15} />
+                )
+              }
+              disabled={
+                video?.analyzing ||
+                (video?.videoDatabyId?.youtubeComments?.length === 0 &&
+                  video?.videoDatabyId?.mvdbComments?.length === 0)
+              }
             >
               Analyze Video
             </Button>
@@ -270,4 +284,8 @@ const useStyles = makeStyles((theme) => ({
   Button: {
     width: theme.spacing(30),
   },
+  alert: {
+    width: '100%',
+    height: '100%'
+  }
 }));

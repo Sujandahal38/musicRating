@@ -53,11 +53,6 @@ const LoginForm = () => {
             helperText={!!errors.password ? '*Password is required.' : null}
           />
         </FormGroup>
-        <Link to="/reset" className={classes.forgotPassword}>
-          <Typography className={classes.forgotText} variant="body2">
-            Forgot password?
-          </Typography>
-        </Link>
         <FormGroup>
           <Button
             name="login"

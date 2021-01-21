@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { makeStyles, Avatar, Typography } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
 import { lightGreen } from '@material-ui/core/colors';
@@ -10,53 +10,56 @@ const ViewComment = ({ id }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const comment = useSelector((state) => state.comment);
-  useEffect(() => {
+  const fetchCommentById = useRef();
+  fetchCommentById.current = () => {
     dispatch(fetchComment(id));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
+  useEffect(() => {
+    fetchCommentById.current();
   }, []);
+  useEffect(() => {
+    fetchCommentById.current();
+  }, [id])
   return (
     <>
       <div className={classes.root}>
-          {
-              comment?.fetching ?
-              <>
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              <Skeleton />
-              </>
-              :
-              <>
-              {comment?.comments?.length > 0 ? (
-                comment?.comments.map((item) => (
-                  <>
-                    <div className={classes.commentHolder}>
-                      <Avatar size={25} className={classes.orange}>
-                        {item.commentedBy}
-                      </Avatar>
-                      <div className={classes.userNameComment}>
+        {comment?.fetching ? (
+          <>
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+            <Skeleton />
+          </>
+        ) : (
+          <>
+            {comment?.comments?.length > 0 ? (
+              comment?.comments.map((item, index) => (
+
+                  <div key={index} className={classes.commentHolder}>
+                    <Avatar size={25} className={classes.orange}>
+                      {item.commentedBy}
+                    </Avatar>
+                    <div className={classes.userNameComment}>
                       <Typography className={classes.userName} variant="h6">
                         {item.commentedBy}
                       </Typography>
                       <Typography className={classes.commentText} variant="h6">
                         {item.comment}
                       </Typography>
-                      </div>
                     </div>
-                    {/* <Skeleton variant="circle" /> */}
-                  </>
-                ))
-              ) : (
-                <Typography className={classes.commentText} variant="h6">
-                  No comments.
-                </Typography>
-              )}
-            </>
-          }
+                  </div>
 
+              ))
+            ) : (
+              <Typography className={classes.commentText} variant="h6">
+                No comments.
+              </Typography>
+            )}
+          </>
+        )}
       </div>
     </>
   );
@@ -88,10 +91,10 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     fontSize: theme.spacing(1.5),
   },
-  userNameComment:{
+  userNameComment: {
     display: 'flex',
     flexDirection: 'column',
-  }
+  },
 }));
 
 export default ViewComment;

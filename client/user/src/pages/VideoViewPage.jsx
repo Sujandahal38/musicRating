@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchVideoById } from '../store';
@@ -13,64 +13,88 @@ import {
 import { Skeleton, Rating } from '@material-ui/lab';
 import AddCommentForm from '../components/forms/AddCommentForm';
 import ViewComment from '../components/view/ViewComments';
+import PleaseLogin from '../components/Banner/PleaseLogin';
+import VideoList from '../components/view/VideoList';
+
+import { videoByGenre } from '../store'
+
 const VideoViewPage = () => {
-  const { id } = useParams();
+  const { id, genre } = useParams();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const video = useSelector((state) => state.video);
-  useEffect(() => {
+  const videos = useSelector((state) => state.video);
+  const auth = useSelector((state) => state.auth)
+  const fetchVideo = useRef();
+   fetchVideo.current = () => {
     dispatch(fetchVideoById(id));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }
+  const fetchVideoByGenre = useRef();
+  fetchVideoByGenre.current = () => {
+    dispatch(videoByGenre(genre))
+  }
+
+
+  useEffect(() => {
+      fetchVideo.current();
+      fetchVideoByGenre.current();
   }, []);
-  console.log(video?.videoById?.ratings);
+
+  useEffect(() => {
+    fetchVideo.current();
+  }, [id, genre])
   return (
     <>
       <Container>
         <div className={classes.root}>
           <div className={classes.videoContainer}>
             <div className={classes.videoHolder}>
-              {video?.videoById ? (
-                <VideoViewCard video={video?.videoById} />
+              {videos?.videoById ? (
+                <VideoViewCard video={videos?.videoById} />
               ) : (
                 <Skeleton variant="rect" height={450} />
               )}
             </div>
             <div>
               <Typography className={classes.title} variant="h5">
-                {video?.videoById?.title}
+                {videos?.videoById?.title}
               </Typography>
               <div><Typography  className={classes.artist}  component="p" >
                 {
 
                 }
-              Ratings: {  video?.videoById?.ratings > 0 ? <>{video?.videoById?.ratings.toFixed(1)}/5</>: 'N/A'}
+              Ratings: {  videos?.videoById?.ratings > 0 ? <>{videos?.videoById?.ratings.toFixed(1)}/5</>: 'N/A'}
                     </Typography></div>
               <div>
                 {
-                  video?.videoById?.ratings &&
-                  <Rating name='rating' value={video?.videoById?.ratings} readOnly size='medium' />
+                  videos?.videoById?.ratings &&
+                  <Rating name='rating' value={videos?.videoById?.ratings} readOnly size='medium' />
                 }
 
               </div>
               <Typography className={classes.artist} variant="h6">
-               Artist: {video?.videoById?.artist}
+               Artist: {videos?.videoById?.artist}
               </Typography>
               <div>
                 <Typography className={classes.date} variant="caption">
                 Uploaded on: <Moment format="YYYY/MM/DD">
-                  {video?.videoById?.uploadedAt}
+                  {videos?.videoById?.uploadedAt}
                   </Moment>
                 </Typography>
               </div>
               <Divider style={{backgroundColor: 'white'}} />
             </div>
             <div className={classes.addComentSection}>
-                <AddCommentForm id={video?.videoById?._id} title={video?.videoById?.title} />
+              {
+                auth?.isLoggedIn ?
+                <AddCommentForm id={videos?.videoById?._id} title={videos?.videoById?.title} />
+                :
+                <PleaseLogin/>
+              }
             </div>
             <ViewComment id={id}/>
           </div>
           <div className={classes.moreVideoContainer}>
-            {/* similar videos section */}
+             <VideoList videos={videos?.genreVideo} />
           </div>
         </div>
       </Container>

@@ -51,7 +51,7 @@ export default function (props) {
         <Navbar openDrawer={openDrawer} setOpenDrawer={setOpenDrawer} />
         <Container>
           <Switch>
-            <Route path="/dashboard/addvideo" component={AddVideoPage} />
+            <Route exact path="/dashboard/addvideo" component={AddVideoPage} />
             <Route path="/dashboard/videos/:id" component={VideoInfo} />
             <Route path="/dashboard/managevideo" component={VideoTable} />
             <Route path="/dashboard/editvideo/:id" component={EditVideo} />

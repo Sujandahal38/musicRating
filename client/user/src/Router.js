@@ -57,7 +57,7 @@ const Router = () => {
         <Route exact path="/" component={HomePage}/>
         <PrivateRoute path="/login" component={LoginPage} />
         <PrivateRoute path="/signup" component={SignupPage}/>
-        <Route path ='/video/:id' component={VideoViewPage} />
+        <Route path ='/video/:genre/:id' component={VideoViewPage} />
       </Switch>
     </>
   );

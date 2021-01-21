@@ -9,3 +9,7 @@ export const FETCH_ID_FAILED =  'FETCH_ID_FAILED';
 export const FETCH_NEW_REQ = 'FETCH_NEW_REQ';
 export const FETCH_NEW_SUC = 'FETCH_NEW_SUC';
 export const FETCH_NEW_FAILED = 'FETCH_NEW_FAILED';
+
+export const FETCH_GENRE_REQ = "FETCH_GENRE_REQ";
+export const FETCH_GENRE_SUC = "FETCH_GENRE_SUC";
+export const FETCH_GENRE_FAIL = "FETCH_GENRE_FAIL";

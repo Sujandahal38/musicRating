@@ -11,7 +11,7 @@ import {
   CircularProgress,
   Container,
 } from '@material-ui/core';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../../Redux/Auth/authActions.js';
 
@@ -20,16 +20,14 @@ const LoginForm = () => {
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const classes = useStyles();
+  const history = useHistory();
   const { register, handleSubmit, errors } = useForm();
 
   const setLogin = (data) => {
     dispatch(login(data));
   };
-  if (auth?.isLoggedIn) {
-    return <Redirect to="/dashboard/" />;
-  }
   if (auth?.message === 'Unauthorized Admin') {
-    return <Redirect to="/unauthorized" />;
+      history.push('/unauthorized')
   }
 
   return (
@@ -71,7 +69,6 @@ const LoginForm = () => {
               </FormGroup>
               <FormGroup>
                 <Toolbar className={classes.loginButtonHolder}>
-                  <Link to="/forgot">forgot password?</Link>
                   <Button
                     className={classes.loginButton}
                     type="submit"

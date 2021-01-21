@@ -6,6 +6,9 @@ const ViewVideoCard = ({ video}) => {
     const opts = {
         height: '450',
         width: '100%',
+        playerVars: {
+          autoplay: 1,
+        },
     }
   return (
     <>

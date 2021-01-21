@@ -7,7 +7,10 @@ import {
   FETCH_ID_FAILED,
   FETCH_NEW_REQ,
   FETCH_NEW_SUC,
-  FETCH_NEW_FAILED
+  FETCH_NEW_FAILED,
+  FETCH_GENRE_REQ,
+  FETCH_GENRE_SUC,
+  FETCH_GENRE_FAIL
 } from './videoTypes';
 import Axios from 'axios';
 import { HOST } from '../../host';
@@ -72,7 +75,27 @@ export const fetchNewFailed = (message) => {
         type: FETCH_NEW_FAILED,
         message: message,
     }
-}
+  }
+
+  const fetchGenreReq = () => {
+    return {
+      type: FETCH_GENRE_REQ,
+    }
+  }
+
+  const fetchGenreSuc = (videos) => {
+    return {
+      type: FETCH_GENRE_SUC,
+      payload: videos,
+    }
+  }
+  const fetchGenreFail = (message) => {
+    return {
+      type: FETCH_GENRE_FAIL,
+      payload: message,
+    }
+  }
+
 
 export const fetchLatestVideo = (limit) => {
     return (dispatch)=> {
@@ -119,3 +142,15 @@ export const fetchVideoById = (id) => {
       });
   };
 };
+
+export const videoByGenre = (genre) => {
+    return (dispatch) => {
+        dispatch(fetchByIdReq());
+        Axios.get(`${HOST}/videoByGenre/${genre}`)
+          .then((res) => {
+              dispatch(fetchGenreSuc(res.data?.videos))
+          }).catch((err) => {
+            dispatch(fetchGenreFail(err?.response?.data?.message));
+          })
+    }
+}

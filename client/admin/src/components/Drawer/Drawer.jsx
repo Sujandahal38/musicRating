@@ -32,14 +32,6 @@ export default function LeftDrawer(props) {
           </Toolbar>
           <Divider variant="middle" />
           <List component="nav">
-            <Link style={{textDecoration: 'none'}} to="/dashboard/">
-              <ListItem  selected={!!(location.pathname === '/dashboard/')} button>
-                <ListItemIcon>
-                  <AiFillDashboard color="white" fontSize={25} />
-                </ListItemIcon>
-                <ListItemText style={{ color: "white" }} primary="Dashboard" />
-              </ListItem>
-            </Link>
             <Link style={{textDecoration: 'none'}} to="/dashboard/addvideo">
               <ListItem  selected={!!(location.pathname === '/dashboard/addvideo')}  button>
                 <ListItemIcon>
@@ -56,7 +48,7 @@ export default function LeftDrawer(props) {
                 <ListItemText style={{ color: "white" }} primary="Manage Video" />
               </ListItem>
             </Link>
-            { userData?.isRoot && 
+            { userData?.isRoot &&
             <Link style={{textDecoration: 'none'}} to="/dashboard/manageadmin">
               <ListItem  selected={!!(location.pathname === '/dashboard/manageadmin')}  button>
                 <ListItemIcon>

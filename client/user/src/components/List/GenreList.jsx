@@ -33,7 +33,7 @@ const GenreList = ({ genre, list }) => {
               <Link
                 style={{ textDecoration: 'none' }}
                 key={item._id}
-                to={`/video/${item._id}`}
+                to={`/video/${item.genre}/${item._id}`}
               >
                 <Card elevation={3} className={classes.card}>
                   <CardMedia
@@ -67,18 +67,6 @@ const GenreList = ({ genre, list }) => {
             ))}
           </ListItem>
         </List>
-        <Link to="/" style={{ textDecoration: 'none' }}>
-          <Toolbar>
-            <Button
-              style={{ color: 'white', bottom: 0}}
-              fullWidth={true}
-              variant="text"
-              color="secondary"
-            >
-              See more
-            </Button>
-          </Toolbar>
-        </Link>
       </Paper>
     </>
   );

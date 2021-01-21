@@ -104,7 +104,6 @@ export default function SignupForm(props) {
             ...data,
             ...signupData?.username,
           };
-          console.log(finalData);
           dispatch(setRequest(finalData));
         }
       }

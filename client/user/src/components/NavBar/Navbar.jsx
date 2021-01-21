@@ -56,7 +56,7 @@ export default function Navbar() {
           </Link>
           <div>
             <FormControl className={classes.FormControl}>
-              <Input
+              {/* <Input
                 className={classes.Input}
                 type="text"
                 disableUnderline={true}
@@ -68,7 +68,7 @@ export default function Navbar() {
                     <SearchSharp />
                   </InputAdornment>
                 }
-              />
+              /> */}
             </FormControl>
         {/* <Paper
           innerRef={ref}
@@ -97,7 +97,6 @@ export default function Navbar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </>

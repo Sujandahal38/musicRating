@@ -22,7 +22,7 @@ const authReducer = (state = initialState, action) => {
     case LOGIN_REQUEST:
       return {
         isLoading: true,
-        
+
       };
     case LOGIN_SUCCESS:
       return {
@@ -71,7 +71,7 @@ const authReducer = (state = initialState, action) => {
       case DESTROY_MESSAGE: {
         return {
           ...state,
-          message : state.message !== 'Unauthorized Admin' ? '' : 'Unauthorized Admin' ,
+          message : '' ,
         }
       }
     default:

@@ -1,89 +1,55 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import LoginPage from './pages/loginPage';
 import SignupPage from './pages/SignupPage';
 import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from './Redux/Auth/authActions';
 import Dashboard from './pages/Dashboard';
 import Unauthorize from './pages/Unauthorize';
 import SuccessSnackbar from './components/snackbar/snackbar';
-
-const isAuthenticated = () => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    return true;
-  }
-  if (!token) {
-    return false;
-  }
-};
+import PublicRoute from './utils/PublicRoute';
+import PrivateRoute from './utils/PrivateRoute';
+import { HashLoader } from 'react-spinners';
 
 const AdminRouter = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const checkUser = () => {
+  const auth = useSelector((state) => state.auth);
+  const checkUser = useRef();
+  checkUser.current = () => {
     let token = localStorage.getItem('token');
     if (token) {
       dispatch(fetchUser(token));
     }
-    if (!token) {
-      history.push('/login');
-    }
   };
   useEffect(() => {
-    checkUser();
+    checkUser.current();
   }, []);
-
-  const PrivateRoute = ({ component: Component, path, ...rest }) => {
-    return (
-      <Route
-        path={path}
-        render={(props) =>
-          isAuthenticated() ? (
-            <Component {...props} {...rest} />
-          ) : (
-            <Redirect
-              to={{
-                pathname: '/login',
-                state: { from: props.location },
-              }}
-            />
-          )
-        }
-      />
-    );
-  };
-  const PublicRoute = ({ component: Component, path, ...rest }) => {
-    return (
-      <Route
-        path={path}
-        render={(props) =>
-          !isAuthenticated() ? (
-            <Component {...props} {...rest} />
-          ) : (
-            <Redirect
-              to={{
-                pathname: '/dashboard',
-                state: { from: props.location },
-              }}
-            />
-          )
-        }
-      />
-    );
-  };
 
   return (
     <>
       <SuccessSnackbar />
-      <Switch>
-        <PublicRoute path="/signup" component={SignupPage} />
-        <PublicRoute path="/login" component={LoginPage} />
-        <PublicRoute path="/unauthorized" component={Unauthorize} />
-        <PrivateRoute path="/dashboard" component={Dashboard} />
-        <Redirect to="/dashboard" />
-      </Switch>
+      {auth?.verifying ? (
+        <div
+          style={{
+            width: '100vw',
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <HashLoader color="yellow" size={45} />
+        </div>
+      ) : (
+        <Switch>
+          <PublicRoute path="/signup" component={SignupPage} />
+          <PublicRoute path="/login" component={LoginPage} />
+          <PublicRoute path="/unauthorized" component={Unauthorize} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
+        </Switch>
+      )}
     </>
   );
 };
