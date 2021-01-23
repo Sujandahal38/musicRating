@@ -92,7 +92,9 @@ export default function Navbar(props) {
             {props.openDrawer ? <MdArrowBack /> : <MenuSharp />}
           </IconButton>
           <Typography variant="h5" className={classes.titleText}>
-            MVDB
+            <Link style={{textDecoration:"none", color: "white"}} to ='/dashboard/addvideo'>
+              MVDB
+            </Link>
           </Typography>
           <ClickAwayListener onClickAway={handleClickAway}>
             <div>

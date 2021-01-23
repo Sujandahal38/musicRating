@@ -200,6 +200,7 @@ const useStyle = makeStyles((theme) => ({
     color: 'white',
   },
   titleText: {
+    color: 'white',
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     display: 'none',

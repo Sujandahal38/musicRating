@@ -40,7 +40,7 @@ adminRouter.patch('/editvideo/:id', adminAuth, editVideo);
 adminRouter.get('/fetchvideo/:limit', adminAuth, fetchVideo);
 
 adminRouter.get('/videobyid/:id', adminAuth, VideoById);
-adminRouter.get('/search/:text', adminAuth, searchVideo);
+adminRouter.get('/search/:text', searchVideo);
 
 adminRouter.patch('/changeauth', adminAuth, changeAuthorization);
 adminRouter.get('/fetchadmin', adminAuth, adminData);
