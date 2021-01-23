@@ -1,4 +1,4 @@
-var stemmer = require('./helper');
+const stemmer = require('./helper');
 
 function naiveBayes() {
   if (!(this instanceof naiveBayes)) {
