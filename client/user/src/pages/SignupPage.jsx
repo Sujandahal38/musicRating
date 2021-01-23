@@ -17,6 +17,7 @@ const SignupPage = () => {
     if (Auth.isLoggedIn) {
       history.push('/');
     }
+// eslint-disable-next-line
   }, []);
   if (signup?.message === 'User created Successfully 🙌') {
     history.push('/login');

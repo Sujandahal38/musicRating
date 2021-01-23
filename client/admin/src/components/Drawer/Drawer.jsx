@@ -11,7 +11,7 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { BsMusicNoteList } from "react-icons/bs";
-import { AiFillDashboard, IoMdAddCircle, FaUserEdit, FaEdit } from "react-icons/all";
+import { IoMdAddCircle, FaUserEdit, FaEdit } from "react-icons/all";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from 'react-redux';
 

@@ -82,7 +82,6 @@ const SignupForm = ({
               type="password"
               inputRef={register({
                 required: true,
-                required: true,
                 maxLength: 75,
                 minLength: 8,
               })}

@@ -22,17 +22,15 @@ import {
 } from '@material-ui/core';
 import { debounce } from 'lodash';
 import { SearchSharp } from '@material-ui/icons';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useOnClickOutside from '../../utils/ClickOutside';
 import { useSelector, useDispatch } from 'react-redux';
-import Moment from 'moment';
 import { getLogout, setSearch, clearSearch } from '../../store';
 
 export default function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
-  const [searchResultOpen, setSearchResultOpen] = useState(true);
-  const [loggedIn] = useState(false);
+  const [setSearchResultOpen] = useState(true);
   const user = useSelector((state) => state.user?.userData[0]);
   const Auth = useSelector((state) => state.auth);
   const handleClose = () => {
@@ -69,7 +67,6 @@ export default function Navbar() {
     dispatch(setSearch(text));
   }, 500);
   const searchedData = useSelector((state) => state.search);
-  const history = useHistory();
   useEffect(() => {
     if (searchedData?.loading || searchedData?.results) {
       setOpen(true);

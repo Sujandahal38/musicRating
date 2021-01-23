@@ -11,7 +11,7 @@ import {
   CircularProgress,
   Container,
 } from '@material-ui/core';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { login } from '../../Redux/Auth/authActions.js';
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { makeStyles, Paper, Container, Button } from '@material-ui/core';
+import { makeStyles, Button } from '@material-ui/core';
 import { Alert } from '@material-ui/lab';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { destroyMessage } from '../Redux';
 

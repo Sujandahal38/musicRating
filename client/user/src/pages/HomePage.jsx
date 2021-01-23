@@ -15,6 +15,7 @@ const HomePage = () => {
   useEffect(() => {
     dispatch(fetchVideo());
     dispatch(fetchLatestVideo(5));
+// eslint-disable-next-line
   },[])
   return (
     <>

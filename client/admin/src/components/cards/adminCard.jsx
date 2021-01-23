@@ -34,6 +34,7 @@ export default function AdminCard() {
   };
   useEffect(() => {
     fetchAdminData();
+// eslint-disable-next-line
   }, []);
 
   const onClickButton = (id) => {
@@ -48,6 +49,7 @@ export default function AdminCard() {
       isAdmin: selectedAdmin[0]?.isAdmin,
       isRoot: selectedAdmin[0]?.isRoot,
     });
+// eslint-disable-next-line
   }, [selectedAdmin]);
   const handleClose = () => {
     setOpen(false);

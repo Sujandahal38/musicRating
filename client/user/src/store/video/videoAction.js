@@ -8,7 +8,6 @@ import {
   FETCH_NEW_REQ,
   FETCH_NEW_SUC,
   FETCH_NEW_FAILED,
-  FETCH_GENRE_REQ,
   FETCH_GENRE_SUC,
   FETCH_GENRE_FAIL
 } from './videoTypes';
@@ -74,12 +73,6 @@ export const fetchNewFailed = (message) => {
     return {
         type: FETCH_NEW_FAILED,
         message: message,
-    }
-  }
-
-  const fetchGenreReq = () => {
-    return {
-      type: FETCH_GENRE_REQ,
     }
   }
 

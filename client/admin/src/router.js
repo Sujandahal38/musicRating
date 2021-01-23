@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import LoginPage from './pages/loginPage';
 import SignupPage from './pages/SignupPage';
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Switch, Redirect } from 'react-router-dom';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUser } from './Redux/Auth/authActions';
@@ -13,7 +13,6 @@ import PrivateRoute from './utils/PrivateRoute';
 import { HashLoader } from 'react-spinners';
 
 const AdminRouter = () => {
-  const history = useHistory();
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const checkUser = useRef();

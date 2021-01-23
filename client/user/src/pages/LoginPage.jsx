@@ -13,6 +13,7 @@ const LoginPage = () => {
     if (Auth.isLoggedIn) {
       history.push('/')
     }
+// eslint-disable-next-line
   },[])
 
   if(Auth.isLoggedIn) {

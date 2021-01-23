@@ -1,12 +1,11 @@
 import React, { useEffect } from 'react';
-import { Switch, Route, Redirect, useHistory } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
-import { useState } from 'react';
 import SignupPage from './pages/SignupPage';
 import Navbar from './components/NavBar/Navbar';
 import HomePage from './pages/HomePage';
 import SnackBar from './components/SnackBar/SnackBar';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { verifyToken } from './store';
 import VideoViewPage from './pages/VideoViewPage.jsx'
 
@@ -47,6 +46,7 @@ const Router = () => {
     if (token) {
      dispatch(verifyToken(token));
     }
+// eslint-disable-next-line
   },[]);
 
   return (
