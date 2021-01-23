@@ -5,6 +5,7 @@ import userReducer from './user/userReducer';
 import signupReducer from './signup/signupReducer';
 import videoReducer from './video/videoReducer';
 import commentReducer from './comment/commentReducer';
+import searchReducer from './search/searchReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -12,7 +13,8 @@ const rootReducer = combineReducers({
     user: userReducer,
     signup: signupReducer,
     video: videoReducer,
-    comment: commentReducer
+    comment: commentReducer,
+    search: searchReducer,
 });
 
 export default rootReducer;

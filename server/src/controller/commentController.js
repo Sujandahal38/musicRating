@@ -58,7 +58,6 @@ exports.analyzeComments = async (req, res, next) => {
            ratings,
          }
        });
-       console.log(saveRating);
        if (saveRating.nModified === 1) {
         res.status(200).json({
           message: 'rated successfully',

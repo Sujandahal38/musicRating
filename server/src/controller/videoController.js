@@ -112,7 +112,7 @@ exports.youtubeScrape = async (req, res, next) => {
       await getElText(page, totalCommentSelector);
 
       const comments = [];
-      for (let i = 1; i < 101; i += 1) {
+      for (let i = 1; i < 51; i += 1) {
         try {
           const commentSelector = `.style-scope:nth-child(${i}) > #comment > #body > #main > #expander #content-text`;
           await page.waitForSelector(commentSelector);

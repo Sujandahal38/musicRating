@@ -3,3 +3,4 @@ export * from './globalSnackBar/snackAction';
 export * from './signup/signupAction';
 export * from './video/videoAction';
 export * from './comment/commentAction'
+export * from './search/searchAction';

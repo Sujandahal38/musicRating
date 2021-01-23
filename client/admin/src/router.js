@@ -48,6 +48,7 @@ const AdminRouter = () => {
           <PublicRoute path="/login" component={LoginPage} />
           <PublicRoute path="/unauthorized" component={Unauthorize} />
           <PrivateRoute path="/dashboard" component={Dashboard} />
+          <Redirect to="/dashboard/addvideo"/>
         </Switch>
       )}
     </>
